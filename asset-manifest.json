@@ -1,0 +1,24 @@
+{
+  "files": {
+    "main.css": "/homefunny/static/css/main.4951e46e.chunk.css",
+    "main.js": "/homefunny/static/js/main.d0d7acfc.chunk.js",
+    "main.js.map": "/homefunny/static/js/main.d0d7acfc.chunk.js.map",
+    "runtime-main.js": "/homefunny/static/js/runtime-main.daee669a.js",
+    "runtime-main.js.map": "/homefunny/static/js/runtime-main.daee669a.js.map",
+    "static/css/2.c2107d56.chunk.css": "/homefunny/static/css/2.c2107d56.chunk.css",
+    "static/js/2.2d74a12d.chunk.js": "/homefunny/static/js/2.2d74a12d.chunk.js",
+    "static/js/2.2d74a12d.chunk.js.map": "/homefunny/static/js/2.2d74a12d.chunk.js.map",
+    "index.html": "/homefunny/index.html",
+    "static/css/2.c2107d56.chunk.css.map": "/homefunny/static/css/2.c2107d56.chunk.css.map",
+    "static/css/main.4951e46e.chunk.css.map": "/homefunny/static/css/main.4951e46e.chunk.css.map",
+    "static/js/2.2d74a12d.chunk.js.LICENSE.txt": "/homefunny/static/js/2.2d74a12d.chunk.js.LICENSE.txt",
+    "static/media/blueprint-icons.css": "/homefunny/static/media/icons-20.cde033c5.eot"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.daee669a.js",
+    "static/css/2.c2107d56.chunk.css",
+    "static/js/2.2d74a12d.chunk.js",
+    "static/css/main.4951e46e.chunk.css",
+    "static/js/main.d0d7acfc.chunk.js"
+  ]
+}
