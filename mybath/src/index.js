@@ -1,10 +1,11 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
+import React from "react";
+import ReactDOM from "react-dom";
+import Bath from "component/Bath";
+import "./index.css";
 
 ReactDOM.render(
   <React.StrictMode>
-    <div>Hello World</div>
+    <Bath />
   </React.StrictMode>,
-  document.getElementById('root')
+  document.getElementById("root")
 );
