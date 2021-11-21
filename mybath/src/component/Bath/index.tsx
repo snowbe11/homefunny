@@ -1,7 +1,8 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import { NameTag } from 'component/NameTag';
 import { Calendar } from 'component/Calendar';
 import { Card } from '@blueprintjs/core';
+import { getBath } from "../../firebase";
 import "./style.css"
 
 import "@blueprintjs/core/lib/css/blueprint.css";
@@ -17,7 +18,7 @@ const countingDays = (date:Date) => {
 }
 
 const whoIs = (days:number) => {
-    if ((days % 2) == 0) {
+    if ((days % 2) === 0) {
         if (start_from === "james") {
             return "james";
         }
@@ -36,6 +37,11 @@ const whoIs = (days:number) => {
 }
 
 const Bath = () => {
+    useEffect(() => {
+        //console.log(firebaseStore);
+        getBath().then(e => console.log(e));
+    }, [])
+
     const [checkDate, setDate] = useState<Date>(new Date());
 
     const day_count = countingDays(checkDate);
