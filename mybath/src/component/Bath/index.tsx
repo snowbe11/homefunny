@@ -18,7 +18,7 @@ import {
   Toaster,
   Position,
   IToastProps,
-} from "@blueprintjs/core";
+} from "antd";
 import { addEvent, getEventState } from "logic/access";
 import "./style.css";
 
