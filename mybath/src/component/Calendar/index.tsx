@@ -1,14 +1,9 @@
-import React, { useState } from 'react'
-import { Classes, Text } from '@blueprintjs/core';
+import { Classes } from '@blueprintjs/core';
 import { DatePicker } from "@blueprintjs/datetime"
 
 export const Calendar = (props:{setNewDate:any}) => {
-    const [pickedDate, setPickDate] = useState("");
-
     const onDateChanged = (date:Date) => {
         if (date) {
-            setPickDate(date.toLocaleDateString());
-
             props.setNewDate(date);
         }
     }

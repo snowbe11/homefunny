@@ -1,13 +1,12 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp, } from "firebase/app";
-import { Firestore, getFirestore, collection, getDocs } from "firebase/firestore/lite";
-import { getAnalytics } from "firebase/analytics";
+//import { getAnalytics } from "firebase/analytics";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
+export const firebaseConfig = {
     apiKey: process.env.REACT_APP_API_KEY,
     authDomain: process.env.REACT_APP_AUTH_DOMAIN,
     projectId: process.env.REACT_APP_PROJECT_ID,
@@ -19,16 +18,6 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const firebaseApp = initializeApp(firebaseConfig);
-const analytics = getAnalytics(firebaseApp);
-const db = getFirestore(firebaseApp);
+//const analytics = getAnalytics(firebaseApp);
 
 export default firebaseApp;
-
-export const getBath = async () => {
-    console.log(JSON.stringify(firebaseConfig));
-
-    const bathCollection = collection(db, 'bath');
-    const basthSnapshot = await getDocs(bathCollection);
-    const contextList = basthSnapshot.docs.map(doc => doc.data());
-    return contextList;
-};
