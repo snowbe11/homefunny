@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { NameTag } from "component/NameTag";
 import { Calendar } from "component/Calendar";
 import { EventUser } from "component/EventUser";
@@ -19,7 +19,7 @@ import {
   Position,
   IToastProps,
 } from "@blueprintjs/core";
-import { addEvent } from "logic/access";
+import { addEvent, getEventState } from "logic/access";
 import "./style.css";
 
 import "@blueprintjs/core/lib/css/blueprint.css";
@@ -27,9 +27,16 @@ import "@blueprintjs/icons/lib/css/blueprint-icons.css";
 import "@blueprintjs/datetime/lib/css/blueprint-datetime.css";
 
 const countingDays = (date: Date, from: Date) => {
+  const fromDay = new Date(from.getFullYear(), from.getMonth(), from.getDay());
+  const currentDay = new Date(
+    date.getFullYear(),
+    date.getMonth(),
+    date.getDay()
+  );
   const one_day = 1000 * 60 * 60 * 24;
-  const diff = (date.getTime() - from.getTime()) / one_day;
-  return Math.ceil(diff);
+  const diff = (currentDay.getTime() - fromDay.getTime()) / one_day;
+  const sign = Math.sign(diff);
+  return Math.floor(Math.abs(diff)) * sign;
 };
 
 const whoIs = (days: number, from: string) => {
@@ -54,22 +61,41 @@ let toasterRef: Toaster;
 
 const Bath = () => {
   const [checkDate, setDate] = useState<Date>(new Date());
-  const [eventUser, setEventUser] = useState({
+  const [todayState, setTodayState] = useState({
+    name: "",
+    dayPassed: 0,
+  });
+  const [eventState, setEventState] = useState({
     date: new Date("1997-1-1"),
     name: "undefined",
   });
 
-  const day_count = countingDays(checkDate, eventUser.date);
-  const person = whoIs(day_count, eventUser.name);
+  const getEventContext = async () => {
+    const { eventDate, eventName } = await getEventState();
+
+    // const log = `get context {${eventDate}: ${eventName}}`;
+    // console.log(log);
+
+    setEventState({ date: eventDate, name: eventName });
+
+    const dayPassed = countingDays(checkDate, eventDate);
+    const name = whoIs(dayPassed, eventName);
+    setTodayState({ name, dayPassed });
+  };
+
+  useEffect(() => {
+    getEventContext();
+    // eslint-disable-next-line
+  }, [checkDate]);
 
   const onClick = (name: string) => {
     addEvent(new Date(), name).then((e) => {
       if (e) {
         console.log(`${e.date}, ${e.name}`);
 
-        setEventUser(e);
-
-        addToast();
+        getEventContext().then((e) => {
+          addToast();
+        });
       }
     });
   };
@@ -77,7 +103,7 @@ const Bath = () => {
   const toastBuild: IToastProps = {
     icon: "tick",
     intent: Intent.SUCCESS,
-    message: `오늘 날자, ${eventUser.name}(으)로 사용자를 바꿨습니다.`,
+    message: `오늘부터 ${eventState.name}가 사용합니다.`,
     timeout: 3000,
   };
 
@@ -116,11 +142,10 @@ const Bath = () => {
       <div>
         <Card className="bp3-text-large bp3-running-text">
           <blockquote>
-            <NameTag name={person} />
-            <div>{day_count} days passed</div>
+            <NameTag name={todayState.name} />
+            <div>{todayState.dayPassed} days passed</div>
           </blockquote>
-          <br />
-          <EventUser eventUser={eventUser} setEventUser={setEventUser} />
+          <EventUser eventUser={eventState} />
           <Calendar setNewDate={setDate} />
         </Card>
       </div>
@@ -137,7 +162,7 @@ const Bath = () => {
 
       <Divider />
       <div>
-        <EventLog {...eventUser} />
+        <EventLog {...eventState} />
       </div>
     </div>
   );
