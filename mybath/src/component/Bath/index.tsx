@@ -28,7 +28,8 @@ import "@blueprintjs/datetime/lib/css/blueprint-datetime.css";
 
 const countingDays = (date: Date, from: Date) => {
   const one_day = 1000 * 60 * 60 * 24;
-  return Math.round((date.getTime() - from.getTime()) / one_day);
+  const diff = (date.getTime() - from.getTime()) / one_day;
+  return Math.ceil(diff);
 };
 
 const whoIs = (days: number, from: string) => {
@@ -98,7 +99,7 @@ const Bath = () => {
         ref={toasterRefHandler}
         autoFocus={false}
         position={Position.TOP}
-        usePortal={true}
+        usePortal={false}
       />
       <Navbar>
         <NavbarGroup align={Alignment.LEFT}>
@@ -110,7 +111,6 @@ const Bath = () => {
             text="Home"
             intent="primary"
           />
-          <Button className={Classes.MINIMAL} icon="calendar" text="My Bath" />
         </NavbarGroup>
       </Navbar>
       <div>
