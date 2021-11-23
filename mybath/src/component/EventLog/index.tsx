@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { getEventLog } from "../../logic/access";
-import { Text, Collapse, Button } from "@blueprintjs/core";
+import { Collapse, Button } from "antd";
 
 export const EventLog = (props: { date: Date; name: string }) => {
   const type: { date: Date; text: string }[] = [];
@@ -15,20 +15,16 @@ export const EventLog = (props: { date: Date; name: string }) => {
 
   return (
     <div>
-      <Button
-        onClick={() => setLogVisiblity(!logVisiblity)}
-        minimal={true}
-        outlined={true}
-      >
+      <Button onClick={() => setLogVisiblity(!logVisiblity)}>
         {logVisiblity ? "감추기" : "보이기"}
       </Button>
-      <Collapse isOpen={logVisiblity}>
+      <Collapse>
         <pre>
           {logState.map((e, i: number) => {
             return (
-              <Text key={i++}>
+              <span key={i++}>
                 [{e.date.toLocaleString()}] {e.text}
-              </Text>
+              </span>
             );
           })}
         </pre>
