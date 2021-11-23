@@ -17,12 +17,8 @@ import "antd/dist/antd.css";
 import { HomeOutlined } from "@ant-design/icons";
 
 const countingDays = (date: Date, from: Date) => {
-  const fromDay = new Date(from.getFullYear(), from.getMonth(), from.getDay());
-  const currentDay = new Date(
-    date.getFullYear(),
-    date.getMonth(),
-    date.getDay()
-  );
+  const fromDay = new Date(from.toLocaleDateString());
+  const currentDay = new Date(date.toLocaleDateString());
   const one_day = 1000 * 60 * 60 * 24;
   const diff = (currentDay.getTime() - fromDay.getTime()) / one_day;
   const sign = Math.sign(diff);
