@@ -5,6 +5,7 @@ import { EventUser } from "component/EventUser";
 import { EventLog } from "component/EventLog";
 import {
   Card,
+  CardBody,
   ButtonGroup,
   Button,
   Divider,
@@ -141,12 +142,14 @@ const Bath = () => {
       </Navbar>
       <div>
         <Card className="bp3-text-large bp3-running-text">
-          <blockquote>
-            <NameTag name={todayState.name} />
-            <div>{todayState.dayPassed} days passed</div>
-          </blockquote>
-          <EventUser eventUser={eventState} />
-          <Calendar setNewDate={setDate} />
+          <CardBody>
+            <blockquote>
+              <NameTag name={todayState.name} />
+              <div>{todayState.dayPassed} days passed</div>
+            </blockquote>
+            <EventUser eventUser={eventState} />
+            <Calendar setNewDate={setDate} />
+          </CardBody>
         </Card>
       </div>
 
