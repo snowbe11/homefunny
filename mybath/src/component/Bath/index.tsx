@@ -3,11 +3,18 @@ import { NameTag } from "component/NameTag";
 import { Calendar } from "component/Calendar";
 import { EventUser } from "component/EventUser";
 import { EventLog } from "component/EventLog";
-import { Card, Button, Divider, Menu, PageHeader, message } from "antd";
+import {
+  Breadcrumb,
+  Card,
+  Button,
+  Divider,
+  message,
+  Space,
+} from "antd";
 import { addEvent, getEventState } from "logic/access";
-import "./style.css";
 
 import "antd/dist/antd.css";
+import { HomeOutlined } from "@ant-design/icons";
 
 const countingDays = (date: Date, from: Date) => {
   const fromDay = new Date(from.getFullYear(), from.getMonth(), from.getDay());
@@ -85,12 +92,15 @@ const Bath = () => {
 
   return (
     <div className="bath-app">
-      <Menu mode="horizontal">
-        <PageHeader title="Home Funny" />
-        <Menu.Item icon="home" color="processing">
-          Home
-        </Menu.Item>
-      </Menu>
+      <Breadcrumb>
+        <Breadcrumb.Item>Home Funny</Breadcrumb.Item>
+        <Breadcrumb.Item>
+          <Space>
+            <HomeOutlined />
+            Home
+          </Space>
+        </Breadcrumb.Item>
+      </Breadcrumb>
       <div>
         <Card className="bp3-text-large bp3-running-text">
           <blockquote>
@@ -104,7 +114,7 @@ const Bath = () => {
 
       <div>
         <Divider />
-        <Button color="success" onClick={() => onClick("james")}>
+        <Button style={{ background: "green", color: "white" }} onClick={() => onClick("james")}>
           james confirm
         </Button>
         <Button color="processing" onClick={() => onClick("henry")}>

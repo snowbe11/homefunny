@@ -1,4 +1,5 @@
 import { DatePicker } from "antd";
+import moment from "moment";
 
 export const Calendar = (props: { setNewDate: any }) => {
   const onDateChanged = (date: Date) => {
@@ -28,7 +29,10 @@ export const Calendar = (props: { setNewDate: any }) => {
               {current.date()}
             </div>
           );
-        }}
+        }
+      }
+      onChange={(date:any, dateString:string) => onDateChanged(new Date(dateString))}
+
       />
     </div>
   );
