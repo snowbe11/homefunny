@@ -10,11 +10,13 @@ import {
   Divider,
   message,
   Space,
+  Layout,
 } from "antd";
 import { addEvent, getEventState } from "logic/access";
 
 import "antd/dist/antd.css";
 import { HomeOutlined } from "@ant-design/icons";
+import { Content } from "antd/lib/layout/layout";
 
 const countingDays = (date: Date, from: Date) => {
   const fromDay = new Date(from.toLocaleDateString());
@@ -86,18 +88,23 @@ const Bath = () => {
     message.success(`오늘부터 ${eventState.name}가 사용합니다.`);
   };
 
+  const style = {
+    display: "inline-block",
+    margin: "30px",
+  };
+
   return (
-    <div className="bath-app">
-      <Breadcrumb>
-        <Breadcrumb.Item>Home Funny</Breadcrumb.Item>
-        <Breadcrumb.Item>
-          <Space>
-            <HomeOutlined />
-            Home
-          </Space>
-        </Breadcrumb.Item>
-      </Breadcrumb>
-      <div>
+    <Layout style={style}>
+      <Layout.Content>
+        <Breadcrumb>
+          <Breadcrumb.Item>Home Funny</Breadcrumb.Item>
+          <Breadcrumb.Item>
+            <Space>
+              <HomeOutlined />
+              Home
+            </Space>
+          </Breadcrumb.Item>
+        </Breadcrumb>
         <Card className="bp3-text-large bp3-running-text">
           <blockquote>
             <NameTag name={todayState.name} />
@@ -106,23 +113,27 @@ const Bath = () => {
           <EventUser eventUser={eventState} />
           <Calendar setNewDate={setDate} />
         </Card>
-      </div>
+        <Space>
+          <Button
+            style={{ background: "#1890ff", color: "white" }}
+            onClick={() => onClick("james")}
+          >
+            james confirm
+          </Button>
+          <Button
+            style={{ background: "#52c41a", color: "white" }}
+            onClick={() => onClick("henry")}
+          >
+            henry confirm
+          </Button>
+        </Space>
 
-      <div>
         <Divider />
-        <Button style={{ background: "green", color: "white" }} onClick={() => onClick("james")}>
-          james confirm
-        </Button>
-        <Button color="processing" onClick={() => onClick("henry")}>
-          henry confirm
-        </Button>
-      </div>
-
-      <Divider />
-      <div>
-        <EventLog {...eventState} />
-      </div>
-    </div>
+        <div>
+          <EventLog {...eventState} />
+        </div>
+      </Layout.Content>
+    </Layout>
   );
 };
 

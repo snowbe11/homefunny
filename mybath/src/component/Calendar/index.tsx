@@ -1,5 +1,4 @@
-import { DatePicker } from "antd";
-import moment from "moment";
+import { Calendar as DatePicker } from "antd";
 
 export const Calendar = (props: { setNewDate: any }) => {
   const onDateChanged = (date: Date) => {
@@ -22,17 +21,8 @@ export const Calendar = (props: { setNewDate: any }) => {
   return (
     <div className="bath-calendar-container">
       <DatePicker
-        dateRender={(current) => {
-          const style = {};
-          return (
-            <div className="ant-picker-cell-inner" style={style}>
-              {current.date()}
-            </div>
-          );
-        }
-      }
-      onChange={(date:any, dateString:string) => onDateChanged(new Date(dateString))}
-
+        fullscreen={false}
+        onSelect={(date: any) => onDateChanged(new Date(date))}
       />
     </div>
   );
