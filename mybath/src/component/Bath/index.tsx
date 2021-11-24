@@ -3,20 +3,11 @@ import { NameTag } from "component/NameTag";
 import { Calendar } from "component/Calendar";
 import { EventUser } from "component/EventUser";
 import { EventLog } from "component/EventLog";
-import {
-  Breadcrumb,
-  Card,
-  Button,
-  Divider,
-  message,
-  Space,
-  Layout,
-} from "antd";
+import { HomeNavigation } from "component/HomeNavigation";
+import { Card, Button, Divider, message, Space, Layout } from "antd";
 import { addEvent, getEventState } from "logic/access";
 
 import "antd/dist/antd.css";
-import { HomeOutlined } from "@ant-design/icons";
-import { Content } from "antd/lib/layout/layout";
 
 const countingDays = (date: Date, from: Date) => {
   const fromDay = new Date(from.toLocaleDateString());
@@ -75,7 +66,7 @@ const Bath = () => {
   const onClick = (name: string) => {
     addEvent(new Date(), name).then((e) => {
       if (e) {
-        console.log(`${e.date}, ${e.name}`);
+        //console.log(`${e.date}, ${e.name}`);
 
         getEventContext().then((e) => {
           addToast();
@@ -96,15 +87,7 @@ const Bath = () => {
   return (
     <Layout style={style}>
       <Layout.Content>
-        <Breadcrumb>
-          <Breadcrumb.Item>Home Funny</Breadcrumb.Item>
-          <Breadcrumb.Item>
-            <Space>
-              <HomeOutlined />
-              Home
-            </Space>
-          </Breadcrumb.Item>
-        </Breadcrumb>
+        <HomeNavigation />
         <Card className="bp3-text-large bp3-running-text">
           <blockquote>
             <NameTag name={todayState.name} />
@@ -129,9 +112,7 @@ const Bath = () => {
         </Space>
 
         <Divider />
-        <div>
-          <EventLog {...eventState} />
-        </div>
+        <EventLog {...eventState} />
       </Layout.Content>
     </Layout>
   );
