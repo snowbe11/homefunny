@@ -1,15 +1,19 @@
-import { Tag, Intent } from "@blueprintjs/core";
+import { Tip, Button } from "grommet";
 
 export const NameTag = (props: { name: string }) => {
+  //const nameColor = props.name === "james" ? "neutral-2" : "neutral-1";
+  const nameColor = props.name === "james" ? "neutral-3" : "status-ok";
+
   return (
     <div>
       <span>today is </span>
-      <Tag
-        intent={props.name === "james" ? Intent.PRIMARY : Intent.SUCCESS}
-        large={true}
-      >
-        {props.name}
-      </Tag>
+      <Tip content={props.name}>
+        <Button
+          color={nameColor}
+          label={props.name}
+          style={{ backgroundColor: "yellow" }}
+        />
+      </Tip>
     </div>
   );
 };

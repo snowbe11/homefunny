@@ -1,31 +1,26 @@
-import { Classes } from '@blueprintjs/core';
-import { DatePicker } from "@blueprintjs/datetime"
+import { useState } from "react";
+import { Calendar as CalendarG } from "grommet";
 
-export const Calendar = (props:{setNewDate:any}) => {
-    const onDateChanged = (date:Date) => {
-        if (date) {
-            props.setNewDate(date);
-        }
+export const Calendar = (props: { setNewDate: any }) => {
+  const [selectedDate, setSelectedDate] = useState(new Date());
+
+  const onDateChanged = (date: Date) => {
+    if (date) {
+      setSelectedDate(date);
+      props.setNewDate(date);
     }
+  };
 
-    const timePickerProps = {
-        date: new Date(),
-        highlightCurrentDay: true,
-        reverseMonthAndYearMenus: false,
-        shortcuts: false,
-        showActionsBar: false,
-        showTimeArrowButtons: false,
-        timePrecision: undefined,
-        useAmPm: false,
-    };
-
-    return (
-        <div className="bath-calendar-container">
-            <DatePicker
-                className={Classes.ELEVATION_1}
-                onChange={onDateChanged}
-                {...timePickerProps}
-            />
-        </div>
-    )
-}
+  return (
+    <div className="bath-calendar-container">
+      <CalendarG
+        firstDayOfWeek={1}
+        date={selectedDate.toISOString()}
+        onSelect={(arg) => {
+          //console.log(arg);
+          onDateChanged(new Date(arg.toLocaleString()));
+        }}
+      />
+    </div>
+  );
+};

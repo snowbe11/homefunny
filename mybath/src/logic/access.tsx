@@ -12,7 +12,7 @@ import {
 } from "firebase/firestore/lite";
 
 const store = getFirestore(firebaseApp);
-let eventLogIndex = 0;
+let eventLogIndex: number = 0;
 
 const getAppStateSnapshot = async (documentName: string) => {
   if (process.env.REACT_APP_COLLECTION_APP_STATE) {
@@ -45,7 +45,12 @@ const getEventLogSnapshot = async () => {
   }
 };
 
-export const getEventLog = async () => {
+export type EventLogType = {
+  date: Date;
+  text: string;
+};
+
+export const getEventLog = async (): Promise<EventLogType[]> => {
   let eventDateLog = await getEventLogSnapshot();
   if (eventDateLog) {
     const convertedDataform = eventDateLog.map((log) => {

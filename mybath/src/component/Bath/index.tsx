@@ -3,29 +3,22 @@ import { NameTag } from "component/NameTag";
 import { Calendar } from "component/Calendar";
 import { EventUser } from "component/EventUser";
 import { EventLog } from "component/EventLog";
+import { addEvent, getEventState } from "logic/access";
 import {
+  Grommet,
   Card,
   CardBody,
-  ButtonGroup,
   Button,
-  Divider,
-  Navbar,
-  NavbarGroup,
-  NavbarHeading,
-  NavbarDivider,
-  Alignment,
-  Classes,
-  Intent,
-  Toaster,
-  Position,
-  IToastProps,
-} from "antd";
-import { addEvent, getEventState } from "logic/access";
-import "./style.css";
+  Nav,
+  Anchor,
+  Box,
+  Notification,
+  Text,
+} from "grommet";
 
-import "@blueprintjs/core/lib/css/blueprint.css";
-import "@blueprintjs/icons/lib/css/blueprint-icons.css";
-import "@blueprintjs/datetime/lib/css/blueprint-datetime.css";
+import { Home } from "grommet-icons";
+import { grommet, base } from "grommet/themes";
+import "./style.css";
 
 const countingDays = (date: Date, from: Date) => {
   const fromDay = new Date(from.toLocaleDateString());
@@ -52,10 +45,6 @@ const whoIs = (days: number, from: string) => {
   }
 };
 
-// useRef 와는 다르다.
-// 블루프린트는 ref 를 설정할 수 없다.
-let toasterRef: Toaster;
-
 const Bath = () => {
   const [checkDate, setDate] = useState<Date>(new Date());
   const [todayState, setTodayState] = useState({
@@ -66,6 +55,7 @@ const Bath = () => {
     date: new Date("1997-1-1"),
     name: "undefined",
   });
+  const [toast, setToast] = useState(false);
 
   const getEventContext = async () => {
     const { eventDate, eventName } = await getEventState();
@@ -82,7 +72,6 @@ const Bath = () => {
 
   useEffect(() => {
     getEventContext();
-    // eslint-disable-next-line
   }, [checkDate]);
 
   const onClick = (name: string) => {
@@ -97,73 +86,63 @@ const Bath = () => {
     });
   };
 
-  const toastBuild: IToastProps = {
-    icon: "tick",
-    intent: Intent.SUCCESS,
-    message: `오늘부터 ${eventState.name}가 사용합니다.`,
-    timeout: 3000,
-  };
-
-  // this 를 넘겨주는 처리를 어떻게 할 수 있을까?
-  // clas-component 에서는 this 를 주고 받고 할 수 있었는데 그 방법으로 될 가능성이 있다.
-  const toasterRefHandler = (ref: Toaster) => {
-    toasterRef = ref;
-  };
+  const RenderNotify = (
+    <Notification
+      toast
+      title="notification"
+      message={`오늘부터 ${eventState.name}가 사용합니다.`}
+      onClose={() => setToast(false)}
+    />
+  );
 
   const addToast = () => {
-    if (toasterRef) {
-      toasterRef.show(toastBuild);
-    }
+    setToast(true);
   };
 
   return (
-    <div className="bath-app">
-      <Toaster
-        ref={toasterRefHandler}
-        autoFocus={false}
-        position={Position.TOP}
-        usePortal={false}
-      />
-      <Navbar>
-        <NavbarGroup align={Alignment.LEFT}>
-          <NavbarHeading>Home Funny</NavbarHeading>
-          <NavbarDivider />
-          <Button
-            className={Classes.MINIMAL}
-            icon="home"
-            text="Home"
-            intent="primary"
-          />
-        </NavbarGroup>
-      </Navbar>
+    <Grommet className="bath-app" theme={base}>
+      {toast && RenderNotify}
+      <Box>
+        <Nav direction="row">
+          <Anchor>
+            <Text>Home Funny / </Text>
+          </Anchor>
+          <Home />
+          <Anchor>Home</Anchor>
+        </Nav>
+      </Box>
       <div>
-        <Card className="bp3-text-large bp3-running-text">
+        <Card className="bp3-text-large bp3-running-text" pad="medium">
           <CardBody>
             <blockquote>
               <NameTag name={todayState.name} />
-              <div>{todayState.dayPassed} days passed</div>
+              <Text>{todayState.dayPassed} days passed</Text>
             </blockquote>
-            <EventUser eventUser={eventState} />
+            <EventUser {...eventState} />
             <Calendar setNewDate={setDate} />
           </CardBody>
         </Card>
       </div>
 
-      <ButtonGroup vertical={false} large={true}>
-        <Divider />
-        <Button intent={"success"} onClick={() => onClick("james")}>
-          james confirm
-        </Button>
-        <Button intent={"primary"} onClick={() => onClick("henry")}>
-          henry confirm
-        </Button>
-      </ButtonGroup>
+      <Box margin="medium" gap="small">
+        <Nav direction="row">
+          <Button
+            onClick={() => onClick("james")}
+            color="neutral-3"
+            label="james confirm"
+          ></Button>
+          <Button
+            onClick={() => onClick("henry")}
+            color="status-ok"
+            label="henry confirm"
+          ></Button>
+        </Nav>
+      </Box>
 
-      <Divider />
-      <div>
+      <Box margin="medium">
         <EventLog {...eventState} />
-      </div>
-    </div>
+      </Box>
+    </Grommet>
   );
 };
 

@@ -1,19 +1,16 @@
 import React from "react";
-import { Tag, Intent } from "@blueprintjs/core";
+import { Button, Text, Box } from "grommet";
 
-export const EventUser = (props: {
-  eventUser: { date: Date; name: string };
-}) => {
-  const intent =
-    props.eventUser.name === "james" ? Intent.PRIMARY : Intent.SUCCESS;
-
+export const EventUser = (props: { date: Date; name: string }) => {
   return (
     <React.Fragment>
       <h5>
-        <Tag key={props.eventUser.name} round={false} intent={intent}>
-          {props.eventUser.name}
-        </Tag>{" "}
-        was use {props.eventUser.date.toLocaleDateString()}
+        <Button hoverIndicator="light-1" key={props.name}>
+          <Box gap="small">
+            <Text>{props.name}</Text>
+          </Box>
+        </Button>{" "}
+        was use {props.date.toLocaleDateString()}
       </h5>
     </React.Fragment>
   );
