@@ -1,19 +1,16 @@
 import React from "react";
-import { Tag, Intent } from "@blueprintjs/core";
+import { Tag } from "antd";
 
 export const EventUser = (props: {
   eventUser: { date: Date; name: string };
 }) => {
-  const intent =
-    props.eventUser.name === "james" ? Intent.PRIMARY : Intent.SUCCESS;
+  const intent = props.eventUser.name === "james" ? "processing" : "success";
 
   return (
     <React.Fragment>
       <h5>
-        <Tag key={props.eventUser.name} round={false} intent={intent}>
-          {props.eventUser.name}
-        </Tag>{" "}
-        was use {props.eventUser.date.toLocaleDateString()}
+        <Tag color={intent}>{props.eventUser.name}</Tag> was use{" "}
+        {props.eventUser.date.toLocaleDateString()}
       </h5>
     </React.Fragment>
   );

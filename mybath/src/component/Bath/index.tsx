@@ -4,27 +4,19 @@ import { Calendar } from "component/Calendar";
 import { EventUser } from "component/EventUser";
 import { EventLog } from "component/EventLog";
 import {
+  Breadcrumb,
   Card,
-  ButtonGroup,
   Button,
   Divider,
-  Navbar,
-  NavbarGroup,
-  NavbarHeading,
-  NavbarDivider,
-  Alignment,
-  Classes,
-  Intent,
-  Toaster,
-  Position,
-  IToastProps,
-} from "@blueprintjs/core";
+  message,
+  Space,
+  Layout,
+} from "antd";
 import { addEvent, getEventState } from "logic/access";
-import "./style.css";
 
-import "@blueprintjs/core/lib/css/blueprint.css";
-import "@blueprintjs/icons/lib/css/blueprint-icons.css";
-import "@blueprintjs/datetime/lib/css/blueprint-datetime.css";
+import "antd/dist/antd.css";
+import { HomeOutlined } from "@ant-design/icons";
+import { Content } from "antd/lib/layout/layout";
 
 const countingDays = (date: Date, from: Date) => {
   const fromDay = new Date(from.toLocaleDateString());
@@ -50,10 +42,6 @@ const whoIs = (days: number, from: string) => {
     }
   }
 };
-
-// useRef 와는 다르다.
-// 블루프린트는 ref 를 설정할 수 없다.
-let toasterRef: Toaster;
 
 const Bath = () => {
   const [checkDate, setDate] = useState<Date>(new Date());
@@ -96,46 +84,27 @@ const Bath = () => {
     });
   };
 
-  const toastBuild: IToastProps = {
-    icon: "tick",
-    intent: Intent.SUCCESS,
-    message: `오늘부터 ${eventState.name}가 사용합니다.`,
-    timeout: 3000,
-  };
-
-  // this 를 넘겨주는 처리를 어떻게 할 수 있을까?
-  // clas-component 에서는 this 를 주고 받고 할 수 있었는데 그 방법으로 될 가능성이 있다.
-  const toasterRefHandler = (ref: Toaster) => {
-    toasterRef = ref;
-  };
-
   const addToast = () => {
-    if (toasterRef) {
-      toasterRef.show(toastBuild);
-    }
+    message.success(`오늘부터 ${eventState.name}가 사용합니다.`);
+  };
+
+  const style = {
+    display: "inline-block",
+    margin: "30px",
   };
 
   return (
-    <div className="bath-app">
-      <Toaster
-        ref={toasterRefHandler}
-        autoFocus={false}
-        position={Position.TOP}
-        usePortal={false}
-      />
-      <Navbar>
-        <NavbarGroup align={Alignment.LEFT}>
-          <NavbarHeading>Home Funny</NavbarHeading>
-          <NavbarDivider />
-          <Button
-            className={Classes.MINIMAL}
-            icon="home"
-            text="Home"
-            intent="primary"
-          />
-        </NavbarGroup>
-      </Navbar>
-      <div>
+    <Layout style={style}>
+      <Layout.Content>
+        <Breadcrumb>
+          <Breadcrumb.Item>Home Funny</Breadcrumb.Item>
+          <Breadcrumb.Item>
+            <Space>
+              <HomeOutlined />
+              Home
+            </Space>
+          </Breadcrumb.Item>
+        </Breadcrumb>
         <Card className="bp3-text-large bp3-running-text">
           <blockquote>
             <NameTag name={todayState.name} />
@@ -144,23 +113,27 @@ const Bath = () => {
           <EventUser eventUser={eventState} />
           <Calendar setNewDate={setDate} />
         </Card>
-      </div>
+        <Space>
+          <Button
+            style={{ background: "#1890ff", color: "white" }}
+            onClick={() => onClick("james")}
+          >
+            james confirm
+          </Button>
+          <Button
+            style={{ background: "#52c41a", color: "white" }}
+            onClick={() => onClick("henry")}
+          >
+            henry confirm
+          </Button>
+        </Space>
 
-      <ButtonGroup vertical={false} large={true}>
         <Divider />
-        <Button intent={"success"} onClick={() => onClick("james")}>
-          james confirm
-        </Button>
-        <Button intent={"primary"} onClick={() => onClick("henry")}>
-          henry confirm
-        </Button>
-      </ButtonGroup>
-
-      <Divider />
-      <div>
-        <EventLog {...eventState} />
-      </div>
-    </div>
+        <div>
+          <EventLog {...eventState} />
+        </div>
+      </Layout.Content>
+    </Layout>
   );
 };
 
