@@ -7,17 +7,6 @@ export const Calendar = (props: { setNewDate: any }) => {
     }
   };
 
-  const timePickerProps = {
-    date: new Date(),
-    highlightCurrentDay: true,
-    reverseMonthAndYearMenus: false,
-    shortcuts: false,
-    showActionsBar: false,
-    showTimeArrowButtons: false,
-    timePrecision: undefined,
-    useAmPm: false,
-  };
-
   return (
     <div className="bath-calendar-container">
       <DatePicker

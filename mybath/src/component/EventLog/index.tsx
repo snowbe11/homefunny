@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { getEventLog } from "../../logic/access";
 import { Collapse, Timeline } from "antd";
 
-export const EventLog = (props: { date: Date; name: string }) => {
+export const EventLog = () => {
   const type: { date: Date; text: string }[] = [];
   const [logState, setLogState] = useState(type);
 
@@ -10,7 +10,7 @@ export const EventLog = (props: { date: Date; name: string }) => {
     getEventLog().then((log) => {
       setLogState(log);
     });
-  }, [props]);
+  }, []);
 
   return (
     <div>

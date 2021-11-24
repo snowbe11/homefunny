@@ -1,82 +1,49 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { NameTag } from "component/NameTag";
 import { Calendar } from "component/Calendar";
 import { EventUser } from "component/EventUser";
 import { EventLog } from "component/EventLog";
 import { HomeNavigation } from "component/HomeNavigation";
 import { Card, Button, Divider, message, Space, Layout } from "antd";
-import { addEvent, getEventState } from "logic/access";
+import { addEvent } from "logic/access";
+import { RootState } from "logic/store";
 
 import "antd/dist/antd.css";
-
-const countingDays = (date: Date, from: Date) => {
-  const fromDay = new Date(from.toLocaleDateString());
-  const currentDay = new Date(date.toLocaleDateString());
-  const one_day = 1000 * 60 * 60 * 24;
-  const diff = (currentDay.getTime() - fromDay.getTime()) / one_day;
-  const sign = Math.sign(diff);
-  return Math.floor(Math.abs(diff)) * sign;
-};
-
-const whoIs = (days: number, from: string) => {
-  if (days % 2 === 0) {
-    if (from === "james") {
-      return "james";
-    } else {
-      return "henry";
-    }
-  } else {
-    if (from === "james") {
-      return "henry";
-    } else {
-      return "james";
-    }
-  }
-};
+import { EventUserAction, eventUserReducer } from "logic/reducer/eventUser";
 
 const Bath = () => {
-  const [checkDate, setDate] = useState<Date>(new Date());
+  const [pickDate, setDate] = useState<Date>(new Date());
   const [todayState, setTodayState] = useState({
     name: "",
     dayPassed: 0,
   });
-  const [eventState, setEventState] = useState({
-    date: new Date("1997-1-1"),
-    name: "undefined",
-  });
 
-  const getEventContext = async () => {
-    const { eventDate, eventName } = await getEventState();
+  const dispatch = useDispatch();
 
-    // const log = `get context {${eventDate}: ${eventName}}`;
-    // console.log(log);
-
-    setEventState({ date: eventDate, name: eventName });
-
-    const dayPassed = countingDays(checkDate, eventDate);
-    const name = whoIs(dayPassed, eventName);
-    setTodayState({ name, dayPassed });
-  };
+  const eventUser = useSelector((state: RootState) => state.eventUser);
 
   useEffect(() => {
-    getEventContext();
-    // eslint-disable-next-line
-  }, [checkDate]);
+    dispatch({ type: "request" });
+  }, []);
+
+  useEffect(() => {
+    dispatch({ type: "request/whois", date: pickDate, eventUser: eventUser });
+  }, [pickDate]);
 
   const onClick = (name: string) => {
     addEvent(new Date(), name).then((e) => {
       if (e) {
-        //console.log(`${e.date}, ${e.name}`);
-
-        getEventContext().then((e) => {
-          addToast();
-        });
+        console.log(`${e.date}, ${e.name}`);
+        dispatch({ type: "request" });
+        addToast();
+        console.log("async?");
       }
     });
   };
 
   const addToast = () => {
-    message.success(`오늘부터 ${eventState.name}가 사용합니다.`);
+    message.success(`오늘부터 ${eventUser.name}가 사용합니다.`);
   };
 
   const style = {
@@ -90,10 +57,10 @@ const Bath = () => {
         <HomeNavigation />
         <Card className="bp3-text-large bp3-running-text">
           <blockquote>
-            <NameTag name={todayState.name} />
+            <NameTag />
             <div>{todayState.dayPassed} days passed</div>
           </blockquote>
-          <EventUser eventUser={eventState} />
+          <EventUser />
           <Calendar setNewDate={setDate} />
         </Card>
         <Space>
@@ -112,7 +79,7 @@ const Bath = () => {
         </Space>
 
         <Divider />
-        <EventLog {...eventState} />
+        <EventLog />
       </Layout.Content>
     </Layout>
   );
