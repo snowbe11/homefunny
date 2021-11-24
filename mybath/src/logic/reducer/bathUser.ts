@@ -1,5 +1,7 @@
 import { BathUser, EventUser } from "logic/type";
 
+// 막상 BathUserActionType 타입으로 분기하지는 않는다.
+// 리듀서를 모두 방문하기 때문에 결국 type 키값으로 판단하게 된다.
 interface BathUserActionType {
   type: "request/whois";
   date: Date;

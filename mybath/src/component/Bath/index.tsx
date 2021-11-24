@@ -36,6 +36,10 @@ const Bath = () => {
       if (e) {
         console.log(`${e.date}, ${e.name}`);
         dispatch({ type: "request" });
+
+        // 여기가 리덕스 + fetch 를 이용해 비동기처리를 할 때 문제점으로 보인다.
+        // 핸들링을 하려면 좀 기교가 필요해보인다.
+
         addToast();
         console.log("async?");
       }
