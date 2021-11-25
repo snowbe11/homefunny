@@ -26,17 +26,23 @@ const Bath = () => {
 
   useEffect(() => {
     dispatch(eventUserThuck());
-  }, [dispatch]);
+
+    // 의도대로 페이지 로드때 한번만 불리우도록
+    // eslint-disable-next-line
+  }, []);
 
   useEffect(() => {
     const payload: BathUserActionType = {
       type: "request/whois",
-      date: pickDate.toLocaleString(),
+      date: pickDate.getTime(),
       eventUser: eventUser,
     };
 
     dispatch(getTodayBathUser(payload));
-  }, [dispatch, eventUser, pickDate]);
+
+    // 이벤트 핸들러에 해당한다.
+    // eslint-disable-next-line
+  }, [pickDate]);
 
   const onClick = (name: string) => {
     addEvent(new Date(), name).then((e) => {
@@ -54,7 +60,7 @@ const Bath = () => {
   };
 
   const addToast = () => {
-    message.success(`오늘부터 ${eventUser.name}가 사용합니다.`);
+    message.success(`오늘부터 ${eventUser.user.name}가 사용합니다.`);
   };
 
   const style = {

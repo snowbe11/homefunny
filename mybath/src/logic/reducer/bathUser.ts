@@ -1,11 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { BathUser, DateString, EventUser } from "logic/type";
+import { BathUser, EventUser } from "logic/type";
 
 // 막상 BathUserActionType 타입으로 분기하지는 않는다.
 // 리듀서를 모두 방문하기 때문에 결국 type 키값으로 판단하게 된다.
 export interface BathUserActionType {
   type: "request/whois";
-  date: DateString;
+  date: number;
   eventUser: EventUser;
 }
 
@@ -18,38 +18,39 @@ const countingDays = (date: Date, from: Date) => {
   return Math.floor(Math.abs(diff)) * sign;
 };
 
-const getBathUser = (days: number, name: BathUser): BathUser => {
+const getBathUser = (days: number, user: BathUser): BathUser => {
   if (days % 2 === 0) {
-    if (name === "james") {
-      return "james";
+    if (user.name === "james") {
+      return { name: "james" };
     } else {
-      return "henry";
+      return { name: "henry" };
     }
   } else {
-    if (name === "james") {
-      return "henry";
+    if (user.name === "james") {
+      return { name: "henry" };
     } else {
-      return "james";
+      return { name: "james" };
     }
   }
 };
 
-const bathUserReducer = (state: BathUser, action: BathUserActionType) => {
+const initialBathUserState: BathUser = {
+  name: "henry"
+}
+
+const bathUserReducer = (state: BathUser = initialBathUserState, action: BathUserActionType) => {
   if (action.type === "request/whois") {
     const dayPassed = countingDays(
       new Date(action.date),
       new Date(action.eventUser.date)
     );
 
-    const userName = getBathUser(dayPassed, action.eventUser.name);
+    const userName = getBathUser(dayPassed, action.eventUser.user);
     return userName;
   } else {
     return state;
   }
 };
-
-const getDefaultValue = (): BathUser => "henry";
-const initialBathUserState: BathUser = getDefaultValue();
 
 const bathUserSlice = createSlice({
   name: "bathUser",

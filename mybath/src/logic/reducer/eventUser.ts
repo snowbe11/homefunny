@@ -5,13 +5,13 @@ import { EventUser } from "logic/type";
 // eventUser 는 일단 fetch 를 사용하므로 슬라이스를 사용하는 것에 적당하다.
 
 const initialEventUserState: EventUser = {
-  date: new Date().toLocaleString(),
-  name: "james",
+  date: new Date().getTime(),
+  user: { name: "james" },
 };
 
 const fetchEventUser = async (): Promise<EventUser> => {
   const { eventDate, eventName } = await getEventState();
-  return { date: eventDate.toLocaleString(), name: eventName };
+  return { date: eventDate.getTime(), user: { name: eventName } };
 };
 
 export const eventUserThuck = createAsyncThunk("request", async () => {
