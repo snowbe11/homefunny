@@ -11,7 +11,7 @@ export const EventUser = () => {
     <React.Fragment>
       <h5>
         <Tag color={intent}>{eventUser.name}</Tag> was use{" "}
-        {eventUser.date.toLocaleDateString()}
+        {new Date(eventUser.date).toLocaleDateString()}
       </h5>
     </React.Fragment>
   );

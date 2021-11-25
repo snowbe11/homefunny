@@ -1,11 +1,13 @@
 export type BathUser = "james" | "henry";
 
+export type DateString = string;
+
 export type EventUser = {
-    date: Date,
-    name: BathUser
+  date: DateString;
+  name: BathUser;
 };
 
 export type EventLog = {
-    date: Date,
-    log: string
+  date: DateString;
+  log: string;
 };
