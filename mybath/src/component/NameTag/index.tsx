@@ -7,10 +7,13 @@ export const NameTag = () => {
 
   return (
     <div>
-      <span>Today is </span>
-      <Tag color={bathUser.name === "james" ? "processing" : "success"}>
-        {bathUser.name}
-      </Tag>
+      <div>
+        <span>Today is </span>
+        <Tag color={bathUser.name === "james" ? "processing" : "success"}>
+          {bathUser.name}
+        </Tag>
+      </div>
+      <div>{bathUser.dayPassed} days passed</div>
     </div>
   );
 };

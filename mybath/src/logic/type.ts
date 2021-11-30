@@ -1,10 +1,11 @@
 export type BathUser = {
-  name: "james" | "henry"
+  name: string
+  dayPassed: number,
 };
 
 export type EventUser = {
   date: number;
-  user: BathUser;
+  name: "james" | "henry"
 };
 
 export type EventLog = {

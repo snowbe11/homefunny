@@ -9,16 +9,12 @@ import { Card, Button, Divider, message, Space, Layout } from "antd";
 import { addEvent } from "logic/access";
 import { RootState } from "logic/store";
 import { eventUserThuck } from "logic/reducer/eventUser";
-import { BathUserActionType, getTodayBathUser } from "logic/reducer/bathUser";
+import { getTodayBathUser } from "logic/reducer/bathUser";
 
 import "antd/dist/antd.css";
 
 const Bath = () => {
   const [pickDate, setDate] = useState<Date>(new Date());
-  const [todayState, setTodayState] = useState({
-    name: "",
-    dayPassed: 0,
-  });
 
   const dispatch = useDispatch();
 
@@ -32,13 +28,13 @@ const Bath = () => {
   }, []);
 
   useEffect(() => {
-    const payload: BathUserActionType = {
-      type: "request/whois",
-      date: pickDate.getTime(),
-      eventUser: eventUser,
-    };
-
-    dispatch(getTodayBathUser(payload));
+    dispatch(
+      getTodayBathUser({
+        type: "request/whois",
+        date: pickDate.getTime(),
+        eventUser: eventUser,
+      })
+    );
 
     // 이벤트 핸들러에 해당한다.
     // eslint-disable-next-line
@@ -48,19 +44,27 @@ const Bath = () => {
     addEvent(new Date(), name).then((e) => {
       if (e) {
         console.log(`${e.date}, ${e.name}`);
-        //dispatch({ type: "request" });
 
-        // 여기가 리덕스 + fetch 를 이용해 비동기처리를 할 때 문제점으로 보인다.
-        // 핸들링을 하려면 좀 기교가 필요해보인다.
+        // 애초에 이건 dispatch 할 녀석이 아닌 것 같다.
+        // addEvent 가 dispatch 할 녀석이고, 이건 로컬의 상태값인데...
+        // 리듀서에 저장을 할만하다고 가정해보자
 
+        const checked = dispatch(
+          getTodayBathUser({
+            type: "request/whois",
+            date: e.date.getTime(),
+            eventUser: eventUser,
+          })
+        );
+
+        console.log(checked);
         addToast();
-        console.log("async?");
       }
     });
   };
 
   const addToast = () => {
-    message.success(`오늘부터 ${eventUser.user.name}가 사용합니다.`);
+    message.success(`오늘부터 ${eventUser.name}가 사용합니다.`);
   };
 
   const style = {
@@ -75,7 +79,6 @@ const Bath = () => {
         <Card className="bp3-text-large bp3-running-text">
           <blockquote>
             <NameTag />
-            <div>{todayState.dayPassed} days passed</div>
           </blockquote>
           <EventUser />
           <Calendar setNewDate={setDate} />

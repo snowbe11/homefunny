@@ -18,35 +18,42 @@ const countingDays = (date: Date, from: Date) => {
   return Math.floor(Math.abs(diff)) * sign;
 };
 
-const getBathUser = (days: number, user: BathUser): BathUser => {
+const getBathUser = (days: number, name: string): string => {
   if (days % 2 === 0) {
-    if (user.name === "james") {
-      return { name: "james" };
+    if (name === "james") {
+      return "james";
     } else {
-      return { name: "henry" };
+      return "henry";
     }
   } else {
-    if (user.name === "james") {
-      return { name: "henry" };
+    if (name === "james") {
+      return "henry";
     } else {
-      return { name: "james" };
+      return "james";
     }
   }
 };
 
 const initialBathUserState: BathUser = {
-  name: "henry"
+  name: "henry",
+  dayPassed: 0
 }
 
-const bathUserReducer = (state: BathUser = initialBathUserState, action: BathUserActionType) => {
+const bathUserReducer = (state: BathUser = initialBathUserState, action: BathUserActionType) : BathUser => {
   if (action.type === "request/whois") {
     const dayPassed = countingDays(
       new Date(action.date),
       new Date(action.eventUser.date)
     );
 
-    const userName = getBathUser(dayPassed, action.eventUser.user);
-    return userName;
+    const userName = getBathUser(dayPassed, action.eventUser.name);
+
+    console.log(dayPassed, " ", userName);
+
+    return {
+      name: userName,
+      dayPassed
+    };
   } else {
     return state;
   }
