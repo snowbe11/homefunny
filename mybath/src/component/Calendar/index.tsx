@@ -2,27 +2,16 @@ import { Calendar as DatePicker } from "antd";
 
 export const Calendar = (props: { setNewDate: any }) => {
   const onDateChanged = (date: Date) => {
-    if (date) {
-      props.setNewDate(date);
-    }
-  };
-
-  const timePickerProps = {
-    date: new Date(),
-    highlightCurrentDay: true,
-    reverseMonthAndYearMenus: false,
-    shortcuts: false,
-    showActionsBar: false,
-    showTimeArrowButtons: false,
-    timePrecision: undefined,
-    useAmPm: false,
+    props.setNewDate(date);
   };
 
   return (
     <div className="bath-calendar-container">
       <DatePicker
         fullscreen={false}
-        onSelect={(date: any) => onDateChanged(new Date(date))}
+        onSelect={(date: moment.Moment) => {
+          onDateChanged(date.toDate());
+        }}
       />
     </div>
   );

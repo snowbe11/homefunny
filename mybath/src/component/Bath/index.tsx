@@ -1,91 +1,62 @@
-import { useState, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { NameTag } from "component/NameTag";
 import { Calendar } from "component/Calendar";
 import { EventUser } from "component/EventUser";
 import { EventLog } from "component/EventLog";
-import {
-  Breadcrumb,
-  Card,
-  Button,
-  Divider,
-  message,
-  Space,
-  Layout,
-} from "antd";
-import { addEvent, getEventState } from "logic/access";
+import { HomeNavigation } from "component/HomeNavigation";
+import { Card, Button, Divider, message, Space, Layout } from "antd";
+import { addEvent } from "logic/access";
+import { RootState } from "logic/store";
+import { eventUserThuck } from "logic/reducer/eventUser";
+import { getTodayBathUser } from "logic/reducer/bathUser";
 
 import "antd/dist/antd.css";
-import { HomeOutlined } from "@ant-design/icons";
-import { Content } from "antd/lib/layout/layout";
-
-const countingDays = (date: Date, from: Date) => {
-  const fromDay = new Date(from.toLocaleDateString());
-  const currentDay = new Date(date.toLocaleDateString());
-  const one_day = 1000 * 60 * 60 * 24;
-  const diff = (currentDay.getTime() - fromDay.getTime()) / one_day;
-  const sign = Math.sign(diff);
-  return Math.floor(Math.abs(diff)) * sign;
-};
-
-const whoIs = (days: number, from: string) => {
-  if (days % 2 === 0) {
-    if (from === "james") {
-      return "james";
-    } else {
-      return "henry";
-    }
-  } else {
-    if (from === "james") {
-      return "henry";
-    } else {
-      return "james";
-    }
-  }
-};
+import { UserName } from "logic/type";
 
 const Bath = () => {
-  const [checkDate, setDate] = useState<Date>(new Date());
-  const [todayState, setTodayState] = useState({
-    name: "",
-    dayPassed: 0,
-  });
-  const [eventState, setEventState] = useState({
-    date: new Date("1997-1-1"),
-    name: "undefined",
-  });
+  const [pickDate, setDate] = useState<Date>(new Date());
 
-  const getEventContext = async () => {
-    const { eventDate, eventName } = await getEventState();
+  const dispatch = useDispatch();
 
-    // const log = `get context {${eventDate}: ${eventName}}`;
-    // console.log(log);
+  const eventUser = useSelector((state: RootState) => state.eventUser);
 
-    setEventState({ date: eventDate, name: eventName });
-
-    const dayPassed = countingDays(checkDate, eventDate);
-    const name = whoIs(dayPassed, eventName);
-    setTodayState({ name, dayPassed });
-  };
+  const updateTodayUser = useCallback(
+    (date: Date) => {
+      dispatch(
+        getTodayBathUser({
+          type: "request/whois",
+          date: date.getTime(),
+          eventUser: eventUser,
+        })
+      );
+    },
+    [dispatch, eventUser]
+  );
 
   useEffect(() => {
-    getEventContext();
-    // eslint-disable-next-line
-  }, [checkDate]);
+    dispatch(eventUserThuck());
+  }, [dispatch]);
+
+  useEffect(() => {
+    updateTodayUser(pickDate);
+    // 이벤트 핸들러에 해당한다.
+  }, [pickDate, eventUser, updateTodayUser]);
 
   const onClick = (name: string) => {
     addEvent(new Date(), name).then((e) => {
       if (e) {
-        console.log(`${e.date}, ${e.name}`);
+        addToast(e.name);
 
-        getEventContext().then((e) => {
-          addToast();
-        });
+        dispatch(eventUserThuck());
+      } else {
+        console.log("add event failed");
       }
     });
   };
 
-  const addToast = () => {
-    message.success(`오늘부터 ${eventState.name}가 사용합니다.`);
+  const addToast = (name: string) => {
+    message.success(`오늘부터 ${UserName[name]}가 사용합니다.`);
   };
 
   const style = {
@@ -96,21 +67,12 @@ const Bath = () => {
   return (
     <Layout style={style}>
       <Layout.Content>
-        <Breadcrumb>
-          <Breadcrumb.Item>Home Funny</Breadcrumb.Item>
-          <Breadcrumb.Item>
-            <Space>
-              <HomeOutlined />
-              Home
-            </Space>
-          </Breadcrumb.Item>
-        </Breadcrumb>
+        <HomeNavigation />
         <Card className="bp3-text-large bp3-running-text">
           <blockquote>
-            <NameTag name={todayState.name} />
-            <div>{todayState.dayPassed} days passed</div>
+            <NameTag pickDate={pickDate} />
           </blockquote>
-          <EventUser eventUser={eventState} />
+          <EventUser />
           <Calendar setNewDate={setDate} />
         </Card>
         <Space>
@@ -118,20 +80,18 @@ const Bath = () => {
             style={{ background: "#1890ff", color: "white" }}
             onClick={() => onClick("james")}
           >
-            james confirm
+            준우부터 다시 시작
           </Button>
           <Button
             style={{ background: "#52c41a", color: "white" }}
             onClick={() => onClick("henry")}
           >
-            henry confirm
+            건우부터 다시 시작
           </Button>
         </Space>
 
         <Divider />
-        <div>
-          <EventLog {...eventState} />
-        </div>
+        <EventLog />
       </Layout.Content>
     </Layout>
   );
