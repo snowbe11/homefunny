@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NameTag } from "component/NameTag";
 import { Calendar } from "component/Calendar";
@@ -12,6 +12,7 @@ import { eventUserThuck } from "logic/reducer/eventUser";
 import { getTodayBathUser } from "logic/reducer/bathUser";
 
 import "antd/dist/antd.css";
+import { UserName } from "logic/type";
 
 const Bath = () => {
   const [pickDate, setDate] = useState<Date>(new Date());
@@ -20,51 +21,42 @@ const Bath = () => {
 
   const eventUser = useSelector((state: RootState) => state.eventUser);
 
+  const updateTodayUser = useCallback(
+    (date: Date) => {
+      dispatch(
+        getTodayBathUser({
+          type: "request/whois",
+          date: date.getTime(),
+          eventUser: eventUser,
+        })
+      );
+    },
+    [dispatch, eventUser]
+  );
+
   useEffect(() => {
     dispatch(eventUserThuck());
-
-    // 의도대로 페이지 로드때 한번만 불리우도록
-    // eslint-disable-next-line
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
-    dispatch(
-      getTodayBathUser({
-        type: "request/whois",
-        date: pickDate.getTime(),
-        eventUser: eventUser,
-      })
-    );
-
+    updateTodayUser(pickDate);
     // 이벤트 핸들러에 해당한다.
-    // eslint-disable-next-line
-  }, [pickDate]);
+  }, [pickDate, eventUser, updateTodayUser]);
 
   const onClick = (name: string) => {
     addEvent(new Date(), name).then((e) => {
       if (e) {
-        console.log(`${e.date}, ${e.name}`);
+        addToast(e.name);
 
-        // 애초에 이건 dispatch 할 녀석이 아닌 것 같다.
-        // addEvent 가 dispatch 할 녀석이고, 이건 로컬의 상태값인데...
-        // 리듀서에 저장을 할만하다고 가정해보자
-
-        const checked = dispatch(
-          getTodayBathUser({
-            type: "request/whois",
-            date: e.date.getTime(),
-            eventUser: eventUser,
-          })
-        );
-
-        console.log(checked);
-        addToast();
+        dispatch(eventUserThuck());
+      } else {
+        console.log("add event failed");
       }
     });
   };
 
-  const addToast = () => {
-    message.success(`오늘부터 ${eventUser.name}가 사용합니다.`);
+  const addToast = (name: string) => {
+    message.success(`오늘부터 ${UserName[name]}가 사용합니다.`);
   };
 
   const style = {
@@ -78,7 +70,7 @@ const Bath = () => {
         <HomeNavigation />
         <Card className="bp3-text-large bp3-running-text">
           <blockquote>
-            <NameTag />
+            <NameTag pickDate={pickDate} />
           </blockquote>
           <EventUser />
           <Calendar setNewDate={setDate} />
@@ -88,13 +80,13 @@ const Bath = () => {
             style={{ background: "#1890ff", color: "white" }}
             onClick={() => onClick("james")}
           >
-            james confirm
+            준우부터 다시 시작
           </Button>
           <Button
             style={{ background: "#52c41a", color: "white" }}
             onClick={() => onClick("henry")}
           >
-            henry confirm
+            건우부터 다시 시작
           </Button>
         </Space>
 

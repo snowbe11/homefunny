@@ -46,33 +46,46 @@ const getEventLogSnapshot = async () => {
 };
 
 export const getEventLog = async () => {
-  let eventDateLog = await getEventLogSnapshot();
-  if (eventDateLog) {
-    const convertedDataform = eventDateLog.map((log) => {
-      return {
-        date: new Date(log.EventTime.seconds * 1000),
-        text: log.EventLog,
-      };
-    });
-
-    eventLogIndex = convertedDataform.length + 1;
-    return convertedDataform;
-  } else {
+  try {
+    let eventDateLog = await getEventLogSnapshot();
+    if (eventDateLog) {
+      const convertedDataform = eventDateLog.map((log) => {
+        return {
+          date: new Date(log.EventTime.seconds * 1000),
+          text: log.EventLog,
+        };
+      });
+  
+      eventLogIndex = convertedDataform.length + 1;
+      return convertedDataform;
+    } else {
+      return [];
+    }
+  }
+  catch {
     return [];
   }
 };
 
 export const getEventState = async () => {
-  let list = await getAppStateSnapshot("stateLog");
-  if (list) {
+  try {
+    let list = await getAppStateSnapshot("stateLog");
+    if (list) {
+      return {
+        eventDate: new Date(list.EventDate.seconds * 1000),
+        eventName: list.EventName,
+      };
+    } else {
+      return {
+        eventDate: new Date("1917-1-1"),
+        eventName: "undefined",
+      };
+    }
+  }
+  catch {
     return {
-      eventDate: new Date(list.EventDate.seconds * 1000),
-      eventName: list.EventName,
-    };
-  } else {
-    return {
-      eventDate: new Date("1917-1-1"),
-      eventName: "undefined",
+      eventDate: new Date("2021-11-29"),
+      eventName: "james",
     };
   }
 };

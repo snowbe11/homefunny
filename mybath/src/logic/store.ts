@@ -17,7 +17,7 @@ const rootReducers: Reducer<RootState> = combineReducers({
 
 const store = configureStore({
   reducer: rootReducers,
-  devTools: true,
+  //devTools: true,
 });
 
 export default store;

@@ -48,7 +48,7 @@ const bathUserReducer = (state: BathUser = initialBathUserState, action: BathUse
 
     const userName = getBathUser(dayPassed, action.eventUser.name);
 
-    console.log(dayPassed, " ", userName);
+    //console.log(dayPassed, userName);
 
     return {
       name: userName,
@@ -67,7 +67,11 @@ const bathUserSlice = createSlice({
       state: BathUser,
       action: PayloadAction<BathUserActionType>
     ) => {
-      state = bathUserReducer(state, action.payload);
+      const newState = bathUserReducer(state, action.payload);
+
+      // 오브젝트 복사 부분이 문제가 되는 것 같다.
+      state.name = newState.name;
+      state.dayPassed = newState.dayPassed;
     },
   },
   extraReducers: {},
