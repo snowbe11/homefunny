@@ -5,7 +5,7 @@ import { Calendar } from "component/Calendar";
 import { EventUser } from "component/EventUser";
 import { EventLog } from "component/EventLog";
 import { HomeNavigation } from "component/HomeNavigation";
-import { Card, Button, Divider, message, Space, Layout } from "antd";
+import { Card, Button, Divider, message, Space } from "antd";
 import { addEvent } from "logic/access";
 import { RootState } from "logic/store";
 import { eventUserThuck } from "logic/reducer/eventUser";
@@ -13,6 +13,8 @@ import { getTodayBathUser } from "logic/reducer/bathUser";
 
 import "antd/dist/antd.css";
 import { UserName } from "logic/type";
+
+import Layout from "component/Layout";
 
 const Bath = () => {
   const [pickDate, setDate] = useState<Date>(new Date());
@@ -59,14 +61,9 @@ const Bath = () => {
     message.success(`오늘부터 ${UserName[name]}가 사용합니다.`);
   };
 
-  const style = {
-    display: "inline-block",
-    margin: "30px",
-  };
-
   return (
-    <Layout style={style}>
-      <Layout.Content>
+    <Layout>
+      <div className="bath-app">
         <HomeNavigation />
         <Card className="bp3-text-large bp3-running-text">
           <blockquote>
@@ -92,7 +89,7 @@ const Bath = () => {
 
         <Divider />
         <EventLog />
-      </Layout.Content>
+      </div>
     </Layout>
   );
 };
