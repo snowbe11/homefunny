@@ -20,8 +20,8 @@ export const Layout: React.FC<Props> = ({ children }) => {
             <Menu.Item key="bath">
               <Link to="/bath">오늘의 화장실</Link>
             </Menu.Item>
-            <Menu.Item key="wordtest">
-              <Link to="/wordtest">정상 단어 테스트</Link>
+            <Menu.Item key="test">
+              <Link to="/test">정상 단어 테스트</Link>
             </Menu.Item>
           </Menu>
         </Sider>
