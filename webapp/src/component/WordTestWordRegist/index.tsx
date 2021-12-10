@@ -1,11 +1,12 @@
 import { Button, Card, Divider, Form, Input, Space, Typography } from "antd";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { PlusCircleTwoTone } from "@ant-design/icons";
 import { addWordTest } from "logic/api/wordTest";
 import { searchWord } from "logic/api/ox";
 
 export const WordTestWordRegist = () => {
   const [testlist, setTestlist] = useState<Array<string>>([""]);
+  const titileRef = useRef<Input>(null);
 
   const onChangeWord = (index: number, value: string) => {
     let copied = testlist;
@@ -35,6 +36,11 @@ export const WordTestWordRegist = () => {
   };
 
   const saveTest = async (values: ArrayLike<string>) => {
+    if (!titileRef.current) {
+      alert("이름을 넣어주세요");
+      return;
+    }
+
     console.log(values);
 
     let completed = true;
@@ -52,8 +58,10 @@ export const WordTestWordRegist = () => {
       }
     }
 
+    const docName = titileRef.current.input.value;
+
     if (completed) {
-      const result = await addWordTest("DSC 4", saveForm);
+      const result = await addWordTest(docName, saveForm);
       if (result) {
         console.log("done");
       } else {
@@ -64,7 +72,7 @@ export const WordTestWordRegist = () => {
 
   return (
     <>
-      <Input placeholder="정상 레벨 또는 워크북 페이지" />
+      <Input ref={titileRef} placeholder="정상 레벨 또는 워크북 페이지" />
       <div style={{ display: "flex", alignItems: "flex-end", padding: "1rem" }}>
         <Form onFinish={saveTest}>
           {testlist.map((e, index) => (

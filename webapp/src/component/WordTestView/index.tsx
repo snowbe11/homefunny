@@ -1,41 +1,25 @@
 import WordCard from "component/WordCard";
-import { searchWord, WordType } from "logic/api/ox";
+import { WordType } from "logic/api/ox";
+import { getWordTest } from "logic/api/wordTest";
+import { WordTestType } from "logic/type";
 import React, { useEffect, useState } from "react";
 
 export const WordTestView = ({ level }: { level?: string }) => {
-  const testMode = level === "DSX";
-
   const [list, setList] = useState<Array<WordType>>([]);
 
-  const sampleTestWord = [
-    "example",
-    "oxford",
-    "farther",
-    "happy",
-    "negociation",
-    "school",
-    "ground",
-  ];
-
   useEffect(() => {
-    const remapTest = async (): Promise<Array<WordType>> => {
-      let ret = Array<WordType>();
-      for (const word of sampleTestWord) {
-        try {
-          const definition = await searchWord(word);
-          ret.push(definition[0]);
-        } catch (e) {
-          console.log(e);
+    if (level) {
+      getWordTest(level).then((test: WordTestType) => {
+        let testList = Array<WordType>();
+        for (const word of Object.keys(test)) {
+          const wordType = JSON.parse(test[word]);
+          for (const wt of wordType) {
+            testList.push(wt);
+          }
         }
-      }
-      return ret;
-    };
-
-    remapTest().then((e) => {
-      if (e) {
-        setList(e);
-      }
-    });
+        setList(testList);
+      });
+    }
   }, []);
 
   return (

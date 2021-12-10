@@ -7,11 +7,13 @@ import { WordTestWordRegist } from "component/WordTestWordRegist";
 export const WordTest = () => {
   const params = useParams();
 
-  const admin = params.level === "regist";
-
   return (
     <Layout>
-      {admin ? <WordTestWordRegist /> : <WordTestView {...params} />}
+      {params.level === "regist" ? (
+        <WordTestWordRegist />
+      ) : (
+        <WordTestView {...params} />
+      )}
     </Layout>
   );
 };

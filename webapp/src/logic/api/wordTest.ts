@@ -35,20 +35,21 @@ const getWordTestSnapshot = async (level: string) => {
   }
 };
 
-export const getWordTest = async (level: string) => {
+export const getWordTest = async (level: string) : Promise<WordTestType> => {
   try {
     let testObject = await getWordTestSnapshot(level);
     if (testObject) {
-      let test = Array<WordTestType>();
+      let test : WordTestType = {};
       for (const key of Object.keys(testObject)) {
-        test.push({ word: key, desc: testObject[key] });
+        test[key] = testObject[key];
       }
+      return test;
     }
-    return test;
   } catch {
-    return Array<WordTestType>();
   }
-};
+
+  return {};
+}
 
 export const addWordTest = async (level: string, list: Array<WordTestType>) => {
   try {
