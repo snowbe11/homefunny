@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { getEventState } from "logic/access";
+import { getEventState } from "logic/api/access";
 import { EventUser } from "logic/type";
 
 // eventUser 는 일단 fetch 를 사용하므로 슬라이스를 사용하는 것에 적당하다.
@@ -24,7 +24,10 @@ const eventUserSlice = createSlice({
   reducers: {},
   extraReducers: {
     [eventUserThuck.pending.type]: (state) => {},
-    [eventUserThuck.fulfilled.type]: (state, action: PayloadAction<EventUser>) => {
+    [eventUserThuck.fulfilled.type]: (
+      state,
+      action: PayloadAction<EventUser>
+    ) => {
       const payload = action.payload;
       state.date = payload.date;
       state.name = payload.name;
