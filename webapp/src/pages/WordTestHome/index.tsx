@@ -4,12 +4,16 @@ import Layout from "component/Layout";
 import { WordTestList } from "component/WordTestList";
 import { Link } from "react-router-dom";
 import { Button } from "antd";
+import WordSearch from "component/WordSearch";
 
 export const WordTestHome = () => {
   return (
     <Layout>
       <div>
         <WordTestList />
+      </div>
+      <div>
+        <WordSearch />
       </div>
       <div>
         <Button>

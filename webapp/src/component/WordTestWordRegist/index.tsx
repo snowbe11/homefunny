@@ -1,16 +1,8 @@
-import {
-  Button,
-  Card,
-  Divider,
-  Form,
-  Input,
-  Slider,
-  Space,
-  Typography,
-} from "antd";
+import { Button, Card, Divider, Form, Input, Space, Typography } from "antd";
 import React, { useState } from "react";
 import { PlusCircleTwoTone } from "@ant-design/icons";
 import { addWordTest } from "logic/api/wordTest";
+import { searchWord } from "logic/api/ox";
 
 export const WordTestWordRegist = () => {
   const [testlist, setTestlist] = useState<Array<string>>([""]);
@@ -45,21 +37,29 @@ export const WordTestWordRegist = () => {
   const saveTest = async (values: ArrayLike<string>) => {
     console.log(values);
 
-    await addWordTest("DSC 4", Object.values(values));
+    let completed = true;
+    let saveForm = [];
 
-    console.log("done");
-  };
+    for (const key in values) {
+      const word = values[key];
+      const definition = await searchWord(word);
+      if (definition) {
+        saveForm.push({ word: word, desc: JSON.stringify(definition) });
+      } else {
+        alert(`${values[key]} 잘못된 단어가 있습니다.`);
+        completed = false;
+        break;
+      }
+    }
 
-  const marks = {
-    1: "1분",
-    2: "2분",
-    3: "3분",
-    10: {
-      style: {
-        color: "#f50",
-      },
-      label: <strong>10분</strong>,
-    },
+    if (completed) {
+      const result = await addWordTest("DSC 4", saveForm);
+      if (result) {
+        console.log("done");
+      } else {
+        alert("서버에 접속할 수 없습니다.");
+      }
+    }
   };
 
   return (
@@ -83,8 +83,6 @@ export const WordTestWordRegist = () => {
       </div>
       <Card title="설정">
         <Typography.Text>대기 시간</Typography.Text>
-        <Slider marks={marks} defaultValue={2} tooltipVisible dots max={10} />
-
         <Divider />
         <Space>
           <Button type="dashed">테스트</Button>

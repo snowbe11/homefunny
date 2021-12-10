@@ -46,24 +46,30 @@ export const getWordTest = async (level: string) => {
     }
     return test;
   } catch {
-    return Array<string>();
+    return Array<WordTestType>();
   }
 };
 
-export const addWordTest = async (level: string, list: Array<string>) => {
-  if (process.env.REACT_APP_COLLECTION_WORD_TEST) {
-    const stateLogDocRef = doc(
-      store,
-      process.env.REACT_APP_COLLECTION_WORD_TEST,
-      level
-    );
+export const addWordTest = async (level: string, list: Array<WordTestType>) => {
+  try {
+    if (process.env.REACT_APP_COLLECTION_WORD_TEST) {
+      const stateLogDocRef = doc(
+        store,
+        process.env.REACT_APP_COLLECTION_WORD_TEST,
+        level
+      );
 
-    let docData = {};
-    list.map((e) => {
-      docData = { ...docData, [e]: "" };
-      return e;
-    });
+      let docData = {};
+      list.map((e) => {
+        docData = { ...docData, [e.word]: e.desc };
+        return e;
+      });
 
-    await setDoc(stateLogDocRef, docData);
-  }
+      await setDoc(stateLogDocRef, docData);
+    }
+
+    return true;
+  } catch {}
+
+  return false;
 };
