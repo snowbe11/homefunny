@@ -12,10 +12,8 @@ export const WordTestView = ({ level }: { level?: string }) => {
       getWordTest(level).then((test: WordTestType) => {
         let testList = Array<WordType>();
         for (const word of Object.keys(test)) {
-          const wordType = JSON.parse(test[word]);
-          for (const wt of wordType) {
-            testList.push(wt);
-          }
+          const wordType: WordType = JSON.parse(test[word]);
+          testList.push(wordType);
         }
         setList(testList);
       });

@@ -1,10 +1,8 @@
 export type WordType = {
   word: string;
   partOfSpeech: string;
-  definition: {
-    text: string;
-    example: string;
-  }[];
+  definition: string;
+  example: string;
   pronunciations: string;
 };
 
@@ -40,7 +38,8 @@ const fromEnties = ({ text, lexicalCategory, entries }: OxResultType) => {
     return {
       word: text,
       partOfSpeech: lexicalCategory.text,
-      definition: definitions,
+      definition: definitions[0].text,
+      example: definitions[0].example,
       pronunciations: pronunciations,
     };
   } catch (e) {
@@ -48,7 +47,16 @@ const fromEnties = ({ text, lexicalCategory, entries }: OxResultType) => {
   }
 };
 
-export const searchWord = async (text: string) => {
+const getPronunciations = ({ text, lexicalCategory, entries }: OxResultType) => {
+  try {
+    const entry = entries["0"];
+    return entry.pronunciations["0"].audioFile;
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+export const fetchWordFromOx = async (text: string) => {
   const app_id = "2d5cc32e";
   const app_key = "e3ac76a3e40c62bf1dde28d9a28274af";
   const language = "en-gb";
@@ -68,10 +76,21 @@ export const searchWord = async (text: string) => {
   const result = await fetch(crosproxy, options);
   const json = await result.json();
 
+  if (json.results) {
+    return json.result;
+  }
+  else {
+    return undefined;
+  }
+}
+
+export const searchWord = async (text: string) => {
+  const results = await fetchWordFromOx(text);
+
   let wordDefinition = Array<WordType>();
 
-  if (json.results) {
-    const enties = json.results["0"]?.lexicalEntries;
+  if (results) {
+    const enties = results["0"]?.lexicalEntries;
     for (const e of enties) {
       const cov = fromEnties(e);
       cov && wordDefinition.push(cov);
@@ -79,4 +98,16 @@ export const searchWord = async (text: string) => {
   }
 
   return wordDefinition;
+};
+
+export const fetchPronunciations = async (text: string) => {
+  const results = await fetchWordFromOx(text);
+  if (results) {
+    const enties = results["0"]?.lexicalEntries;
+    for (const e of enties) {
+      return getPronunciations(e);
+    }
+  }
+
+  return "";
 };

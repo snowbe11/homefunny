@@ -17,14 +17,13 @@ export const WordCard = ({ word }: { word: WordType }) => {
     >
       <Space direction="vertical">
         <Typography.Text type="success">{word.partOfSpeech}</Typography.Text>
-        {word.definition.map((e, index) => (
-          <Space key={index} direction="vertical">
-            <Typography.Text>{index}.</Typography.Text>
-            <Typography.Text type="warning">{e.text}</Typography.Text>
-            {e.example && <Typography.Text italic>{e.example}</Typography.Text>}
-            <Divider />
-          </Space>
-        ))}
+        <Space direction="vertical">
+          <Typography.Text type="warning">{word.definition}</Typography.Text>
+          {word.example && (
+            <Typography.Text italic>{word.example}</Typography.Text>
+          )}
+          <Divider />
+        </Space>
       </Space>
     </Card>
   );
