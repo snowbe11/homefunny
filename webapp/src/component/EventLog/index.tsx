@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { getEventLog } from "../../logic/access";
+import { getEventLog } from "../../logic/api/access";
 import { Collapse, Timeline } from "antd";
 import { useSelector } from "react-redux";
 import { RootState } from "logic/store";

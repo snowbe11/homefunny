@@ -1,11 +1,11 @@
 export type BathUser = {
-  name: string
-  dayPassed: number,
+  name: string;
+  dayPassed: number;
 };
 
 export type EventUser = {
   date: number;
-  name: "james" | "henry"
+  name: "james" | "henry";
 };
 
 export type EventLog = {
@@ -14,10 +14,14 @@ export type EventLog = {
 };
 
 type UserNameType = {
-  [index:string]: string,
-}
+  [index: string]: string;
+};
 
-export const UserName : UserNameType = {
+export const UserName: UserNameType = {
   james: "준우",
-  henry: "건우"  
-}
+  henry: "건우",
+};
+
+export type WordTestType = {
+  [index: string]: string;
+};

@@ -1,30 +1,22 @@
-import firebaseApp from "./firebase";
+import store, { getCollectionSnapshot } from "../firebase";
 import {
-  getFirestore,
   collection,
   getDocs,
   query,
   where,
   doc,
-  getDoc,
   setDoc,
   orderBy,
 } from "firebase/firestore/lite";
 
-const store = getFirestore(firebaseApp);
 let eventLogIndex = 0;
 
-const getAppStateSnapshot = async (documentName: string) => {
+const getAppStateSnapshot = (documentName: string) => {
   if (process.env.REACT_APP_COLLECTION_APP_STATE) {
-    const docRef = doc(
-      store,
+    return getCollectionSnapshot(
       process.env.REACT_APP_COLLECTION_APP_STATE,
       documentName
     );
-    const docSnapshot = await getDoc(docRef);
-    if (docSnapshot.exists()) {
-      return docSnapshot.data();
-    }
   } else {
     return undefined;
   }
@@ -36,7 +28,6 @@ const getEventLogSnapshot = async () => {
       store,
       process.env.REACT_APP_COLLECTION_EVENT_LOG
     );
-    //const storeSnapshot = await getDocs(storeCollection);
     const storeQuery = query(storeCollection, orderBy("EventTime", "desc"));
     const storeSnapshot = await getDocs(storeQuery);
     return storeSnapshot.docs.map((doc) => doc.data());
@@ -55,14 +46,13 @@ export const getEventLog = async () => {
           text: log.EventLog,
         };
       });
-  
+
       eventLogIndex = convertedDataform.length + 1;
       return convertedDataform;
     } else {
       return [];
     }
-  }
-  catch {
+  } catch {
     return [];
   }
 };
@@ -81,8 +71,7 @@ export const getEventState = async () => {
         eventName: "undefined",
       };
     }
-  }
-  catch {
+  } catch {
     return {
       eventDate: new Date("2021-11-29"),
       eventName: "james",
@@ -105,29 +94,6 @@ export const queryDocument = async (eventId: number) => {
     });
   }
 };
-
-// class EventLog {
-//   date: Date;
-//   log: string;
-
-//   constructor(date: Date, log: string) {
-//     this.date = date;
-//     this.log = log;
-//   }
-// }
-
-// const EventLogSerializer = {
-//     toFirebase: (eventLog : EventLog) => {
-//         return {
-//             date: eventLog.date,
-//             log: eventLog.log,
-//         }
-//     },
-//     fromFirebase: (snapshot: DocumentData, options: any) => {
-//         const data = snapshot.data(options);
-//         return new EventLog(data.date, data.log);
-//     }
-// };
 
 export const addEvent = async (currentDate: Date, userName: string) => {
   if (process.env.REACT_APP_COLLECTION_APP_STATE) {

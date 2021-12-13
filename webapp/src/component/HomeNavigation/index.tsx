@@ -15,7 +15,7 @@ const NaviMenu = (
       </Link>
     </Menu.Item>
     <Menu.Item>
-      <Link to="/wordtest">
+      <Link to="/test">
         <CheckSquareOutlined /> Word Test
       </Link>
     </Menu.Item>

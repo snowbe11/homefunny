@@ -1,0 +1,21 @@
+.word-test-dictation {
+    display: flex;
+    flex-direction: column;
+}
+
+.word-test-dictation-row {
+    display: flex;
+}
+
+.word-test-dictation-answer {
+    background-color: white;
+    padding: 2px 5px 2px 5px;
+}
+
+.word-test-dictation-answer-trasnparent {
+    background-color: white;
+    /*visibility: hidden;*/
+    color:white;
+    user-select: none;
+    padding: 2px 5px 2px 5px;
+}
