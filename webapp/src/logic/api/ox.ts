@@ -47,7 +47,11 @@ const fromEnties = ({ text, lexicalCategory, entries }: OxResultType) => {
   }
 };
 
-const getPronunciations = ({ text, lexicalCategory, entries }: OxResultType) => {
+const getPronunciations = ({
+  text,
+  lexicalCategory,
+  entries,
+}: OxResultType) => {
   try {
     const entry = entries["0"];
     return entry.pronunciations["0"].audioFile;
@@ -77,12 +81,11 @@ export const fetchWordFromOx = async (text: string) => {
   const json = await result.json();
 
   if (json.results) {
-    return json.result;
-  }
-  else {
+    return json.results;
+  } else {
     return undefined;
   }
-}
+};
 
 export const searchWord = async (text: string) => {
   const results = await fetchWordFromOx(text);

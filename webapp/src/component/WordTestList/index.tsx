@@ -8,7 +8,7 @@ export const WordTestList = () => {
 
   useEffect(() => {
     getTestLevelList().then((testList) => {
-      setList([...testList, "DSX"]);
+      setList(testList);
     });
   }, []);
 

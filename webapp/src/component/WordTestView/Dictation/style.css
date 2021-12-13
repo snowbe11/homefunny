@@ -1,0 +1,13 @@
+.word-test-dictation {
+    display: flex;
+    flex-direction: column;
+}
+
+.word-test-dictation-row {
+    display: flex;
+}
+
+.word-test-dictation-answer {
+    background-color: white;
+    color: white;
+}
