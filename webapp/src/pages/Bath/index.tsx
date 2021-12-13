@@ -64,7 +64,6 @@ const Bath = () => {
   return (
     <Layout>
       <div className="bath-app">
-        <HomeNavigation />
         <Card className="bp3-text-large bp3-running-text">
           <blockquote>
             <NameTag pickDate={pickDate} />
