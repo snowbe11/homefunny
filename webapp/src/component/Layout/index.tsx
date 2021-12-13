@@ -1,5 +1,5 @@
 import React from "react";
-import { Breadcrumb, Layout as L, Menu } from "antd";
+import { Layout as L, Menu } from "antd";
 import { Link } from "react-router-dom";
 import { BrowserView, MobileView } from "react-device-detect";
 
@@ -32,8 +32,10 @@ export const Layout: React.FC<Props> = ({ children }) => {
         </L>
       </BrowserView>
       <MobileView>
-        <HomeNavigation />
-        <Content>{children}</Content>
+        <Content>
+          <HomeNavigation />
+          {children}
+        </Content>
       </MobileView>
       <Footer>This is home funny, 2021</Footer>
     </L>

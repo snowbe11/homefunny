@@ -23,7 +23,7 @@ export const Dictation = ({
     <div className="word-test-dictation">
       {list.map((word) =>
         displayMode === "show def" ? (
-          <div>
+          <div key={word.word}>
             <span>
               <Typography.Text type="secondary" italic>
                 {word.partOfSpeech}
