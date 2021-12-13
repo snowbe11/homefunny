@@ -20,7 +20,7 @@ export const getTestLevelList = async () => {
       return Array<string>();
     }
   } catch {
-    return Array<string>("DSX");
+    return Array<string>();
   }
 };
 
@@ -35,21 +35,20 @@ const getWordTestSnapshot = async (level: string) => {
   }
 };
 
-export const getWordTest = async (level: string) : Promise<WordTestType> => {
+export const getWordTest = async (level: string): Promise<WordTestType> => {
   try {
     let testObject = await getWordTestSnapshot(level);
     if (testObject) {
-      let test : WordTestType = {};
+      let test: WordTestType = {};
       for (const key of Object.keys(testObject)) {
         test[key] = testObject[key];
       }
       return test;
     }
-  } catch {
-  }
+  } catch {}
 
   return {};
-}
+};
 
 export const addWordTest = async (level: string, list: Array<WordTestType>) => {
   try {

@@ -1,64 +1,64 @@
-import { Button, Card, Divider, Form, Input, Space, Typography } from "antd";
-import React, { useRef, useState } from "react";
+import { Button, Form, Input, Space } from "antd";
+import React, { useState } from "react";
 import { PlusCircleTwoTone } from "@ant-design/icons";
 import { addWordTest } from "logic/api/wordTest";
-import { searchWord } from "logic/api/ox";
+import { fetchPronunciations, WordType } from "logic/api/ox";
+import WordInputCardFormItem from "./WordInputCardFormItem";
+import { WordTestType } from "logic/type";
 
 export const WordTestWordRegist = () => {
-  const [testlist, setTestlist] = useState<Array<string>>([""]);
-  const titileRef = useRef<Input>(null);
-
-  const onChangeWord = (index: number, value: string) => {
-    let copied = testlist;
-    copied[index] = value;
-    setTestlist(copied);
+  const initialWord: WordType = {
+    word: "",
+    partOfSpeech: "",
+    definition: "",
+    example: "",
+    pronunciations: "",
   };
 
-  const RenderWordInput = ({
-    index,
-    value,
-  }: {
-    index: number;
-    value: string;
-  }) => {
-    return (
-      <Form.Item name={`${index}`} label="word">
-        <Input
-          value={value}
-          onChange={(e) => onChangeWord(index, e.target.value)}
-        />
-      </Form.Item>
-    );
-  };
+  const [testlist, setTestlist] = useState<Array<WordType>>([initialWord]);
 
   const addInputWord = () => {
-    setTestlist((list: Array<string>) => [...list, ""]);
+    setTestlist((list) => [...list, initialWord]);
   };
 
-  const saveTest = async (values: ArrayLike<string>) => {
-    if (!titileRef.current) {
-      alert("이름을 넣어주세요");
-      return;
-    }
-
+  const saveTest = async (values: any) => {
     console.log(values);
 
+    const docName = values["title"];
+
     let completed = true;
-    let saveForm = [];
+    let saveForm = Array<WordTestType>();
 
     for (const key in values) {
-      const word = values[key];
-      const definition = await searchWord(word);
-      if (definition) {
-        saveForm.push({ word: word, desc: JSON.stringify(definition) });
+      if (key === "title") {
+        continue;
+      }
+
+      const { word, pos, definition, example } = values[key];
+      if (!word) {
+        continue;
+      }
+
+      const pronunce = await fetchPronunciations(word);
+      if (pronunce) {
+        const override: WordType = {
+          word: word,
+          partOfSpeech: pos,
+          definition: definition,
+          example: example,
+          pronunciations: pronunce,
+        };
+
+        saveForm.push({
+          word: word,
+          desc: JSON.stringify(override),
+        });
       } else {
-        alert(`${values[key]} 잘못된 단어가 있습니다.`);
+        alert(`${word} 잘못된 단어가 있습니다.`);
         completed = false;
         break;
       }
     }
-
-    const docName = titileRef.current.input.value;
 
     if (completed) {
       const result = await addWordTest(docName, saveForm);
@@ -72,11 +72,17 @@ export const WordTestWordRegist = () => {
 
   return (
     <>
-      <Input ref={titileRef} placeholder="정상 레벨 또는 워크북 페이지" />
       <div style={{ display: "flex", alignItems: "flex-end", padding: "1rem" }}>
-        <Form onFinish={saveTest}>
+        <Form onFinish={saveTest} layout="vertical">
+          <Form.Item
+            name="title"
+            rules={[{ required: true }]}
+            label="테스트이름"
+          >
+            <Input placeholder="정상 레벨 또는 워크북 페이지" />
+          </Form.Item>
           {testlist.map((e, index) => (
-            <RenderWordInput key={index} index={index} value={e} />
+            <WordInputCardFormItem key={index} index={index} word={e} />
           ))}
           <Button type="primary" htmlType="submit">
             저장
@@ -84,18 +90,11 @@ export const WordTestWordRegist = () => {
         </Form>
 
         <Space>
-          <Button onClick={addInputWord} style={{ marginBottom: "3.5rem" }}>
+          <Button onClick={addInputWord}>
             <PlusCircleTwoTone />
           </Button>
         </Space>
       </div>
-      <Card title="설정">
-        <Typography.Text>대기 시간</Typography.Text>
-        <Divider />
-        <Space>
-          <Button type="dashed">테스트</Button>
-        </Space>
-      </Card>
     </>
   );
 };
