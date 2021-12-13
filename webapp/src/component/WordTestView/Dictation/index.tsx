@@ -1,5 +1,4 @@
-import { Card, Divider, Space, Typography } from "antd";
-import { PlayCircleTwoTone } from "@ant-design/icons";
+import { Typography } from "antd";
 import { WordType } from "logic/api/ox";
 
 import "./style.css";
@@ -16,9 +15,9 @@ export const Dictation = ({
   };
 
   let displayMode = "show def";
-  if (Math.random() < 0.5) {
-    displayMode = "show example";
-  }
+  // if (Math.random() < 0.5) {
+  //   displayMode = "show example";
+  // }
 
   return (
     <div className="word-test-dictation">
@@ -31,16 +30,27 @@ export const Dictation = ({
               </Typography.Text>
             </span>
             <span>,&nbsp;&nbsp;</span>
-            <span>{answerVisiblity && word.definition}</span>
-            <span className="word-test-dictation-answer">{word.word}</span>
+            <span>{word.definition}</span>
+            <span
+              className={`word-test-dictation-answer${
+                answerVisiblity ? "" : "-trasnparent"
+              }`}
+            >
+              {word.word}
+            </span>
           </div>
         ) : (
+          // 이거 아니고 한 글 뜻으로 해야 하나?
           <div>
             <span>
               <Typography.Text>{word.example}</Typography.Text>
             </span>
-            <span className="word-test-dictation-answer">
-              {answerVisiblity && word.word}
+            <span
+              className={`word-test-dictation-answer${
+                !answerVisiblity && "-trasnparent"
+              }`}
+            >
+              {word.word}
             </span>
           </div>
         )

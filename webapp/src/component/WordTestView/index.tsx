@@ -49,7 +49,7 @@ export const WordTestView = ({ level }: { level?: string }) => {
         setPart2(q.slice(count));
       });
     }
-  }, []);
+  }, [level]);
 
   const onClickShowAnswer = (visible: boolean) => {
     showAnswer(visible);
