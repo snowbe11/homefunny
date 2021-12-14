@@ -29,6 +29,7 @@ export const FillTheBlanks = ({
       const partial = e.example.split(e.word);
 
       return {
+        key: e.word,
         order: `${index + 1}.`,
         sentance: (
           <div className="fill-blank-table-row">
@@ -46,6 +47,7 @@ export const FillTheBlanks = ({
       };
     } else {
       return {
+        key: e.word,
         order: `${index + 1}.`,
         sentance: <div className="fill-blank-table-row">{e.definition}</div>,
       };
@@ -62,7 +64,7 @@ export const FillTheBlanks = ({
     {
       title: "Sentance",
       dataIndex: "sentance",
-      key: "sentance",
+      key: "key",
     },
   ];
 

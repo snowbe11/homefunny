@@ -17,6 +17,7 @@ export const Dictation = ({
 
   const dataSource = list.map((e, index) => {
     return {
+      key: e.word,
       order: `${index + 1}.`,
       definition: (
         <div
@@ -47,12 +48,12 @@ export const Dictation = ({
     {
       title: "Definition",
       dataIndex: "definition",
-      key: "definition",
+      key: "key",
     },
     {
       title: "English Word",
       dataIndex: "answer",
-      key: "answer",
+      key: "key",
       width: "25%",
     },
   ];
