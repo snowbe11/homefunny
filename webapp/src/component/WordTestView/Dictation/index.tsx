@@ -1,4 +1,4 @@
-import { Table, Typography } from "antd";
+import { Table } from "antd";
 import { WordType } from "logic/api/ox";
 import { EditOutlined } from "@ant-design/icons";
 
@@ -15,26 +15,23 @@ export const Dictation = ({
     new Audio(audio).play();
   };
 
-  const { Title, Text, Paragraph } = Typography;
-
   const dataSource = list.map((e, index) => {
     return {
-      order: index + 1,
+      order: `${index + 1}.`,
       definition: (
         <div
           onClick={() => pronunce(e.pronunciations)}
-          className="dictation-table-row"
+          className="dictation-table-definition-row"
         >
-          <Text strong italic>
-            {e.partOfSpeech}.
-          </Text>
-          <Text> {Math.random() < 0.5 ? e.definition : e.translation}</Text>
+          <span>{e.partOfSpeech}.</span>
+          <span> </span>
+          <span>{Math.random() < 0.5 ? e.definition : e.translation}</span>
         </div>
       ),
       answer: (
-        <div className="dictation-table-2line-row">
-          <Text strong>{answerVisiblity ? e.word : ""}</Text>
-          <Text>{answerVisiblity ? e.translation : ""}</Text>
+        <div className="dictation-table-answer-row">
+          <div>{answerVisiblity ? e.word : ""}</div>
+          <div>{answerVisiblity ? e.translation : ""}</div>
         </div>
       ),
     };
@@ -45,13 +42,12 @@ export const Dictation = ({
       title: "No.",
       dataIndex: "order",
       key: "order",
-      width: "10%",
+      width: "5%",
     },
     {
       title: "Definition",
       dataIndex: "definition",
       key: "definition",
-      width: "65%",
     },
     {
       title: "English Word",
@@ -63,10 +59,10 @@ export const Dictation = ({
 
   return (
     <div className="word-test-dictation">
-      <Title level={4}>
+      <h2 className="word-test-dictation-title">
         <EditOutlined style={{ fontSize: "big" }} /> Read and write the words.
         Write both Present and Past forms for verbs.
-      </Title>
+      </h2>
       <Table
         dataSource={dataSource}
         columns={columns}

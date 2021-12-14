@@ -6,7 +6,7 @@ import FillTheBlanks from "./FillTheBlanks";
 import Dictation from "./Dictation";
 
 import "./style.css";
-import { Button, Typography } from "antd";
+import { Button } from "antd";
 
 const shuffle = (array: any[]) => {
   let currentIndex = array.length;
@@ -60,10 +60,10 @@ export const WordTestView = ({ level }: { level?: string }) => {
 
   return (
     <div className="word-test-layout">
-      <Typography.Title>{level}</Typography.Title>
+      <h2>{`<${level}>`}</h2>
       <Dictation list={[...test.part1]} answerVisiblity={answerVisiblity} />
+      <br />
       <FillTheBlanks list={[...test.part2]} answerVisiblity={answerVisiblity} />
-
       <Button onClick={() => onClickShowAnswer(!answerVisiblity)}>
         정답보기
       </Button>

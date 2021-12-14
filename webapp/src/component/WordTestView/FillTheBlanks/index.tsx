@@ -1,4 +1,4 @@
-import { Space, Table, Typography } from "antd";
+import { Table } from "antd";
 import { WordType } from "logic/api/ox";
 import { EditOutlined } from "@ant-design/icons";
 import React from "react";
@@ -22,8 +22,6 @@ export const FillTheBlanks = ({
   list: Array<WordType>;
   answerVisiblity: boolean;
 }) => {
-  const { Title, Text } = Typography;
-
   const dataSource = list.map((e, index) => {
     // 이건 잘 안된다.
     // 사전에서 검색하는 예제는 시제가 적요된 경우가 있어서 그대로 쓸 수 없다.
@@ -31,25 +29,25 @@ export const FillTheBlanks = ({
       const partial = e.example.split(e.word);
 
       return {
-        order: index + 1,
+        order: `${index + 1}.`,
         sentance: (
           <div className="fill-blank-table-row">
-            <Text>
-              {partial[0]}
-              <span>
-                {answerVisiblity
-                  ? e.word
-                  : Array(e.word.length).fill("__").join("")}
-              </span>
-              {partial[1]}
-            </Text>
+            {partial[0]}
+            <span> </span>
+            <span>
+              {answerVisiblity
+                ? `[ ${e.word} ]`
+                : Array(e.word.length).fill("__").join("")}
+            </span>
+            <span> </span>
+            {partial[1]}
           </div>
         ),
       };
     } else {
       return {
-        order: index + 1,
-        sentance: e.definition,
+        order: `${index + 1}.`,
+        sentance: <div className="fill-blank-table-row">{e.definition}</div>,
       };
     }
   });
@@ -59,6 +57,7 @@ export const FillTheBlanks = ({
       title: "No.",
       dataIndex: "order",
       key: "order",
+      width: "5%",
     },
     {
       title: "Sentance",
@@ -69,10 +68,10 @@ export const FillTheBlanks = ({
 
   return (
     <div>
-      <Title level={4}>
+      <h2 className="fill-blank-test-title">
         <EditOutlined style={{ fontSize: "big" }} /> Read and write the correct
         word from the below.
-      </Title>
+      </h2>
       <Table
         dataSource={dataSource}
         columns={columns}

@@ -20,17 +20,15 @@
     padding: 2px 5px 2px 5px;
 }
 
-.dictation-table-row {
-    display: flex;
-    align-items: center;
-    height: 2.5rem;
-    font-size: 1rem;
+.dictation-table-definition-row {
+    font-size: 1.5rem;
+    margin-top: -0.3rem;
+    margin-bottom: -0.3rem;
 }
 
-.dictation-table-2line-row {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    height: 2.5rem;
-    font-size: 1rem;
+.dictation-table-answer-row {
+    height: 2rem;
+    font-size: 1.2rem;
+    margin-top: -2rem;
+    margin-bottom: -0.5rem;
 }
