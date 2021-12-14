@@ -12,11 +12,13 @@ type Props = {
 const WordInputCardFormItem = ({ index, word }: Props) => {
   const { Option } = Select;
 
-  const labels = {
+  const labels: WordType = {
     word: "단어",
-    pos: "품사",
-    definition: "뜻",
+    partOfSpeech: "품사",
+    definition: "영문 뜻",
+    translation: "한글 뜻",
     example: "예제",
+    pronunciations: "",
   };
 
   return (
@@ -25,8 +27,8 @@ const WordInputCardFormItem = ({ index, word }: Props) => {
         <Form.Item name={[index, "word"]} rules={[{ required: true }]}>
           <Input placeholder={labels["word"]} allowClear />
         </Form.Item>
-        <Form.Item name={[index, "pos"]} initialValue="Noun">
-          <Select placeholder={labels["pos"]}>
+        <Form.Item name={[index, "partOfSpeech"]} initialValue="Noun">
+          <Select placeholder={labels["partOfSpeech"]}>
             <Option value="Noun">Noun</Option>
             <Option value="Verb">Verb</Option>
             <Option value="Adjective">Adjective</Option>
@@ -40,6 +42,9 @@ const WordInputCardFormItem = ({ index, word }: Props) => {
       </Space>
       <Form.Item name={[index, "definition"]}>
         <Input placeholder={labels["definition"]} allowClear></Input>
+      </Form.Item>
+      <Form.Item name={[index, "translation"]}>
+        <Input placeholder={labels["translation"]} allowClear></Input>
       </Form.Item>
       <Form.Item name={[index, "example"]}>
         <TextArea placeholder={labels["example"]} allowClear></TextArea>

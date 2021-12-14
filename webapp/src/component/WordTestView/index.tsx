@@ -28,9 +28,13 @@ const shuffle = (array: any[]) => {
   return array;
 };
 
+type SaveType = {
+  part1: Array<WordType>;
+  part2: Array<WordType>;
+};
+
 export const WordTestView = ({ level }: { level?: string }) => {
-  const [part1, setPart1] = useState<Array<WordType>>([]);
-  const [part2, setPart2] = useState<Array<WordType>>([]);
+  const [test, setTest] = useState<SaveType>({ part1: [], part2: [] });
   const [answerVisiblity, showAnswer] = useState(false);
 
   useEffect(() => {
@@ -45,11 +49,10 @@ export const WordTestView = ({ level }: { level?: string }) => {
         const q = shuffle(testList);
         const count = Math.round(testList.length / 2);
 
-        setPart1(q.slice(0, count));
-        setPart2(q.slice(count));
+        setTest({ part1: q.slice(0, count), part2: q.slice(count) });
       });
     }
-  }, [level]);
+  }, []);
 
   const onClickShowAnswer = (visible: boolean) => {
     showAnswer(visible);
@@ -58,8 +61,8 @@ export const WordTestView = ({ level }: { level?: string }) => {
   return (
     <div className="word-test-layout">
       <Typography.Title>{level}</Typography.Title>
-      <Dictation list={[...part1]} answerVisiblity={answerVisiblity} />
-      <FillTheBlanks list={[...part2]} answerVisiblity={answerVisiblity} />
+      <Dictation list={[...test.part1]} answerVisiblity={answerVisiblity} />
+      <FillTheBlanks list={[...test.part2]} answerVisiblity={answerVisiblity} />
 
       <Button onClick={() => onClickShowAnswer(!answerVisiblity)}>
         정답보기

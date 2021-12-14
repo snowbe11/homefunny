@@ -1,5 +1,6 @@
-import { Typography } from "antd";
+import { Space, Table, Typography } from "antd";
 import { WordType } from "logic/api/ox";
+import { EditOutlined } from "@ant-design/icons";
 
 import "./style.css";
 
@@ -14,47 +15,52 @@ export const Dictation = ({
     new Audio(audio).play();
   };
 
-  let displayMode = "show def";
-  // if (Math.random() < 0.5) {
-  //   displayMode = "show example";
-  // }
+  const { Title, Text } = Typography;
+
+  const dataSource = list.map((e, index) => {
+    return {
+      order: index + 1,
+      definition: (
+        <Space onClick={() => pronunce(e.pronunciations)}>
+          <Text strong italic>
+            {e.partOfSpeech}.
+          </Text>
+          <Text> {Math.random() < 0.5 ? e.definition : e.translation}</Text>
+        </Space>
+      ),
+      answer: <Title level={5}>{answerVisiblity ? e.word : " "}</Title>,
+    };
+  });
+
+  const columns = [
+    {
+      title: "No.",
+      dataIndex: "order",
+      key: "order",
+    },
+    {
+      title: "Definition",
+      dataIndex: "definition",
+      key: "definition",
+    },
+    {
+      title: "English Word",
+      dataIndex: "answer",
+      key: "answer",
+    },
+  ];
 
   return (
     <div className="word-test-dictation">
-      {list.map((word) =>
-        displayMode === "show def" ? (
-          <div key={word.word}>
-            <span>
-              <Typography.Text type="secondary" italic>
-                {word.partOfSpeech}
-              </Typography.Text>
-            </span>
-            <span>,&nbsp;&nbsp;</span>
-            <span>{word.definition}</span>
-            <span
-              className={`word-test-dictation-answer${
-                answerVisiblity ? "" : "-trasnparent"
-              }`}
-            >
-              {word.word}
-            </span>
-          </div>
-        ) : (
-          // 이거 아니고 한 글 뜻으로 해야 하나?
-          <div>
-            <span>
-              <Typography.Text>{word.example}</Typography.Text>
-            </span>
-            <span
-              className={`word-test-dictation-answer${
-                !answerVisiblity && "-trasnparent"
-              }`}
-            >
-              {word.word}
-            </span>
-          </div>
-        )
-      )}
+      <Title level={4}>
+        <EditOutlined style={{ fontSize: "big" }} /> Read and write the words.
+        Write both Present and Past forms for verbs.
+      </Title>
+      <Table
+        dataSource={dataSource}
+        columns={columns}
+        pagination={{ position: [] }}
+      />
     </div>
   );
 };
