@@ -61,8 +61,8 @@ const getPronunciations = ({
 };
 
 export const fetchWordFromOx = async (text: string) => {
-  const app_id = "2d5cc32e";
-  const app_key = "e3ac76a3e40c62bf1dde28d9a28274af";
+  const app_id = process.env.OX_APP_ID!.valueOf();
+  const app_key = process.env.OX_APP_KEY!.valueOf();
   const language = "en-gb";
   const word_id = text;
 
