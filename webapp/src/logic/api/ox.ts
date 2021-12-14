@@ -2,8 +2,18 @@ export type WordType = {
   word: string;
   partOfSpeech: string;
   definition: string;
+  translation: string;
   example: string;
   pronunciations: string;
+};
+
+export const initialWord: WordType = {
+  word: "",
+  partOfSpeech: "",
+  definition: "",
+  translation: "",
+  example: "",
+  pronunciations: "",
 };
 
 type OxEntryType = {
@@ -19,7 +29,11 @@ type OxResultType = {
   entries: Array<OxEntryType>;
 };
 
-const fromEnties = ({ text, lexicalCategory, entries }: OxResultType) => {
+const fromEnties = ({
+  text,
+  lexicalCategory,
+  entries,
+}: OxResultType): WordType | undefined => {
   try {
     const entry = entries["0"];
     const pronunciations = entry.pronunciations["0"].audioFile;
@@ -30,7 +44,7 @@ const fromEnties = ({ text, lexicalCategory, entries }: OxResultType) => {
       if (sense.definitions) {
         definitions.push({
           text: sense.definitions[0],
-          example: sense.examples ? sense.examples[0].text : "",
+          example: sense.examples![0].text,
         });
       }
     }
@@ -39,6 +53,7 @@ const fromEnties = ({ text, lexicalCategory, entries }: OxResultType) => {
       word: text,
       partOfSpeech: lexicalCategory.text,
       definition: definitions[0].text,
+      translation: "",
       example: definitions[0].example,
       pronunciations: pronunciations,
     };
@@ -47,22 +62,51 @@ const fromEnties = ({ text, lexicalCategory, entries }: OxResultType) => {
   }
 };
 
-const getPronunciations = ({
-  text,
-  lexicalCategory,
-  entries,
-}: OxResultType) => {
+const getPronunce = ({ entries }: OxResultType) => {
   try {
     const entry = entries["0"];
+
     return entry.pronunciations["0"].audioFile;
   } catch (e) {
     console.log(e);
   }
 };
 
+const getPronunceAndExample = ({ text, entries }: OxResultType) => {
+  try {
+    const entry = entries["0"];
+
+    for (const sense of entry.senses) {
+      if (sense.examples) {
+        // 예문의 경우 시제가 다르게 들어갈 수 있어서 깔끔하게 되지 않는다.
+
+        for (const exam of sense.examples) {
+          if (exam.text.includes(text)) {
+            return {
+              pronounce: entry.pronunciations["0"].audioFile,
+              example: exam.text,
+            };
+          }
+        }
+
+        return {
+          pronounce: entry.pronunciations["0"].audioFile,
+          example: sense.examples["0"].text,
+        };
+      } else {
+        return {
+          pronounce: entry.pronunciations["0"].audioFile,
+        };
+      }
+    }
+  } catch (e) {
+    console.log(e);
+  }
+};
+
 export const fetchWordFromOx = async (text: string) => {
-  const app_id = process.env.OX_APP_ID!.valueOf();
-  const app_key = process.env.OX_APP_KEY!.valueOf();
+  const app_id = "2d5cc32e";
+  const app_key = "e3ac76a3e40c62bf1dde28d9a28274af";
   const language = "en-gb";
   const word_id = text;
 
@@ -93,7 +137,7 @@ export const searchWord = async (text: string) => {
   let wordDefinition = Array<WordType>();
 
   if (results) {
-    const enties = results["0"]?.lexicalEntries;
+    const enties = results["0"]!.lexicalEntries;
     for (const e of enties) {
       const cov = fromEnties(e);
       cov && wordDefinition.push(cov);
@@ -106,9 +150,21 @@ export const searchWord = async (text: string) => {
 export const fetchPronunciations = async (text: string) => {
   const results = await fetchWordFromOx(text);
   if (results) {
-    const enties = results["0"]?.lexicalEntries;
+    const enties = results["0"]!.lexicalEntries;
     for (const e of enties) {
-      return getPronunciations(e);
+      return getPronunce(e);
+    }
+  }
+
+  return "";
+};
+
+export const fetchPronunceAndExample = async (text: string) => {
+  const results = await fetchWordFromOx(text);
+  if (results) {
+    const enties = results["0"]!.lexicalEntries;
+    for (const e of enties) {
+      return getPronunceAndExample(e);
     }
   }
 
