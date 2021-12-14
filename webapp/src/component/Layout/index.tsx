@@ -18,7 +18,7 @@ export const Layout: React.FC<Props> = ({ children }) => {
       </Header>
       <BrowserView>
         <L>
-          <Sider theme="light">
+          <Sider theme="light" className="layout-sider">
             <Menu mode="vertical">
               <Menu.Item key="bath">
                 <Link to="/bath">오늘의 화장실</Link>

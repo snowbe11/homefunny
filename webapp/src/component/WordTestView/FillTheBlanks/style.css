@@ -10,4 +10,12 @@
     border-style: solid;
     border-width: 1px;
     border-color: gray;
+    font-size: 1rem;
+}
+
+.fill-blank-table-row {
+    display: flex;
+    align-items: center;
+    height: 2.5rem;
+    font-size: 1rem;
 }

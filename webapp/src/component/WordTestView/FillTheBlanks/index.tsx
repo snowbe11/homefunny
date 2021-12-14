@@ -33,15 +33,17 @@ export const FillTheBlanks = ({
       return {
         order: index + 1,
         sentance: (
-          <Text>
-            <span>{partial[0]}</span>
-            <span>
-              {answerVisiblity
-                ? e.word
-                : Array(e.word.length).fill("__").join("")}
-            </span>
-            <span>{partial[1]}</span>
-          </Text>
+          <div className="fill-blank-table-row">
+            <Text>
+              {partial[0]}
+              <span>
+                {answerVisiblity
+                  ? e.word
+                  : Array(e.word.length).fill("__").join("")}
+              </span>
+              {partial[1]}
+            </Text>
+          </div>
         ),
       };
     } else {

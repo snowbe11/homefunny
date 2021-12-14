@@ -1,5 +1,10 @@
 .word-test-layout {
   text-align: left;
+
+  width: 210mm;
+  height: 297mm;
+
+  background-color: aqua;
 }
 
 
