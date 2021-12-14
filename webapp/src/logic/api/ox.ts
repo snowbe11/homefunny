@@ -105,30 +105,31 @@ const getPronunceAndExample = ({ text, entries }: OxResultType) => {
 };
 
 export const fetchWordFromOx = async (text: string) => {
-  const app_id = "2d5cc32e";
-  const app_key = "e3ac76a3e40c62bf1dde28d9a28274af";
-  const language = "en-gb";
-  const word_id = text;
+  if (process.env.OX_APP_ID && process.env.OX_APP_KEY) {
+    const language = "en-gb";
+    const word_id = text;
+    const apiurl = `https://od-api.oxforddictionaries.com:443/api/v2/entries/${language}/${word_id.toLowerCase()}`;
 
-  const options = {
-    method: "GET",
-    headers: {
-      app_id: app_id,
-      app_key: app_key,
-    },
-  };
+    const options = {
+      method: "GET",
+      headers: {
+        app_id: process.env.OX_APP_ID,
+        app_key: process.env.OX_APP_KEY,
+      },
+    };
 
-  const apiurl = `https://od-api.oxforddictionaries.com:443/api/v2/entries/${language}/${word_id.toLowerCase()}`;
-  const crosproxy = `https://cors-anywhere.herokuapp.com/${apiurl}`;
+    const crosproxy = `https://cors-anywhere.herokuapp.com/${apiurl}`;
 
-  const result = await fetch(crosproxy, options);
-  const json = await result.json();
-
-  if (json.results) {
-    return json.results;
-  } else {
-    return undefined;
+    const result = await fetch(crosproxy, options);
+    const json = await result.json();
+    if (json.results) {
+      return json.results;
+    } else {
+      return undefined;
+    }
   }
+
+  return undefined;
 };
 
 export const searchWord = async (text: string) => {
