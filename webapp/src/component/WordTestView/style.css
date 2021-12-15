@@ -1,0 +1,11 @@
+.word-test-layout {
+  text-align: left;
+}
+
+
+@media print {
+  .word-test-layout {
+    width: 210mm;
+    height: 297mm;
+  }
+}
