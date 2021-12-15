@@ -1,8 +1,13 @@
 {
+  "name": "snowbe11-proxy-poersonal",
+  "version": "1.0.0",
+  "description": "snowbe11 \\`s proxy for poersonal",
+  "main": "app.js",
   "scripts": {
-    "start": "nodemon app.ts",
+    "start": "node ./app.js",
+    "server": "nodemon app.js",
     "client": "npm start --prefix ../webapp",
-    "dev": "concurrently --kill-others-on-fail \"npm start\" \"npm run client\""
+    "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\""
   },
   "dependencies": {
     "eslint": "^8.4.1",
