@@ -5,36 +5,28 @@ import {
   CheckSquareOutlined,
   CalendarOutlined,
 } from "@ant-design/icons";
-import { Link } from "react-router-dom";
-
-const NaviMenu = (
-  <Menu>
-    <Menu.Item>
-      <Link to="/bath">
-        <CalendarOutlined /> Bath
-      </Link>
-    </Menu.Item>
-    <Menu.Item>
-      <Link to="/test">
-        <CheckSquareOutlined /> Word Test
-      </Link>
-    </Menu.Item>
-  </Menu>
-);
+import { Link, useLocation } from "react-router-dom";
 
 export const HomeNavigation = () => {
+  const location = useLocation();
+
   return (
-    <Breadcrumb>
-      <Breadcrumb.Item>
+    <Menu mode="horizontal" selectedKeys={[location.pathname]}>
+      <Menu.Item key="/">
         <Link to="/">
           <HomeOutlined /> Home Funny
         </Link>
-      </Breadcrumb.Item>
-      <Breadcrumb.Item overlay={NaviMenu}>
+      </Menu.Item>
+      <Menu.Item key="/bath">
         <Link to="/bath">
           <CalendarOutlined /> Bath
         </Link>
-      </Breadcrumb.Item>
-    </Breadcrumb>
+      </Menu.Item>
+      <Menu.Item key="/test">
+        <Link to="/test">
+          <CheckSquareOutlined /> Word Test
+        </Link>
+      </Menu.Item>
+    </Menu>
   );
 };
