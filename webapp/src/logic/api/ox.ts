@@ -118,7 +118,8 @@ export const fetchWordFromOx = async (text: string) => {
       },
     };
 
-    const crosproxy = `https://cors-anywhere.herokuapp.com/${apiurl}`;
+    //const crosproxy = `https://cors-anywhere.herokuapp.com/${apiurl}`;
+    const crosproxy = `localhost:3001/${apiurl}`;
 
     const result = await fetch(crosproxy, options);
     const json = await result.json();
