@@ -1,24 +1,20 @@
 import { Button, Form, Input, Space } from "antd";
 import React, { useState } from "react";
-import { PlusCircleTwoTone } from "@ant-design/icons";
+import { PlusCircleTwoTone, MinusCircleTwoTone } from "@ant-design/icons";
 import { addWordTest } from "logic/api/wordTest";
-import { fetchPronunciations, WordType } from "logic/api/ox";
+import { fetchPronunceAndExample, initialWord, WordType } from "logic/api/ox";
 import WordInputCardFormItem from "./WordInputCardFormItem";
 import { WordTestType } from "logic/type";
 
 export const WordTestWordRegist = () => {
-  const initialWord: WordType = {
-    word: "",
-    partOfSpeech: "",
-    definition: "",
-    example: "",
-    pronunciations: "",
-  };
-
   const [testlist, setTestlist] = useState<Array<WordType>>([initialWord]);
 
   const addInputWord = () => {
     setTestlist((list) => [...list, initialWord]);
+  };
+
+  const deleteLastInputWord = () => {
+    setTestlist((list) => [...list.slice(0, list.length - 1)]);
   };
 
   const saveTest = async (values: any) => {
@@ -34,19 +30,21 @@ export const WordTestWordRegist = () => {
         continue;
       }
 
-      const { word, pos, definition, example } = values[key];
+      const { word, partOfSpeech, definition, translation, example } =
+        values[key];
       if (!word) {
         continue;
       }
 
-      const pronunce = await fetchPronunciations(word);
-      if (pronunce) {
+      const result = await fetchPronunceAndExample(word);
+      if (result) {
         const override: WordType = {
           word: word,
-          partOfSpeech: pos,
+          partOfSpeech: partOfSpeech,
           definition: definition,
-          example: example,
-          pronunciations: pronunce,
+          translation: translation,
+          example: example ? example : result.example,
+          pronunciations: result.pronounce,
         };
 
         saveForm.push({
@@ -92,6 +90,9 @@ export const WordTestWordRegist = () => {
         <Space>
           <Button onClick={addInputWord}>
             <PlusCircleTwoTone />
+          </Button>
+          <Button onClick={deleteLastInputWord}>
+            <MinusCircleTwoTone />
           </Button>
         </Space>
       </div>

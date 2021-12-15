@@ -4,21 +4,24 @@ import Layout from "component/Layout";
 import { WordTestList } from "component/WordTestList";
 import { Link } from "react-router-dom";
 import { Button } from "antd";
-import WordSearch from "component/WordSearch";
+import { PlusCircleTwoTone } from "@ant-design/icons";
+
+import "./style.css";
 
 export const WordTestHome = () => {
   return (
     <Layout>
-      <div>
-        <WordTestList />
-      </div>
-      <div>
-        <WordSearch />
-      </div>
-      <div>
-        <Button>
-          <Link to="/test/regist">시험 등록</Link>
-        </Button>
+      <div className="word-test-home-content-container">
+        <div>
+          <Button>
+            <Link to="/test/regist">
+              새 시험 등록 <PlusCircleTwoTone />
+            </Link>
+          </Button>
+        </div>
+        <div className="word-test-home-content-row">
+          <WordTestList />
+        </div>
       </div>
     </Layout>
   );

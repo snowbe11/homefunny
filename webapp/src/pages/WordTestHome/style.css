@@ -1,0 +1,11 @@
+.word-test-home-content-container {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    flex-shrink: 0;
+    min-height: 85vh;
+}
+
+.word-test-home-content-row {
+    flex-grow: 1;
+}

@@ -1,3 +1,7 @@
 .layout-title {
   color: white;
 }
+
+.home-content-container {
+  height: 85vh;
+}

@@ -4,7 +4,6 @@ import { NameTag } from "component/NameTag";
 import { Calendar } from "component/Calendar";
 import { EventUser } from "component/EventUser";
 import { EventLog } from "component/EventLog";
-import { HomeNavigation } from "component/HomeNavigation";
 import { Card, Button, Divider, message, Space } from "antd";
 import { addEvent } from "logic/api/access";
 import { RootState } from "logic/store";
