@@ -1,15 +1,17 @@
-import { Form, Input, Select, Space } from "antd";
+import { Button, Form, Input, Select, Space } from "antd";
 import TextArea from "antd/lib/input/TextArea";
 import { WordType } from "logic/api/ox";
+import { MinusCircleTwoTone } from "@ant-design/icons";
 
 import "./style.css";
 
 type Props = {
   index: number;
   word: WordType;
+  deleteItem: (index: number, text: string) => void;
 };
 
-const WordInputCardFormItem = ({ index, word }: Props) => {
+const WordInputCardFormItem = ({ index, word, deleteItem }: Props) => {
   const { Option } = Select;
 
   const labels: WordType = {
@@ -23,7 +25,7 @@ const WordInputCardFormItem = ({ index, word }: Props) => {
 
   return (
     <Form.Item label={`Q.${index + 1}`}>
-      <Space>
+      <Space align="start">
         <Form.Item name={[index, "word"]} rules={[{ required: true }]}>
           <Input placeholder={labels["word"]} allowClear />
         </Form.Item>
@@ -42,6 +44,9 @@ const WordInputCardFormItem = ({ index, word }: Props) => {
             <Option value="Interjection">Interjection</Option>
           </Select>
         </Form.Item>
+        <Button onClick={() => deleteItem(index, word.word)}>
+          <MinusCircleTwoTone /> 삭제
+        </Button>
       </Space>
       <Form.Item name={[index, "definition"]}>
         <TextArea placeholder={labels["definition"]} allowClear></TextArea>

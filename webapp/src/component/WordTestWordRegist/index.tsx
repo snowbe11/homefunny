@@ -1,6 +1,6 @@
-import { Button, Form, FormInstance, Input, Space } from "antd";
+import { Button, Form, FormInstance, Input, message, Space } from "antd";
 import React, { useEffect, useRef, useState } from "react";
-import { PlusCircleTwoTone, MinusCircleTwoTone } from "@ant-design/icons";
+import { PlusCircleTwoTone } from "@ant-design/icons";
 import { addWordTest, getWordTest } from "logic/api/wordTest";
 import { fetchPronunceAndExample, initialWord, WordType } from "logic/api/ox";
 import WordInputCardFormItem from "./WordInputCardFormItem";
@@ -20,31 +20,35 @@ export const WordTestWordRegist = ({ level }: { level?: string }) => {
         }
 
         setTestlist(testList);
-
-        if (formRef.current) {
-          testList.map((word, index) => {
-            formRef.current?.setFieldsValue({
-              [index]: {
-                ...word,
-              },
-            });
-            return word;
-          });
-        }
       });
     }
   }, []);
+
+  useEffect(() => {
+    if (formRef.current) {
+      testlist.map((word, index) => {
+        formRef.current?.setFieldsValue({
+          [index]: {
+            ...word,
+          },
+        });
+        return word;
+      });
+    }
+  }, [testlist]);
 
   const addInputWord = () => {
     setTestlist((list) => [...list, initialWord]);
   };
 
-  const deleteLastInputWord = () => {
-    setTestlist((list) => [...list.slice(0, list.length - 1)]);
-  };
-
   const saveTest = async (values: any) => {
     console.log(values);
+
+    message.loading({
+      content: "저장을 하고 있습니다...",
+      key: "updatable",
+      duration: 0,
+    });
 
     const docName = values["title"];
 
@@ -87,16 +91,35 @@ export const WordTestWordRegist = ({ level }: { level?: string }) => {
     if (completed) {
       const result = await addWordTest(docName, saveForm);
       if (result) {
-        console.log("done");
+        message.success({
+          content: "저장했습니다.",
+          key: "updatable",
+          duration: 2,
+        });
       } else {
-        alert("서버에 접속할 수 없습니다.");
+        message.error({ content: "서버에 접속할 수 없습니다.", duration: 2 });
       }
     }
   };
 
+  const deleteFormItem = (index: number, text: string) => {
+    setTestlist((list) => {
+      if (text === "") {
+        return list.splice(index, 1);
+      } else {
+        return list.filter((e) => e.word !== text);
+      }
+    });
+  };
+
   return (
-    <div>
-      <Form onFinish={saveTest} layout="vertical" ref={formRef}>
+    <div style={{ display: "flex", alignItems: "flex-end", padding: "1rem" }}>
+      <Form
+        onFinish={saveTest}
+        layout="vertical"
+        ref={formRef}
+        style={{ flexGrow: "1" }}
+      >
         <Form.Item
           name="title"
           rules={[{ required: true }]}
@@ -106,21 +129,22 @@ export const WordTestWordRegist = ({ level }: { level?: string }) => {
           <Input placeholder="정상 레벨 또는 워크북 페이지" />
         </Form.Item>
         {testlist.map((e, index) => (
-          <WordInputCardFormItem key={index} index={index} word={e} />
+          <WordInputCardFormItem
+            key={index}
+            index={index}
+            word={e}
+            deleteItem={deleteFormItem}
+          />
         ))}
-        <Button type="primary" htmlType="submit">
-          저장
-        </Button>
+        <Space size={40}>
+          <Button onClick={addInputWord}>
+            단어 추가 <PlusCircleTwoTone />
+          </Button>
+          <Button type="primary" htmlType="submit">
+            저장
+          </Button>
+        </Space>
       </Form>
-
-      <Space>
-        <Button onClick={addInputWord}>
-          <PlusCircleTwoTone />
-        </Button>
-        <Button onClick={deleteLastInputWord}>
-          <MinusCircleTwoTone />
-        </Button>
-      </Space>
     </div>
   );
 };
