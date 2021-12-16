@@ -27,7 +27,10 @@ const WordInputCardFormItem = ({ index, word }: Props) => {
         <Form.Item name={[index, "word"]} rules={[{ required: true }]}>
           <Input placeholder={labels["word"]} allowClear />
         </Form.Item>
-        <Form.Item name={[index, "partOfSpeech"]} initialValue="Noun">
+        <Form.Item
+          name={[index, "partOfSpeech"]}
+          initialValue={word.partOfSpeech}
+        >
           <Select placeholder={labels["partOfSpeech"]}>
             <Option value="Noun">Noun</Option>
             <Option value="Verb">Verb</Option>
@@ -41,7 +44,7 @@ const WordInputCardFormItem = ({ index, word }: Props) => {
         </Form.Item>
       </Space>
       <Form.Item name={[index, "definition"]}>
-        <Input placeholder={labels["definition"]} allowClear></Input>
+        <TextArea placeholder={labels["definition"]} allowClear></TextArea>
       </Form.Item>
       <Form.Item name={[index, "translation"]}>
         <Input placeholder={labels["translation"]} allowClear></Input>

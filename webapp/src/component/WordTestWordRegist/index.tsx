@@ -1,13 +1,39 @@
-import { Button, Form, Input, Space } from "antd";
-import React, { useState } from "react";
+import { Button, Form, FormInstance, Input, Space } from "antd";
+import React, { useEffect, useRef, useState } from "react";
 import { PlusCircleTwoTone, MinusCircleTwoTone } from "@ant-design/icons";
-import { addWordTest } from "logic/api/wordTest";
+import { addWordTest, getWordTest } from "logic/api/wordTest";
 import { fetchPronunceAndExample, initialWord, WordType } from "logic/api/ox";
 import WordInputCardFormItem from "./WordInputCardFormItem";
 import { WordTestType } from "logic/type";
 
-export const WordTestWordRegist = () => {
+export const WordTestWordRegist = ({ level }: { level?: string }) => {
   const [testlist, setTestlist] = useState<Array<WordType>>([initialWord]);
+  const formRef = useRef<FormInstance>(null);
+
+  useEffect(() => {
+    if (level) {
+      getWordTest(level).then((test: WordTestType) => {
+        let testList = Array<WordType>();
+        for (const word of Object.keys(test)) {
+          const wordType: WordType = JSON.parse(test[word]);
+          testList.push(wordType);
+        }
+
+        setTestlist(testList);
+
+        if (formRef.current) {
+          testList.map((word, index) => {
+            formRef.current?.setFieldsValue({
+              [index]: {
+                ...word,
+              },
+            });
+            return word;
+          });
+        }
+      });
+    }
+  }, []);
 
   const addInputWord = () => {
     setTestlist((list) => [...list, initialWord]);
@@ -69,33 +95,32 @@ export const WordTestWordRegist = () => {
   };
 
   return (
-    <>
-      <div style={{ display: "flex", alignItems: "flex-end", padding: "1rem" }}>
-        <Form onFinish={saveTest} layout="vertical">
-          <Form.Item
-            name="title"
-            rules={[{ required: true }]}
-            label="테스트이름"
-          >
-            <Input placeholder="정상 레벨 또는 워크북 페이지" />
-          </Form.Item>
-          {testlist.map((e, index) => (
-            <WordInputCardFormItem key={index} index={index} word={e} />
-          ))}
-          <Button type="primary" htmlType="submit">
-            저장
-          </Button>
-        </Form>
+    <div>
+      <Form onFinish={saveTest} layout="vertical" ref={formRef}>
+        <Form.Item
+          name="title"
+          rules={[{ required: true }]}
+          label="테스트이름"
+          initialValue={level}
+        >
+          <Input placeholder="정상 레벨 또는 워크북 페이지" />
+        </Form.Item>
+        {testlist.map((e, index) => (
+          <WordInputCardFormItem key={index} index={index} word={e} />
+        ))}
+        <Button type="primary" htmlType="submit">
+          저장
+        </Button>
+      </Form>
 
-        <Space>
-          <Button onClick={addInputWord}>
-            <PlusCircleTwoTone />
-          </Button>
-          <Button onClick={deleteLastInputWord}>
-            <MinusCircleTwoTone />
-          </Button>
-        </Space>
-      </div>
-    </>
+      <Space>
+        <Button onClick={addInputWord}>
+          <PlusCircleTwoTone />
+        </Button>
+        <Button onClick={deleteLastInputWord}>
+          <MinusCircleTwoTone />
+        </Button>
+      </Space>
+    </div>
   );
 };

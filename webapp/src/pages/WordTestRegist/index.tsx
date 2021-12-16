@@ -1,20 +1,20 @@
 import React from "react";
 import Layout from "component/Layout";
 import { useParams } from "react-router-dom";
-import { WordTestPaper } from "component/WordTestPaper";
+import { WordTestWordRegist } from "component/WordTestWordRegist";
 
 import "./style.css";
 
-export const WordTest = () => {
+export const WordTestRegist = () => {
   const params = useParams();
 
   return (
     <Layout>
       <div className="word-test-content-container">
-        <WordTestPaper {...params} />
+        <WordTestWordRegist {...params} />
       </div>
     </Layout>
   );
 };
 
-export default WordTest;
+export default WordTestRegist;
