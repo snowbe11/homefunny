@@ -105,7 +105,7 @@ const getPronunceAndExample = ({ text, entries }: OxResultType) => {
 };
 
 export const fetchWordFromOx = async (text: string) => {
-  if (process.env.OX_APP_ID && process.env.OX_APP_KEY) {
+  if (process.env.REACT_APP_OX_APP_ID && process.env.REACT_APP_OX_APP_KEY) {
     const language = "en-gb";
     const word_id = text;
     const apiurl = `https://od-api.oxforddictionaries.com:443/api/v2/entries/${language}/${word_id.toLowerCase()}`;
@@ -113,8 +113,8 @@ export const fetchWordFromOx = async (text: string) => {
     const options = {
       method: "GET",
       headers: {
-        app_id: process.env.OX_APP_ID,
-        app_key: process.env.OX_APP_KEY,
+        app_id: process.env.REACT_APP_OX_APP_ID,
+        app_key: process.env.REACT_APP_OX_APP_KEY,
       },
     };
 
