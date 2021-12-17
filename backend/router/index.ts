@@ -1,5 +1,4 @@
 import express from "express";
-import { proxyRequestDictionary } from "../api/restApiProxy";
 
 const router = express.Router();
 
@@ -8,26 +7,8 @@ router.get("/hello", async (request, response) => {
 
   response.json({
     status: "success",
-    payload: { message: "hello"},
+    payload: { message: "hi to client" },
   });
-});
-
-router.get("/openapi/", async (request, response) => {
-  console.log("openapi");
-
-  response.json({
-    status: "success",
-    payload: { message: "openapi ready"},
-  });
-});
-
-router.get("/openapi/:word", async (request, response) => {
-  const { word } = request.params;
-  console.log(word);
-
-  const json = await proxyRequestDictionary(word);
-
-  response.json(json);
 });
 
 export default router;
