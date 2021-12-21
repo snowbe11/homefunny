@@ -41,6 +41,33 @@ export const WordTestWordRegist = ({ level }: { level?: string }) => {
     setTestlist((list) => [...list, initialWord]);
   };
 
+  const updateFromForm = (values: any) => {
+    let newWordList = Array<WordType>();
+
+    for (const key in values) {
+      if (key === "title") {
+        continue;
+      }
+
+      const { word, partOfSpeech, definition, translation, example } =
+        values[key];
+      if (!word) {
+        continue;
+      }
+
+      newWordList.push({
+        word: word,
+        partOfSpeech: partOfSpeech,
+        definition: definition,
+        translation: translation,
+        example: example,
+        pronunciations: "",
+      });
+    }
+
+    setTestlist(newWordList);
+  };
+
   const saveTest = async (values: any) => {
     console.log(values);
 

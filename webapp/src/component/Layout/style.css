@@ -1,0 +1,20 @@
+@media print {
+  .layout-title {
+    display: none;
+  }
+
+  .layout-sider {
+    display: none;
+  }
+
+  .layout-footer {
+    display: none;
+  }
+
+  .layout-content {
+    height: 297mm;
+    width: 200mm;
+    margin-top: -0.8cm;
+    padding-left: 1.2cm;
+  }
+}

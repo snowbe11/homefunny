@@ -1,34 +1,33 @@
 .word-test-dictation {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .word-test-dictation-row {
-    display: flex;
+  display: flex;
 }
 
 .word-test-dictation-answer {
-    background-color: white;
-    padding: 2px 5px 2px 5px;
+  background-color: white;
+  padding: 2px 5px 2px 5px;
 }
 
 .word-test-dictation-answer-trasnparent {
-    background-color: white;
-    /*visibility: hidden;*/
-    color:white;
-    user-select: none;
-    padding: 2px 5px 2px 5px;
+  background-color: white;
+  /*visibility: hidden;*/
+  color: white;
+  user-select: none;
+  padding: 2px 5px 2px 5px;
 }
 
 .dictation-table-definition-row {
-    font-size: 1.5rem;
-    margin-top: -0.3rem;
-    margin-bottom: -0.3rem;
+  font-size: 13pt;
+  margin-top: -8pt;
+  margin-bottom: -8pt;
 }
 
 .dictation-table-answer-row {
-    height: 2rem;
-    font-size: 1.2rem;
-    margin-top: -2rem;
-    margin-bottom: -0.5rem;
+  font-size: 12pt;
+  margin-top: -17pt;
+  margin-bottom: -17pt;
 }

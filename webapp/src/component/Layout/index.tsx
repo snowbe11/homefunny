@@ -28,16 +28,16 @@ export const Layout: React.FC<Props> = ({ children }) => {
               </Menu.Item>
             </Menu>
           </Sider>
-          <Content>{children}</Content>
+          <Content className="layout-content">{children}</Content>
         </L>
       </BrowserView>
       <MobileView>
-        <Content>
+        <L>
           <HomeNavigation />
-          {children}
-        </Content>
+          <Content className="layout-content">{children}</Content>
+        </L>
       </MobileView>
-      <Footer>This is home funny, 2021</Footer>
+      <Footer className="layout-footer">This is home funny, 2021</Footer>
     </L>
   );
 };

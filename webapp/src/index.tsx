@@ -24,6 +24,7 @@ ReactDOM.render(
           <Route path="wordtest/regist/" element={<WordTestRegist />} />
           <Route path="wordtest/regist/:level" element={<WordTestRegist />} />
           <Route path="wordtest/test/:level" element={<WordTest />} />
+          <Route path="*" element={<Home />} />
         </Routes>
       </BrowserRouter>
     </Provider>
