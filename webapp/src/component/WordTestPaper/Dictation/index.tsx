@@ -31,8 +31,12 @@ export const Dictation = ({
       ),
       answer: (
         <div className="dictation-table-answer-row">
-          <div>{answerVisiblity ? e.word : ""}</div>
-          <div>{answerVisiblity ? e.translation : ""}</div>
+          <div className="dictation-table-answer-row-word">
+            {answerVisiblity ? e.word : ""}
+          </div>
+          <div className="dictation-table-answer-row-translate">
+            {answerVisiblity ? e.translation : ""}
+          </div>
         </div>
       ),
     };

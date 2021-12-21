@@ -1,20 +1,13 @@
 @media print {
-  .layout-title {
-    display: none;
-  }
-
-  .layout-sider {
-    display: none;
-  }
-
-  .layout-footer {
+  .layout-print-display-none {
     display: none;
   }
 
   .layout-content {
     height: 297mm;
-    width: 200mm;
-    margin-top: -0.8cm;
+    width: 210mm;
+    padding-top: 1.2cm;
     padding-left: 1.2cm;
+    padding-right: 1cm;
   }
 }

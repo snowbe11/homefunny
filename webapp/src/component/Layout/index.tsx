@@ -13,12 +13,12 @@ type Props = {};
 export const Layout: React.FC<Props> = ({ children }) => {
   return (
     <L style={{ minHeight: "100vh" }}>
-      <Header>
-        <div className="layout-title">Home Funny</div>
+      <Header className="layout-print-display-none">
+        <div>Home Funny</div>
       </Header>
       <BrowserView>
         <L>
-          <Sider theme="light" className="layout-sider">
+          <Sider theme="light" className="layout-print-display-none">
             <Menu mode="vertical">
               <Menu.Item key="bath">
                 <Link to="/bath">오늘의 화장실</Link>
@@ -32,12 +32,14 @@ export const Layout: React.FC<Props> = ({ children }) => {
         </L>
       </BrowserView>
       <MobileView>
-        <L>
+        <L className="layout-print-display-none">
           <HomeNavigation />
-          <Content className="layout-content">{children}</Content>
         </L>
+        <Content className="layout-content">{children}</Content>
       </MobileView>
-      <Footer className="layout-footer">This is home funny, 2021</Footer>
+      <Footer className="layout-print-display-none">
+        This is home funny, 2021
+      </Footer>
     </L>
   );
 };

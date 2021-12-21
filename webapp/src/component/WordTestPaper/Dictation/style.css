@@ -21,13 +21,34 @@
 }
 
 .dictation-table-definition-row {
-  font-size: 13pt;
-  margin-top: -8pt;
-  margin-bottom: -8pt;
+  font-size: 1.2rem;
 }
 
-.dictation-table-answer-row {
-  font-size: 12pt;
-  margin-top: -17pt;
-  margin-bottom: -17pt;
+.dictation-table-answer-row-word {
+  font-size: 1.1rem;
+  margin-bottom: -0.12cm;
+}
+
+@media print {
+  .dictation-table-definition-row {
+    font-size: 0.5cm;
+  }
+
+  .dictation-table-answer-row {
+    margin-top: -0.4cm;
+    margin-bottom: -0.4cm;
+  }
+
+  .dictation-table-answer-row-word {
+    font-size: 0.6cm;
+    margin-bottom: -0.12cm;
+  }
+
+  .dictation-table-answer-row-translate {
+    font-size: 0.4cm;
+  }
+
+  .ant-table-tbody > tr > td {
+    padding: 0.3cm;
+  }
 }
