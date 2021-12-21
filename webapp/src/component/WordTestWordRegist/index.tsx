@@ -1,24 +1,54 @@
-import { Button, Form, Input, Space } from "antd";
-import React, { useState } from "react";
-import { PlusCircleTwoTone, MinusCircleTwoTone } from "@ant-design/icons";
-import { addWordTest } from "logic/api/wordTest";
+import { Button, Form, FormInstance, Input, message, Space } from "antd";
+import React, { useEffect, useRef, useState } from "react";
+import { PlusCircleTwoTone } from "@ant-design/icons";
+import { addWordTest, getWordTest } from "logic/api/wordTest";
 import { fetchPronunceAndExample, initialWord, WordType } from "logic/api/ox";
 import WordInputCardFormItem from "./WordInputCardFormItem";
 import { WordTestType } from "logic/type";
 
-export const WordTestWordRegist = () => {
+export const WordTestWordRegist = ({ level }: { level?: string }) => {
   const [testlist, setTestlist] = useState<Array<WordType>>([initialWord]);
+  const formRef = useRef<FormInstance>(null);
+
+  useEffect(() => {
+    if (level) {
+      getWordTest(level).then((test: WordTestType) => {
+        let testList = Array<WordType>();
+        for (const word of Object.keys(test)) {
+          const wordType: WordType = JSON.parse(test[word]);
+          testList.push(wordType);
+        }
+
+        setTestlist(testList);
+      });
+    }
+  }, []);
+
+  useEffect(() => {
+    if (formRef.current) {
+      testlist.map((word, index) => {
+        formRef.current?.setFieldsValue({
+          [index]: {
+            ...word,
+          },
+        });
+        return word;
+      });
+    }
+  }, [testlist]);
 
   const addInputWord = () => {
     setTestlist((list) => [...list, initialWord]);
   };
 
-  const deleteLastInputWord = () => {
-    setTestlist((list) => [...list.slice(0, list.length - 1)]);
-  };
-
   const saveTest = async (values: any) => {
     console.log(values);
+
+    message.loading({
+      content: "저장을 하고 있습니다...",
+      key: "updatable",
+      duration: 0,
+    });
 
     const docName = values["title"];
 
@@ -61,41 +91,60 @@ export const WordTestWordRegist = () => {
     if (completed) {
       const result = await addWordTest(docName, saveForm);
       if (result) {
-        console.log("done");
+        message.success({
+          content: "저장했습니다.",
+          key: "updatable",
+          duration: 2,
+        });
       } else {
-        alert("서버에 접속할 수 없습니다.");
+        message.error({ content: "서버에 접속할 수 없습니다.", duration: 2 });
       }
     }
   };
 
+  const deleteFormItem = (index: number, text: string) => {
+    setTestlist((list) => {
+      if (text === "") {
+        return list.splice(index, 1);
+      } else {
+        return list.filter((e) => e.word !== text);
+      }
+    });
+  };
+
   return (
-    <>
-      <div style={{ display: "flex", alignItems: "flex-end", padding: "1rem" }}>
-        <Form onFinish={saveTest} layout="vertical">
-          <Form.Item
-            name="title"
-            rules={[{ required: true }]}
-            label="테스트이름"
-          >
-            <Input placeholder="정상 레벨 또는 워크북 페이지" />
-          </Form.Item>
-          {testlist.map((e, index) => (
-            <WordInputCardFormItem key={index} index={index} word={e} />
-          ))}
+    <div style={{ display: "flex", alignItems: "flex-end", padding: "1rem" }}>
+      <Form
+        onFinish={saveTest}
+        layout="vertical"
+        ref={formRef}
+        style={{ flexGrow: "1" }}
+      >
+        <Form.Item
+          name="title"
+          rules={[{ required: true }]}
+          label="테스트이름"
+          initialValue={level}
+        >
+          <Input placeholder="정상 레벨 또는 워크북 페이지" />
+        </Form.Item>
+        {testlist.map((e, index) => (
+          <WordInputCardFormItem
+            key={index}
+            index={index}
+            word={e}
+            deleteItem={deleteFormItem}
+          />
+        ))}
+        <Space size={40}>
+          <Button onClick={addInputWord}>
+            단어 추가 <PlusCircleTwoTone />
+          </Button>
           <Button type="primary" htmlType="submit">
             저장
           </Button>
-        </Form>
-
-        <Space>
-          <Button onClick={addInputWord}>
-            <PlusCircleTwoTone />
-          </Button>
-          <Button onClick={deleteLastInputWord}>
-            <MinusCircleTwoTone />
-          </Button>
         </Space>
-      </div>
-    </>
+      </Form>
+    </div>
   );
 };

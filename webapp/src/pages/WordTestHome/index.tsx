@@ -1,7 +1,7 @@
 import React from "react";
 
 import Layout from "component/Layout";
-import { WordTestList } from "component/WordTestList";
+import { WordTestLevelList } from "component/WordTestLevelList";
 import { Link } from "react-router-dom";
 import { Button } from "antd";
 import { PlusCircleTwoTone } from "@ant-design/icons";
@@ -14,13 +14,13 @@ export const WordTestHome = () => {
       <div className="word-test-home-content-container">
         <div>
           <Button>
-            <Link to="/test/regist">
+            <Link to="regist">
               새 시험 등록 <PlusCircleTwoTone />
             </Link>
           </Button>
         </div>
         <div className="word-test-home-content-row">
-          <WordTestList />
+          <WordTestLevelList />
         </div>
       </div>
     </Layout>

@@ -33,7 +33,7 @@ type SaveType = {
   part2: Array<WordType>;
 };
 
-export const WordTestView = ({ level }: { level?: string }) => {
+export const WordTestPaper = ({ level }: { level?: string }) => {
   const [test, setTest] = useState<SaveType>({ part1: [], part2: [] });
   const [answerVisiblity, showAnswer] = useState(false);
 

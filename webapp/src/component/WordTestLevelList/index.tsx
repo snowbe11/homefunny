@@ -1,9 +1,11 @@
-import { Menu } from "antd";
+import { Button, Menu } from "antd";
 import { getTestLevelList } from "logic/api/wordTest";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-export const WordTestList = () => {
+import "./style.css";
+
+export const WordTestLevelList = () => {
   const [list, setList] = useState<Array<string>>([]);
 
   useEffect(() => {
@@ -16,7 +18,12 @@ export const WordTestList = () => {
     <Menu>
       {list.map((level) => (
         <Menu.Item key={level}>
-          <Link to={`/test/${level}`}>{level}</Link>
+          <div className="word-test-level-list-link-container">
+            <Link to={`test/${level}`}>{level}</Link>
+            <Button type="link">
+              <Link to={`regist/${level}`}>수정</Link>
+            </Button>
+          </div>
         </Menu.Item>
       ))}
     </Menu>

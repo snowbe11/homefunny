@@ -1,5 +1,5 @@
 import React from "react";
-import { Breadcrumb, Menu } from "antd";
+import { Menu } from "antd";
 import {
   HomeOutlined,
   CheckSquareOutlined,
@@ -22,8 +22,8 @@ export const HomeNavigation = () => {
           <CalendarOutlined /> Bath
         </Link>
       </Menu.Item>
-      <Menu.Item key="/test">
-        <Link to="/test">
+      <Menu.Item key="/wordtest">
+        <Link to="/wordtest">
           <CheckSquareOutlined /> Word Test
         </Link>
       </Menu.Item>
