@@ -18,12 +18,12 @@ export const HomeNavigation = () => {
         </Link>
       </Menu.Item>
       <Menu.Item key="/bath">
-        <Link to="/bath">
+        <Link to="/homefunny/bath">
           <CalendarOutlined /> Bath
         </Link>
       </Menu.Item>
       <Menu.Item key="/wordtest">
-        <Link to="/wordtest">
+        <Link to="/homefunny/wordtest">
           <CheckSquareOutlined /> Word Test
         </Link>
       </Menu.Item>

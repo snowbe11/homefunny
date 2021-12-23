@@ -19,11 +19,20 @@ ReactDOM.render(
       <BrowserRouter>
         <Routes>
           <Route index element={<Home />} />
-          <Route path="bath" element={<Bath />} />
-          <Route path="wordtest" element={<WordTestHome />} />
-          <Route path="wordtest/regist/" element={<WordTestRegist />} />
-          <Route path="wordtest/regist/:level" element={<WordTestRegist />} />
-          <Route path="wordtest/test/:level" element={<WordTest />} />
+          <Route path="/homefunny/bath" element={<Bath />} />
+          <Route path="/homefunny/wordtest" element={<WordTestHome />} />
+          <Route
+            path="/homefunny/wordtest/regist/"
+            element={<WordTestRegist />}
+          />
+          <Route
+            path="/homefunny/wordtest/regist/:level"
+            element={<WordTestRegist />}
+          />
+          <Route
+            path="/homefunny/wordtest/test/:level"
+            element={<WordTest />}
+          />
           <Route path="*" element={<Home />} />
         </Routes>
       </BrowserRouter>

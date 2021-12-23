@@ -21,10 +21,10 @@ export const Layout: React.FC<Props> = ({ children }) => {
           <Sider theme="light" className="layout-print-display-none">
             <Menu mode="vertical">
               <Menu.Item key="bath">
-                <Link to="/bath">오늘의 화장실</Link>
+                <Link to="/homefunny/bath">오늘의 화장실</Link>
               </Menu.Item>
               <Menu.Item key="wordtest">
-                <Link to="/wordtest">정상 단어 테스트</Link>
+                <Link to="/homefunny/wordtest">정상 단어 테스트</Link>
               </Menu.Item>
             </Menu>
           </Sider>

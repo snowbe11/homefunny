@@ -13,59 +13,30 @@ export const WordTestWordRegist = ({ level }: { level?: string }) => {
   useEffect(() => {
     if (level) {
       getWordTest(level).then((test: WordTestType) => {
-        let testList = Array<WordType>();
+        let list = Array<WordType>();
         for (const word of Object.keys(test)) {
           const wordType: WordType = JSON.parse(test[word]);
-          testList.push(wordType);
+          list.push(wordType);
         }
 
-        setTestlist(testList);
+        setTestlist(list);
+
+        if (formRef.current) {
+          list.map((word, index) => {
+            formRef.current?.setFieldsValue({
+              [index]: {
+                ...word,
+              },
+            });
+            return word;
+          });
+        }
       });
     }
   }, []);
 
-  useEffect(() => {
-    if (formRef.current) {
-      testlist.map((word, index) => {
-        formRef.current?.setFieldsValue({
-          [index]: {
-            ...word,
-          },
-        });
-        return word;
-      });
-    }
-  }, [testlist]);
-
   const addInputWord = () => {
     setTestlist((list) => [...list, initialWord]);
-  };
-
-  const updateFromForm = (values: any) => {
-    let newWordList = Array<WordType>();
-
-    for (const key in values) {
-      if (key === "title") {
-        continue;
-      }
-
-      const { word, partOfSpeech, definition, translation, example } =
-        values[key];
-      if (!word) {
-        continue;
-      }
-
-      newWordList.push({
-        word: word,
-        partOfSpeech: partOfSpeech,
-        definition: definition,
-        translation: translation,
-        example: example,
-        pronunciations: "",
-      });
-    }
-
-    setTestlist(newWordList);
   };
 
   const saveTest = async (values: any) => {
@@ -159,7 +130,7 @@ export const WordTestWordRegist = ({ level }: { level?: string }) => {
           <WordInputCardFormItem
             key={index}
             index={index}
-            word={e}
+            word={level ? e.word : undefined}
             deleteItem={deleteFormItem}
           />
         ))}

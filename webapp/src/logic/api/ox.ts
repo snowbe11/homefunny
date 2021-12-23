@@ -9,7 +9,7 @@ export type WordType = {
 
 export const initialWord: WordType = {
   word: "",
-  partOfSpeech: "",
+  partOfSpeech: "Noun",
   definition: "",
   translation: "",
   example: "",

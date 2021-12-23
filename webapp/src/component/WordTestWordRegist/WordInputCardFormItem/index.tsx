@@ -7,7 +7,7 @@ import "./style.css";
 
 type Props = {
   index: number;
-  word: WordType;
+  word?: string;
   deleteItem: (index: number, text: string) => void;
 };
 
@@ -29,10 +29,7 @@ const WordInputCardFormItem = ({ index, word, deleteItem }: Props) => {
         <Form.Item name={[index, "word"]} rules={[{ required: true }]}>
           <Input placeholder={labels["word"]} allowClear />
         </Form.Item>
-        <Form.Item
-          name={[index, "partOfSpeech"]}
-          initialValue={word.partOfSpeech}
-        >
+        <Form.Item name={[index, "partOfSpeech"]}>
           <Select placeholder={labels["partOfSpeech"]}>
             <Option value="Noun">Noun</Option>
             <Option value="Verb">Verb</Option>
@@ -44,7 +41,7 @@ const WordInputCardFormItem = ({ index, word, deleteItem }: Props) => {
             <Option value="Interjection">Interjection</Option>
           </Select>
         </Form.Item>
-        <Button onClick={() => deleteItem(index, word.word)}>
+        <Button onClick={() => word && deleteItem(index, word)}>
           <MinusCircleTwoTone /> 삭제
         </Button>
       </Space>
