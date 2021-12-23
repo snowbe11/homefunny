@@ -2,7 +2,7 @@
   "name": "homefunny",
   "version": "0.2.4",
   "private": true,
-  "homepage": "https://snowbe11.github.com/homefunny",
+  "homepage": "https://snowbe11.github.io/homefunny",
   "dependencies": {
     "@reduxjs/toolkit": "^1.6.2",
     "@testing-library/jest-dom": "^5.15.0",
