@@ -14,7 +14,7 @@ export const WordTestHome = () => {
       <div className="word-test-home-content-container">
         <div>
           <Button>
-            <Link to="/homefunny/wordtest/regist">
+            <Link to="/wordtest/regist">
               새 시험 등록 <PlusCircleTwoTone />
             </Link>
           </Button>
