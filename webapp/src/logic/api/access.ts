@@ -6,10 +6,19 @@ import {
   where,
   doc,
   setDoc,
+  addDoc,
   orderBy,
 } from "firebase/firestore/lite";
 
-let eventLogIndex = 0;
+export type EventLogType = {
+  date: Date;
+  log: string;
+};
+
+type EventLogDocumentType = {
+  EventDate: Date,
+  EventName: string,
+}
 
 const getAppStateSnapshot = (documentName: string) => {
   if (process.env.REACT_APP_COLLECTION_APP_STATE) {
@@ -47,7 +56,6 @@ export const getEventLog = async () => {
         };
       });
 
-      eventLogIndex = convertedDataform.length + 1;
       return convertedDataform;
     } else {
       return [];
@@ -95,32 +103,17 @@ export const queryDocument = async (eventId: number) => {
   }
 };
 
-export const addEvent = async (currentDate: Date, userName: string) => {
-  if (process.env.REACT_APP_COLLECTION_APP_STATE) {
-    const stateLogDocRef = doc(
+export const addEvent = async (currentDate: Date, log: string) : Promise<EventLogType | undefined> => {
+  if (process.env.REACT_APP_COLLECTION_EVENT_LOG) {
+    const collectionRef = collection(
       store,
-      process.env.REACT_APP_COLLECTION_APP_STATE,
-      "stateLog"
+      process.env.REACT_APP_COLLECTION_EVENT_LOG
     );
-    await setDoc(stateLogDocRef, {
-      EventDate: currentDate,
-      EventName: userName,
+    await addDoc(collectionRef, {
+      EventTime: currentDate,
+      EventLog: log,
     });
-
-    if (process.env.REACT_APP_COLLECTION_EVENT_LOG) {
-      const eventLogDocRef = doc(
-        store,
-        process.env.REACT_APP_COLLECTION_EVENT_LOG,
-        `event${eventLogIndex}`
-      );
-      await setDoc(eventLogDocRef, {
-        EventTime: currentDate,
-        EventLog: `set ${userName}`,
-      });
-    }
-
-    return { date: currentDate, name: userName };
-  } else {
-    return undefined;
   }
+
+  return { date: currentDate, log: log };
 };
