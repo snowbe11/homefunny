@@ -3,6 +3,7 @@ import { getEventLog } from "../../logic/api/access";
 import { Collapse, Timeline } from "antd";
 import { useSelector } from "react-redux";
 import { RootState } from "logic/store";
+import { LogParser } from "component/LogParser";
 
 export const EventLog = () => {
   const type: { date: Date; text: string }[] = [];
@@ -24,7 +25,7 @@ export const EventLog = () => {
             {logState.map((e, i: number) => {
               return (
                 <Timeline.Item key={i++}>
-                  [{e.date.toLocaleString()}] {e.text}
+                  {e.date.toLocaleString()} <LogParser log={e.text} />
                 </Timeline.Item>
               );
             })}
