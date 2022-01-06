@@ -14,6 +14,7 @@ import "antd/dist/antd.css";
 import Layout from "component/Layout";
 import { AddEvent } from "component/AddEvent";
 import { TodayBathUser } from "component/TodayBathUser";
+import { toKrDateString } from "logic/api/misc";
 
 const Bath = () => {
   const [pickDate, setDate] = useState<Date>(new Date());
@@ -50,7 +51,7 @@ const Bath = () => {
         <Space direction="vertical">
           <Calendar setNewDate={setDate} />
 
-          <Card title={pickDate.toLocaleDateString()}>
+          <Card title={toKrDateString(pickDate)}>
             <TodayBathUser pickDate={pickDate} />
             <EventUser />
           </Card>
