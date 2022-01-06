@@ -4,8 +4,6 @@ import {
   getDocs,
   query,
   where,
-  doc,
-  setDoc,
   addDoc,
   orderBy,
 } from "firebase/firestore/lite";
@@ -102,6 +100,12 @@ export const queryDocument = async (eventId: number) => {
     });
   }
 };
+
+
+// 이걸 완전히 변경한다
+// 일자별로 남긴 로그를 모두 확인할 수 있게 변경할텐데
+// DB 에 저장하는 방법이 문제다.
+// 우선 로그를 굳이 유니크하게 만들지 않고 차라리 삭제할 수 있게 하는것이 나을 수 있다.
 
 export const addEvent = async (currentDate: Date, log: string) : Promise<EventLogType | undefined> => {
   if (process.env.REACT_APP_COLLECTION_EVENT_LOG) {

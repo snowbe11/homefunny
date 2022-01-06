@@ -5,6 +5,7 @@ import { addEvent } from "logic/api/access";
 import { useDispatch } from "react-redux";
 import { eventUserThuck } from "logic/reducer/eventUser";
 import { UserName } from "logic/type";
+import { toKrDateString } from "logic/api/misc";
 
 type AddEventProp = {
   date: Date;
@@ -14,24 +15,12 @@ export const AddEvent = ({ date }: AddEventProp) => {
   const dispatch = useDispatch();
 
   const onFinish = (values: any) => {
-    let newLog = "";
-    switch (values.event) {
-      case "bath":
-        newLog = `${UserName[values.who]} 화장실 쓰는 날`;
-        break;
-      case "ban":
-        newLog = `${UserName[values.who]} 사용 금지`;
-        break;
-      case "custom":
-        newLog = `${values.log}, ${UserName[values.who]}`;
-        break;
-    }
-
+    const newLog = [values.who, values.event, values.log].join("|");
     console.log(newLog);
 
     addEvent(date, newLog).then((e) => {
       if (e) {
-        addToast(`${date} ${e.log}`);
+        addToast(`${toKrDateString(date)} ${e.log}`);
 
         dispatch(eventUserThuck());
       } else {
@@ -44,16 +33,21 @@ export const AddEvent = ({ date }: AddEventProp) => {
     message.success(text);
   };
 
+  const layout = {
+    labelCol: { span: 2 },
+    wrapperCol: { span: 8 },
+  };
+
   return (
-    <Form onFinish={onFinish} layout="vertical">
-      <Form.Item name="event" rules={[{ required: true }]}>
+    <Form {...layout} onFinish={onFinish}>
+      <Form.Item name="event" label="무슨일?" rules={[{ required: true }]}>
         <Select placeholder="무슨일?">
           <Select.Option value="bath">화장실 사용하는 날</Select.Option>
-          <Select.Option value="ban">사용 금지</Select.Option>
+          <Select.Option value="ban">금지</Select.Option>
           <Select.Option value="custom">직접입력</Select.Option>
         </Select>
       </Form.Item>
-      <Form.Item name="who" rules={[{ required: true }]}>
+      <Form.Item name="who" label="누구?" rules={[{ required: true }]}>
         <Select placeholder="누구?">
           <Select.Option value="james">
             <NameTag name="james" />
@@ -63,8 +57,19 @@ export const AddEvent = ({ date }: AddEventProp) => {
           </Select.Option>
         </Select>
       </Form.Item>
-      <Form.Item name="log">
-        <Input placeholder="직접입력" />
+      <Form.Item
+        noStyle
+        shouldUpdate={(prevValues, currentValues) =>
+          prevValues.event !== currentValues.event
+        }
+      >
+        {({ getFieldValue }) =>
+          getFieldValue("event") !== "bath" ? (
+            <Form.Item name="log" label="기록" rules={[{ required: true }]}>
+              <Input placeholder="직접입력" />
+            </Form.Item>
+          ) : null
+        }
       </Form.Item>
       <Form.Item>
         <Button type="primary" htmlType="submit">
