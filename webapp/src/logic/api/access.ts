@@ -7,11 +7,17 @@ import {
   addDoc,
   orderBy,
 } from "firebase/firestore/lite";
+import { EventType } from "component/LogParser";
 
 export type EventLogType = {
   date: Date;
   log: string;
 };
+
+type EventStateType = {
+  eventDate: Date,
+  eventName: string,
+}
 
 type EventLogDocumentType = {
   EventDate: Date,
@@ -27,6 +33,35 @@ const getAppStateSnapshot = (documentName: string) => {
   } else {
     return undefined;
   }
+};
+
+export const getEventState = async () : Promise<EventStateType> => {
+  try {
+    let eventDateLog = await getEventLogSnapshot();
+    if (eventDateLog) {
+      const bathLogOnly = eventDateLog.filter((log) => {
+        const token = log.EventLog.split("|");
+        const eventType = token[1] as EventType;
+
+        return (eventType === "bath") ? true : false;
+      });
+
+      for (const log of bathLogOnly) {
+        const token = log.EventLog.split("|");
+        return {
+          eventDate: new Date(log.EventTime.seconds * 1000),
+          eventName: token[0],
+        }
+      }
+    }
+  } catch (e) {
+    console.log(e);
+  }
+
+  return {
+    eventDate: new Date("2021-11-29"),
+    eventName: "james",
+  };
 };
 
 const getEventLogSnapshot = async () => {
@@ -60,28 +95,6 @@ export const getEventLog = async () => {
     }
   } catch {
     return [];
-  }
-};
-
-export const getEventState = async () => {
-  try {
-    let list = await getAppStateSnapshot("stateLog");
-    if (list) {
-      return {
-        eventDate: new Date(list.EventDate.seconds * 1000),
-        eventName: list.EventName,
-      };
-    } else {
-      return {
-        eventDate: new Date("1917-1-1"),
-        eventName: "undefined",
-      };
-    }
-  } catch {
-    return {
-      eventDate: new Date("2021-11-29"),
-      eventName: "james",
-    };
   }
 };
 

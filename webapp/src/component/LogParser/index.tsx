@@ -5,7 +5,7 @@ type LogParserProps = {
   log: string;
 };
 
-type EventType = "bath" | "custom" | "ban";
+export type EventType = "bath" | "custom" | "ban";
 
 export const LogParser = ({ log }: LogParserProps) => {
   //const newLog = [values.who, values.event, values.log].join("|");
