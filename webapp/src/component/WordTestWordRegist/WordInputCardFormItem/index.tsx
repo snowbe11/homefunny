@@ -7,11 +7,10 @@ import "./style.css";
 
 type Props = {
   index: number;
-  word?: string;
-  deleteItem: (index: number, text: string) => void;
+  deleteItem: (index: number) => void;
 };
 
-const WordInputCardFormItem = ({ index, word, deleteItem }: Props) => {
+const WordInputCardFormItem = ({ index, deleteItem }: Props) => {
   const { Option } = Select;
 
   const labels: WordType = {
@@ -41,7 +40,7 @@ const WordInputCardFormItem = ({ index, word, deleteItem }: Props) => {
             <Option value="Interjection">Interjection</Option>
           </Select>
         </Form.Item>
-        <Button onClick={() => word && deleteItem(index, word)}>
+        <Button onClick={() => deleteItem(index)}>
           <MinusCircleTwoTone /> 삭제
         </Button>
       </Space>
