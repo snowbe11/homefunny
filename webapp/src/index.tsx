@@ -16,7 +16,7 @@ import WordTestRegist from "pages/WordTestRegist";
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <BrowserRouter>
+      <BrowserRouter basename="/homefunny">
         <Routes>
           <Route index element={<Home />} />
           <Route path="/bath" element={<Bath />} />
