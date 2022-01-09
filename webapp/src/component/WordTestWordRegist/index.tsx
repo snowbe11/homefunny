@@ -5,6 +5,7 @@ import { addWordTest, getWordTest } from "logic/api/wordTest";
 import { fetchPronunceAndExample, initialWord, WordType } from "logic/api/ox";
 import WordInputCardFormItem from "./WordInputCardFormItem";
 import { WordTestType } from "logic/type";
+import { connectFirestoreEmulator } from "firebase/firestore/lite";
 
 export const WordTestWordRegist = ({ level }: { level?: string }) => {
   const [testlist, setTestlist] = useState<Array<WordType>>([initialWord]);
@@ -20,28 +21,41 @@ export const WordTestWordRegist = ({ level }: { level?: string }) => {
         }
 
         setTestlist(list);
-
-        if (formRef.current) {
-          list.map((word, index) => {
-            formRef.current?.setFieldsValue({
-              [index]: {
-                ...word,
-              },
-            });
-            return word;
-          });
-        }
       });
     }
   }, []);
+
+  useEffect(() => {
+    if (formRef.current) {
+      testlist.map((word, index) => {
+        formRef.current?.setFieldsValue({
+          [index]: {
+            ...word,
+          },
+        });
+        return word;
+      });
+    }
+  }, [testlist]);
 
   const addInputWord = () => {
     setTestlist((list) => [...list, initialWord]);
   };
 
-  const saveTest = async (values: any) => {
-    console.log(values);
+  const onValuesChange = async (changedValues: any, allValues: any) => {
+    for (const key in changedValues) {
+      setTestlist((list) => {
+        const index = parseInt(key);
+        list[index] = {
+          ...list[index],
+          ...changedValues[key],
+        };
+        return [...list];
+      });
+    }
+  };
 
+  const saveTest = async (values: any) => {
     message.loading({
       content: "저장을 하고 있습니다...",
       key: "updatable",
@@ -100,13 +114,10 @@ export const WordTestWordRegist = ({ level }: { level?: string }) => {
     }
   };
 
-  const deleteFormItem = (index: number, text: string) => {
+  const deleteFormItem = (index: number) => {
     setTestlist((list) => {
-      if (text === "") {
-        return list.splice(index, 1);
-      } else {
-        return list.filter((e) => e.word !== text);
-      }
+      list.splice(index, 1);
+      return [...list];
     });
   };
 
@@ -114,6 +125,7 @@ export const WordTestWordRegist = ({ level }: { level?: string }) => {
     <div style={{ display: "flex", alignItems: "flex-end", padding: "1rem" }}>
       <Form
         onFinish={saveTest}
+        onValuesChange={onValuesChange}
         layout="vertical"
         ref={formRef}
         style={{ flexGrow: "1" }}
@@ -130,7 +142,6 @@ export const WordTestWordRegist = ({ level }: { level?: string }) => {
           <WordInputCardFormItem
             key={index}
             index={index}
-            word={level ? e.word : undefined}
             deleteItem={deleteFormItem}
           />
         ))}
