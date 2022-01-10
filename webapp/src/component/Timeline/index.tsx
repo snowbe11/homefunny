@@ -1,8 +1,9 @@
 import React from "react";
-import { Timeline as Time } from "antd";
+import { Slider, Timeline as Time } from "antd";
 import { EventLogType } from "logic/api/access";
 import { EventFormType, splitLogToContents } from "logic/api/misc";
 import { NameTag } from "component/NameTag";
+import { FrownOutlined, SmileOutlined } from "@ant-design/icons";
 
 import "./style.css";
 
@@ -34,7 +35,7 @@ export const Timeline = ({ logs }: TimelineProps) => {
     const user = events[0].name;
 
     const style = {
-      backgroundColor: user === "james" ? "white" : "whitesmoke",
+      backgroundColor: user === "james" ? "white" : "ghostwhite",
     };
 
     const now = new Date();
@@ -49,8 +50,25 @@ export const Timeline = ({ logs }: TimelineProps) => {
       return log;
     });
 
+    let value = 0;
+
+    if (currentActived + 1 < events.length) {
+      const from = new Date(events[currentActived].time);
+      const to = new Date(events[currentActived + 1].time);
+
+      const duration = to.valueOf() - from.valueOf();
+      const pregressed = new Date().valueOf() - from.valueOf();
+
+      value = (pregressed / duration) * 100;
+    }
+
     const currentWork = (
-      <div className="timeline-current">{events[currentActived].text}</div>
+      <>
+        <div className="timeline-current">{events[currentActived].text}</div>
+        <div className="icon-wrapper">
+          <Slider value={value} />
+        </div>
+      </>
     );
 
     return (
