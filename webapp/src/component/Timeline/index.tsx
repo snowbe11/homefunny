@@ -30,23 +30,59 @@ export const Timeline = ({ logs }: TimelineProps) => {
     }
   });
 
-  const style = {
-    backgroundColor: events[0].name === "james" ? "white" : "whitesmoke",
-  };
+  try {
+    const user = events[0].name;
 
-  return (
-    <div className="timeline-pannel" style={style}>
-      <Time>
-        {events.map((log, index) => {
-          return (
-            <Time.Item key={index}>
-              <span>{new Date(log.time).toLocaleTimeString()}</span>
-              <NameTag name={log.name} />
-              <span>{log.text}</span>
-            </Time.Item>
-          );
-        })}
-      </Time>
-    </div>
-  );
+    const style = {
+      backgroundColor: user === "james" ? "white" : "whitesmoke",
+    };
+
+    const now = new Date();
+
+    let currentActived = 0;
+    events.map((log, index) => {
+      const tagTime = new Date(log.time);
+      if (tagTime < now) {
+        currentActived = index;
+      }
+
+      return log;
+    });
+
+    const currentWork = (
+      <div className="timeline-current">{events[currentActived].text}</div>
+    );
+
+    return (
+      <div className="timeline-pannel" style={style}>
+        <p>
+          <NameTag name={user} />
+        </p>
+        <p>{currentWork}</p>
+        <Time>
+          {events.map((log, index) => {
+            const tagTime = new Date(log.time);
+
+            let color = "blue";
+            if (currentActived !== index && tagTime < now) {
+              color = "green";
+            } else if (tagTime > now) {
+              color = "gray";
+            }
+
+            return (
+              <Time.Item key={index} color={color}>
+                <span>{tagTime.toLocaleTimeString()}</span>{" "}
+                <NameTag name={log.name} /> <span>{log.text}</span>
+              </Time.Item>
+            );
+          })}
+        </Time>
+      </div>
+    );
+  } catch (e) {
+    console.log(e);
+  }
+
+  return <div></div>;
 };

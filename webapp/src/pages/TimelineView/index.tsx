@@ -8,6 +8,7 @@ import "./style.css";
 
 export const TimelineView = () => {
   const [todayEvent, setTodayEvent] = useState<Array<EventLogType>>([]);
+  const [time, setTime] = useState(new Date().toLocaleTimeString());
 
   useEffect(() => {
     getTodayEvent().then((log) => {
@@ -15,6 +16,8 @@ export const TimelineView = () => {
 
       setTodayEvent(log);
     });
+
+    window.setInterval(() => setTime(new Date().toLocaleTimeString()), 1000);
   }, []);
 
   const filteredLogs = (user: string): Array<EventLogType> => {
@@ -34,6 +37,7 @@ export const TimelineView = () => {
   return (
     <Layout>
       <div className="timeline-container">
+        <div className="timeline-clock">{time}</div>
         <div className="timeline-contents">
           <Timeline logs={james} />
           <Timeline logs={henry} />

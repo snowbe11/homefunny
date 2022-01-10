@@ -5,3 +5,13 @@
 .timeline-contents {
   display: flex;
 }
+
+.timeline-clock {
+  margin: 1rem;
+  padding: 1rem;
+  border-radius: 10px;
+  background-color: white;
+  font-weight: bold;
+  font-size: 1.5rem;
+  text-shadow: 2px 2px 3px gainsboro;
+}
