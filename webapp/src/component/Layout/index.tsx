@@ -1,5 +1,5 @@
 import React from "react";
-import { Layout as L, Menu } from "antd";
+import { Layout as L, Menu, Space } from "antd";
 import { Link } from "react-router-dom";
 import { BrowserView, MobileView } from "react-device-detect";
 
@@ -14,7 +14,19 @@ export const Layout: React.FC<Props> = ({ children }) => {
   return (
     <L style={{ minHeight: "100vh" }}>
       <Header className="layout-print-display-none">
-        <div>Home Funny</div>
+        <Menu theme="dark">
+          <Menu.Item key="header">
+            <Space align="center">
+              <img
+                src="https://cdn-icons-png.flaticon.com/512/6272/6272776.png"
+                width="28px"
+                height="auto"
+                alt="funny"
+              />
+              Home Funny
+            </Space>
+          </Menu.Item>
+        </Menu>
       </Header>
       <BrowserView>
         <L>
@@ -25,6 +37,9 @@ export const Layout: React.FC<Props> = ({ children }) => {
               </Menu.Item>
               <Menu.Item key="wordtest">
                 <Link to="/wordtest">정상 단어 테스트</Link>
+              </Menu.Item>
+              <Menu.Item key="timeline">
+                <Link to="/timeline">스케줄</Link>
               </Menu.Item>
             </Menu>
           </Sider>

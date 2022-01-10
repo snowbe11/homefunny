@@ -6,8 +6,9 @@ import {
   where,
   addDoc,
   orderBy,
+  Timestamp,
 } from "firebase/firestore/lite";
-import { EventType } from "component/LogParser";
+import { splitLogToContents } from "./misc";
 
 export type EventLogType = {
   date: Date;
@@ -40,17 +41,15 @@ export const getEventState = async () : Promise<EventStateType> => {
     let eventDateLog = await getEventLogSnapshot();
     if (eventDateLog) {
       const bathLogOnly = eventDateLog.filter((log) => {
-        const token = log.EventLog.split("|");
-        const eventType = token[1] as EventType;
-
-        return (eventType === "bath") ? true : false;
+        const { type } = splitLogToContents(log.EventLog);
+        return (type === "bath") ? true : false;
       });
 
       for (const log of bathLogOnly) {
-        const token = log.EventLog.split("|");
+        const { text } = splitLogToContents(log.EventLog);
         return {
           eventDate: new Date(log.EventTime.seconds * 1000),
-          eventName: token[0],
+          eventName: text,
         }
       }
     }
@@ -64,6 +63,24 @@ export const getEventState = async () : Promise<EventStateType> => {
   };
 };
 
+export const getTodayEvent = async () : Promise<Array<EventLogType>> => {
+  try {
+    let eventDateLog = await getEventByDate(new Date(new Date().toDateString()));
+    if (eventDateLog) {
+      return eventDateLog.map(log => {
+        return {
+          date: new Date(log.EventTime.seconds * 1000),
+          log: log.EventLog,
+        }
+      });
+    }
+  } catch (e) {
+    console.log(e);
+  }
+
+  return [];
+};
+
 const getEventLogSnapshot = async () => {
   if (process.env.REACT_APP_COLLECTION_EVENT_LOG) {
     const storeCollection = collection(
@@ -71,6 +88,25 @@ const getEventLogSnapshot = async () => {
       process.env.REACT_APP_COLLECTION_EVENT_LOG
     );
     const storeQuery = query(storeCollection, orderBy("EventTime", "desc"));
+    const storeSnapshot = await getDocs(storeQuery);
+    return storeSnapshot.docs.map((doc) => doc.data());
+  } else {
+    return undefined;
+  }
+};
+
+const getEventByDate = async (date: Date) => {
+  if (process.env.REACT_APP_COLLECTION_EVENT_LOG) {
+    const storeCollection = collection(
+      store,
+      process.env.REACT_APP_COLLECTION_EVENT_LOG
+    );
+
+    const timefrom = Timestamp.fromDate(date);
+    date.setDate(date.getDate() + 1);
+    const timeto =  Timestamp.fromDate(date);
+    let storeQuery = query(storeCollection, where("EventTime", ">=", timefrom), where("EventTime", "<=", timeto));
+
     const storeSnapshot = await getDocs(storeQuery);
     return storeSnapshot.docs.map((doc) => doc.data());
   } else {
