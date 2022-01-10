@@ -6,7 +6,7 @@ import FillTheBlanks from "./FillTheBlanks";
 import Dictation from "./Dictation";
 
 import "./style.css";
-import { Button } from "antd";
+import { Button, Space } from "antd";
 
 const shuffle = (array: any[]) => {
   let currentIndex = array.length;
@@ -64,9 +64,12 @@ export const WordTestPaper = ({ level }: { level?: string }) => {
       <Dictation list={[...test.part1]} answerVisiblity={answerVisiblity} />
       <br />
       <FillTheBlanks list={[...test.part2]} answerVisiblity={answerVisiblity} />
-      <Button onClick={() => onClickShowAnswer(!answerVisiblity)}>
-        정답보기
-      </Button>
+      <Space>
+        <Button onClick={() => onClickShowAnswer(!answerVisiblity)}>
+          정답보기
+        </Button>
+        <Button onClick={() => window.print()}>시험지 출력하기</Button>
+      </Space>
     </div>
   );
 };
