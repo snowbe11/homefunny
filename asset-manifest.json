@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/homefunny/static/css/main.4fb697db.chunk.css",
-    "main.js": "/homefunny/static/js/main.82b4e343.chunk.js",
-    "main.js.map": "/homefunny/static/js/main.82b4e343.chunk.js.map",
+    "main.js": "/homefunny/static/js/main.7f9e44a4.chunk.js",
+    "main.js.map": "/homefunny/static/js/main.7f9e44a4.chunk.js.map",
     "runtime-main.js": "/homefunny/static/js/runtime-main.6076826f.js",
     "runtime-main.js.map": "/homefunny/static/js/runtime-main.6076826f.js.map",
     "static/css/2.a95be28f.chunk.css": "/homefunny/static/css/2.a95be28f.chunk.css",
@@ -18,6 +18,6 @@
     "static/css/2.a95be28f.chunk.css",
     "static/js/2.09d3281b.chunk.js",
     "static/css/main.4fb697db.chunk.css",
-    "static/js/main.82b4e343.chunk.js"
+    "static/js/main.7f9e44a4.chunk.js"
   ]
 }
