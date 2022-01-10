@@ -1,0 +1,7 @@
+.timeline-container {
+  margin: 2rem;
+}
+
+.timeline-contents {
+  display: flex;
+}
