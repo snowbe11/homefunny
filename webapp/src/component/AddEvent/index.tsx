@@ -1,11 +1,12 @@
 import React from "react";
-import { Form, Input, Select, message, Button } from "antd";
+import { Form, Input, Select, message, Button, TimePicker } from "antd";
 import { NameTag } from "component/NameTag";
 import { addEvent } from "logic/api/access";
 import { useDispatch } from "react-redux";
 import { eventUserThuck } from "logic/reducer/eventUser";
 import { UserName } from "logic/type";
 import { toKrDateString } from "logic/api/misc";
+import moment from "moment";
 
 type AddEventProp = {
   date: Date;
@@ -15,7 +16,13 @@ export const AddEvent = ({ date }: AddEventProp) => {
   const dispatch = useDispatch();
 
   const onFinish = (values: any) => {
-    const newLog = [values.who, values.event, values.log].join("|");
+    const newLog = [
+      values.who,
+      values.event,
+      values.log,
+      values.eventTime,
+    ].join("|");
+
     console.log(newLog);
 
     addEvent(date, newLog).then((e) => {
@@ -56,6 +63,13 @@ export const AddEvent = ({ date }: AddEventProp) => {
             <NameTag name="henry" />
           </Select.Option>
         </Select>
+      </Form.Item>
+      <Form.Item name="eventTime" label="시간">
+        <TimePicker
+          defaultPickerValue={moment("12:00 am", "HH:mm a")}
+          use12Hours
+          format="h:mm a"
+        />
       </Form.Item>
       <Form.Item
         noStyle
