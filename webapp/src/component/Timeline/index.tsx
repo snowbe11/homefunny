@@ -1,9 +1,8 @@
 import React from "react";
 import { Slider, Timeline as Time } from "antd";
-import { EventLogType } from "logic/api/access";
+import { EventLogType } from "logic/api/eventLog";
 import { EventFormType, splitLogToContents } from "logic/api/misc";
 import { NameTag } from "component/NameTag";
-import { FrownOutlined, SmileOutlined } from "@ant-design/icons";
 
 import "./style.css";
 

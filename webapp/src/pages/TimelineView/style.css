@@ -4,6 +4,7 @@
 
 .timeline-contents {
   display: flex;
+  flex-wrap: wrap;
 }
 
 .timeline-clock {

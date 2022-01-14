@@ -1,6 +1,6 @@
 import Layout from "component/Layout";
 import { Timeline } from "component/Timeline";
-import { EventLogType, getTodayEvent } from "logic/api/access";
+import { EventLogType, getTodayEvent, getEventAt } from "logic/api/eventLog";
 import { splitLogToContents } from "logic/api/misc";
 import React, { useState, useEffect } from "react";
 
@@ -11,7 +11,7 @@ export const TimelineView = () => {
   const [time, setTime] = useState(new Date().toLocaleTimeString());
 
   useEffect(() => {
-    getTodayEvent().then((log) => {
+    getEventAt(new Date("2022-1-10")).then((log) => {
       console.log(log);
 
       setTodayEvent(log);

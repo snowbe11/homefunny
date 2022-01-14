@@ -1,10 +1,9 @@
 import React from "react";
 import { Form, Input, Select, message, Button, TimePicker } from "antd";
 import { NameTag } from "component/NameTag";
-import { addEvent } from "logic/api/access";
+import { addEvent } from "logic/api/eventLog";
 import { useDispatch } from "react-redux";
 import { eventUserThuck } from "logic/reducer/eventUser";
-import { UserName } from "logic/type";
 import { toKrDateString } from "logic/api/misc";
 import moment from "moment";
 

@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { getEventState } from "logic/api/access";
+import { getRecentBathEvent } from "logic/api/eventLog";
 import { EventUser } from "logic/type";
 
 // eventUser 는 일단 fetch 를 사용하므로 슬라이스를 사용하는 것에 적당하다.
@@ -10,8 +10,8 @@ const initialEventUserState: EventUser = {
 };
 
 const fetchEventUser = async (): Promise<EventUser> => {
-  const { eventDate, eventName } = await getEventState();
-  return { date: eventDate.getTime(), name: eventName as "james" | "henry"};
+  const { date, log } = await getRecentBathEvent();
+  return { date: date.getTime(), name: log as "james" | "henry"};
 };
 
 export const eventUserThuck = createAsyncThunk("request", async () => {
