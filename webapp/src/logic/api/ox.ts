@@ -62,7 +62,7 @@ const fromEnties = ({
   }
 };
 
-const getPronunce = ({ entries }: OxResultType) => {
+const getPronunce = ({ entries }: OxResultType) : string | undefined => {
   try {
     const entry = entries["0"];
 
@@ -169,5 +169,8 @@ export const fetchPronunceAndExample = async (text: string) => {
     }
   }
 
-  return "";
+  return {
+    pronounce: "",
+    example: "",
+  };
 };

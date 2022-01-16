@@ -93,7 +93,13 @@ export const WordTestWordRegist = ({ level }: { level?: string }) => {
           desc: JSON.stringify(override),
         });
       } else {
-        alert(`${word} 잘못된 단어가 있습니다.`);
+        //alert(`${word} 잘못된 단어가 있습니다.`);
+        message.error({
+          content: `${word} 잘못된 단어가 있습니다.`,
+          key: "updatable",
+          duration: 5,
+        });
+
         completed = false;
         break;
       }
