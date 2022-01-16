@@ -3,7 +3,7 @@ import "./style.css";
 import Layout from "component/Layout";
 import { Typography } from "antd";
 
-const { Paragraph, Title, Text } = Typography;
+const { Paragraph, Title } = Typography;
 
 export const Home = () => {
   return (

@@ -1,7 +1,6 @@
 import React from "react";
 import { Menu } from "antd";
 import {
-  HomeOutlined,
   CheckSquareOutlined,
   CalendarOutlined,
   ClockCircleOutlined,
@@ -26,6 +25,11 @@ export const HomeNavigation = () => {
       <Menu.Item key="/timeline">
         <Link to="/timeline">
           <ClockCircleOutlined /> 스케줄
+        </Link>
+      </Menu.Item>
+      <Menu.Item key="/scheduler">
+        <Link to="/scheduler">
+          <ClockCircleOutlined /> 스케줄 등록
         </Link>
       </Menu.Item>
     </Menu>

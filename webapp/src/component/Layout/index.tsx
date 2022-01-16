@@ -41,6 +41,9 @@ export const Layout: React.FC<Props> = ({ children }) => {
               <Menu.Item key="timeline">
                 <Link to="/timeline">스케줄</Link>
               </Menu.Item>
+              <Menu.Item key="scheduler">
+                <Link to="/scheduler">스케줄 등록</Link>
+              </Menu.Item>
             </Menu>
           </Sider>
           <Content className="layout-content">{children}</Content>

@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { EventUser } from "component/EventUser";
-import { Card } from "antd";
+import { Calendar } from "component/Calendar";
+import { EventLog } from "component/EventLog";
+import { Divider, Space } from "antd";
 import { RootState } from "logic/store";
 import { eventUserThuck } from "logic/reducer/eventUser";
 import { getTodayBathUser } from "logic/reducer/bathUser";
@@ -9,11 +10,10 @@ import { getTodayBathUser } from "logic/reducer/bathUser";
 import "antd/dist/antd.css";
 
 import Layout from "component/Layout";
-import { TodayBathUser } from "component/TodayBathUser";
-import { toKrDateString } from "logic/api/misc";
+import { AddEvent } from "component/AddEvent";
 
-const Bath = () => {
-  const [pickDate] = useState(new Date());
+const Scheduler = () => {
+  const [pickDate, setDate] = useState<Date>(new Date());
 
   const dispatch = useDispatch();
 
@@ -44,13 +44,16 @@ const Bath = () => {
   return (
     <Layout>
       <div className="bath-app">
-        <Card title={toKrDateString(pickDate)}>
-          <TodayBathUser pickDate={pickDate} />
-          <EventUser />
-        </Card>
+        <Space direction="vertical">
+          <Calendar setNewDate={setDate} />
+
+          <AddEvent date={pickDate} />
+        </Space>
+        <Divider />
+        <EventLog />
       </div>
     </Layout>
   );
 };
 
-export default Bath;
+export default Scheduler;

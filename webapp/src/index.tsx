@@ -13,6 +13,7 @@ import Home from "pages/Home";
 import "./index.css";
 import WordTestRegist from "pages/WordTestRegist";
 import { TimelineView } from "pages/TimelineView";
+import Scheduler from "pages/Scheduler";
 
 ReactDOM.render(
   <React.StrictMode>
@@ -26,6 +27,7 @@ ReactDOM.render(
           <Route path="/wordtest/regist/:level" element={<WordTestRegist />} />
           <Route path="/wordtest/test/:level" element={<WordTest />} />
           <Route path="/timeline" element={<TimelineView />} />
+          <Route path="/scheduler" element={<Scheduler />} />
         </Routes>
       </BrowserRouter>
     </Provider>

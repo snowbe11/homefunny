@@ -1,7 +1,15 @@
 import React from "react";
-import { Form, Input, Select, message, Button, TimePicker } from "antd";
+import {
+  Form,
+  Input,
+  Select,
+  message,
+  Button,
+  TimePicker,
+  Checkbox,
+} from "antd";
 import { NameTag } from "component/NameTag";
-import { addEvent } from "logic/api/eventLog";
+import { addEvent, EventLogType } from "logic/api/eventLog";
 import { useDispatch } from "react-redux";
 import { eventUserThuck } from "logic/reducer/eventUser";
 import { toKrDateString } from "logic/api/misc";
@@ -15,18 +23,24 @@ export const AddEvent = ({ date }: AddEventProp) => {
   const dispatch = useDispatch();
 
   const onFinish = (values: any) => {
-    const newLog = [
-      values.who,
-      values.event,
-      values.log,
-      values.eventTime,
-    ].join("|");
+    const newLog: EventLogType = {
+      loggingTime: new Date(),
+      eventType: values.event,
+      eventTime: values.eventTime.toDate(),
+      eventUser: values.who,
+      logText: values.log,
+      repeat: values.repeat,
+    };
 
     console.log(newLog);
 
-    addEvent(date, newLog).then((e) => {
-      if (e) {
-        addToast(`${toKrDateString(date)} ${e.log}`);
+    addEvent(newLog).then((ret) => {
+      if (ret) {
+        addToast(
+          `${toKrDateString(ret.eventTime)}, ${
+            ret.logText
+          } 이벤트를 등록했습니다.`
+        );
 
         dispatch(eventUserThuck());
       } else {
@@ -40,9 +54,19 @@ export const AddEvent = ({ date }: AddEventProp) => {
   };
 
   const layout = {
-    labelCol: { span: 2 },
-    wrapperCol: { span: 8 },
+    labelCol: { span: 4 },
+    //wrapperCol: { span: 8 },
   };
+
+  const repeatDay = [
+    { label: "월", value: "mon" },
+    { label: "화", value: "tue" },
+    { label: "수", value: "wed" },
+    { label: "목", value: "thr" },
+    { label: "금", value: "fri" },
+    { label: "토", value: "sat" },
+    { label: "일", value: "sun" },
+  ];
 
   return (
     <Form {...layout} onFinish={onFinish}>
@@ -83,6 +107,9 @@ export const AddEvent = ({ date }: AddEventProp) => {
             </Form.Item>
           ) : null
         }
+      </Form.Item>
+      <Form.Item name="repeat" label="반복">
+        <Checkbox.Group options={repeatDay} />
       </Form.Item>
       <Form.Item>
         <Button type="primary" htmlType="submit">

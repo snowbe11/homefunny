@@ -52,7 +52,7 @@ export const WordTestPaper = ({ level }: { level?: string }) => {
         setTest({ part1: q.slice(0, count), part2: q.slice(count) });
       });
     }
-  }, []);
+  }, [level]);
 
   const onClickShowAnswer = (visible: boolean) => {
     showAnswer(visible);

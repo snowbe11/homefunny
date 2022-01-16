@@ -1,7 +1,6 @@
 import Layout from "component/Layout";
 import { Timeline } from "component/Timeline";
-import { EventLogType, getTodayEvent, getEventAt } from "logic/api/eventLog";
-import { splitLogToContents } from "logic/api/misc";
+import { EventLogType, getTodayEvent } from "logic/api/eventLog";
 import React, { useState, useEffect } from "react";
 
 import "./style.css";
@@ -11,7 +10,7 @@ export const TimelineView = () => {
   const [time, setTime] = useState(new Date().toLocaleTimeString());
 
   useEffect(() => {
-    getEventAt(new Date("2022-1-10")).then((log) => {
+    getTodayEvent().then((log) => {
       console.log(log);
 
       setTodayEvent(log);
@@ -20,10 +19,10 @@ export const TimelineView = () => {
     window.setInterval(() => setTime(new Date().toLocaleTimeString()), 1000);
   }, []);
 
-  const filteredLogs = (user: string): Array<EventLogType> => {
+  const filteredLogs = (name: string): Array<EventLogType> => {
     return todayEvent.filter((log) => {
-      const { type, name } = splitLogToContents(log.log);
-      if (type === "custom" && name === user) {
+      const { eventType, eventUser } = log;
+      if (eventType === "custom" && eventUser === name) {
         return true;
       } else {
         return false;

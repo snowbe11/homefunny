@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { getEventLog } from "../../logic/api/eventLog";
+import { EventLogType, getEventLog } from "../../logic/api/eventLog";
 import { Collapse, Timeline } from "antd";
 import { useSelector } from "react-redux";
 import { RootState } from "logic/store";
 import { LogParser } from "component/LogParser";
 
 export const EventLog = () => {
-  const type: { date: Date; text: string }[] = [];
-  const [logState, setLogState] = useState(type);
+  const [logState, setLogState] = useState<Array<EventLogType>>([]);
 
   const eventUser = useSelector((state: RootState) => state.eventUser);
 
@@ -22,10 +21,10 @@ export const EventLog = () => {
       <Collapse defaultActiveKey={[1]}>
         <Collapse.Panel header="Event Log" key="1">
           <Timeline>
-            {logState.map((e, i: number) => {
+            {logState.map((log, i: number) => {
               return (
                 <Timeline.Item key={i++}>
-                  {e.date.toLocaleString()} <LogParser log={e.text} />
+                  {log.loggingTime.toLocaleString()} <LogParser {...log} />
                 </Timeline.Item>
               );
             })}

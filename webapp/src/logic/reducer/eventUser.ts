@@ -10,8 +10,8 @@ const initialEventUserState: EventUser = {
 };
 
 const fetchEventUser = async (): Promise<EventUser> => {
-  const { date, log } = await getRecentBathEvent();
-  return { date: date.getTime(), name: log as "james" | "henry"};
+  const { date, name } = await getRecentBathEvent();
+  return { date: date.getTime(), name: name as "james" | "henry"};
 };
 
 export const eventUserThuck = createAsyncThunk("request", async () => {

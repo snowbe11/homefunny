@@ -5,7 +5,6 @@ import { addWordTest, getWordTest } from "logic/api/wordTest";
 import { fetchPronunceAndExample, initialWord, WordType } from "logic/api/ox";
 import WordInputCardFormItem from "./WordInputCardFormItem";
 import { WordTestType } from "logic/type";
-import { connectFirestoreEmulator } from "firebase/firestore/lite";
 
 export const WordTestWordRegist = ({ level }: { level?: string }) => {
   const [testlist, setTestlist] = useState<Array<WordType>>([initialWord]);
@@ -23,7 +22,7 @@ export const WordTestWordRegist = ({ level }: { level?: string }) => {
         setTestlist(list);
       });
     }
-  }, []);
+  }, [level]);
 
   useEffect(() => {
     if (formRef.current) {
