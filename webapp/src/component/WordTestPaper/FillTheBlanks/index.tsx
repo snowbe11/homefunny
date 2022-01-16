@@ -35,11 +35,13 @@ export const FillTheBlanks = ({
           <div className="fill-blank-table-row">
             {partial[0]}
             <span> </span>
-            <span>
-              {answerVisiblity
-                ? `[ ${e.word} ]`
-                : Array(e.word.length).fill("__").join("")}
-            </span>
+            {answerVisiblity ? (
+              <span className="fill-blank-table-answer">{e.word}</span>
+            ) : (
+              <span className="fill-blank-table-blank">
+                {Array(e.word.length).fill("__").join("")}
+              </span>
+            )}
             <span> </span>
             {partial[1]}
           </div>

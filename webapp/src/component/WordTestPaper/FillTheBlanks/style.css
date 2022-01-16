@@ -30,3 +30,12 @@
     font-size: 13pt;
   }
 }
+
+.fill-blank-table-answer {
+  color: crimson;
+  font-weight: bold;
+}
+
+.fill-blank-table-blank {
+  color: black;
+}

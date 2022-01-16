@@ -2,10 +2,13 @@
   text-align: left;
 }
 
-
 @media print {
   .word-test-layout {
     width: 210mm;
     height: 297mm;
+  }
+
+  .word-test-option {
+    display: none;
   }
 }

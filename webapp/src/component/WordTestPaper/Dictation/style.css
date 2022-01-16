@@ -51,4 +51,8 @@
   .ant-table-tbody > tr > td {
     padding: 0.3cm;
   }
+
+  .ant-table-thead > tr > th {
+    padding: 5px;
+  }
 }

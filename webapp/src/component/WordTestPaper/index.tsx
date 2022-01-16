@@ -64,7 +64,7 @@ export const WordTestPaper = ({ level }: { level?: string }) => {
       <Dictation list={[...test.part1]} answerVisiblity={answerVisiblity} />
       <br />
       <FillTheBlanks list={[...test.part2]} answerVisiblity={answerVisiblity} />
-      <Space>
+      <Space className="word-test-option">
         <Button onClick={() => onClickShowAnswer(!answerVisiblity)}>
           정답보기
         </Button>
