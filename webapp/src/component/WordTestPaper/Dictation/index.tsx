@@ -26,7 +26,7 @@ export const Dictation = ({
         >
           <span>{e.partOfSpeech}.</span>
           <span> </span>
-          <span>{Math.random() < 0.5 ? e.definition : e.translation}</span>
+          <span>{index % 2 === 1 ? e.definition : e.translation}</span>
         </div>
       ),
       answer: (
