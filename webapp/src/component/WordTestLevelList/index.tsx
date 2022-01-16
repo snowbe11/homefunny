@@ -22,12 +22,14 @@ export const WordTestLevelList = () => {
         <Menu.Item key={level}>
           <div className="word-test-level-list-link-container">
             <Link to={`/wordtest/test/${level}`}>{level}</Link>
-            <Button type="link">
-              <Link to={`/wordtest/regist/${level}`}>수정</Link>
-            </Button>
-            <Button type="link" onClick={() => deleteLevel(level)}>
-              삭제
-            </Button>
+            <div className="word-test-level-list-option">
+              <Button type="link">
+                <Link to={`/wordtest/regist/${level}`}>수정</Link>
+              </Button>
+              <Button type="link" onClick={() => deleteLevel(level)}>
+                삭제
+              </Button>
+            </div>
           </div>
         </Menu.Item>
       ))}

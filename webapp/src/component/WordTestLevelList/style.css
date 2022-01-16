@@ -1,4 +1,8 @@
 .word-test-level-list-link-container {
-    display: flex;
-    justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
+}
+
+.word-test-level-list-option {
+  display: flex;
 }
