@@ -25,6 +25,8 @@ export const WordTestWordRegist = ({ level }: { level?: string }) => {
   }, [level]);
 
   useEffect(() => {
+    // 3회에 걸쳐 리렌더가 일어난다.
+    // 근데 삭제할 경우 이 코드가 없으면 하나씩 밀리지 중간 입력이 삭제되지 않는다.
     if (formRef.current) {
       testlist.map((word, index) => {
         formRef.current?.setFieldsValue({
@@ -37,7 +39,29 @@ export const WordTestWordRegist = ({ level }: { level?: string }) => {
     }
   }, [testlist]);
 
+  const saveCurrentForm = () => {
+    if (formRef.current) {
+      const values = formRef.current.getFieldsValue(true);
+      saveValues(values);
+    }
+  };
+
+  const saveValues = (values: any) => {
+    for (const key in values) {
+      setTestlist((list) => {
+        const index = parseInt(key);
+        list[index] = {
+          ...list[index],
+          ...values[key],
+        };
+        return [...list];
+      });
+    }
+  };
+
   const addInputWord = () => {
+    saveCurrentForm();
+
     setTestlist((list) => [...list, initialWord]);
   };
 
@@ -120,6 +144,8 @@ export const WordTestWordRegist = ({ level }: { level?: string }) => {
   };
 
   const deleteFormItem = (index: number) => {
+    saveCurrentForm();
+
     setTestlist((list) => {
       list.splice(index, 1);
       return [...list];
@@ -130,7 +156,7 @@ export const WordTestWordRegist = ({ level }: { level?: string }) => {
     <div style={{ display: "flex", alignItems: "flex-end", padding: "1rem" }}>
       <Form
         onFinish={saveTest}
-        onValuesChange={onValuesChange}
+        //onValuesChange={onValuesChange}
         layout="vertical"
         ref={formRef}
         style={{ flexGrow: "1" }}
