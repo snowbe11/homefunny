@@ -1,8 +1,8 @@
 {
   "files": {
-    "main.css": "/homefunny/static/css/main.e8844fef.chunk.css",
-    "main.js": "/homefunny/static/js/main.ab802452.chunk.js",
-    "main.js.map": "/homefunny/static/js/main.ab802452.chunk.js.map",
+    "main.css": "/homefunny/static/css/main.53924283.chunk.css",
+    "main.js": "/homefunny/static/js/main.46aa8d8a.chunk.js",
+    "main.js.map": "/homefunny/static/js/main.46aa8d8a.chunk.js.map",
     "runtime-main.js": "/homefunny/static/js/runtime-main.6076826f.js",
     "runtime-main.js.map": "/homefunny/static/js/runtime-main.6076826f.js.map",
     "static/css/2.a95be28f.chunk.css": "/homefunny/static/css/2.a95be28f.chunk.css",
@@ -10,14 +10,14 @@
     "static/js/2.93cd4c16.chunk.js.map": "/homefunny/static/js/2.93cd4c16.chunk.js.map",
     "index.html": "/homefunny/index.html",
     "static/css/2.a95be28f.chunk.css.map": "/homefunny/static/css/2.a95be28f.chunk.css.map",
-    "static/css/main.e8844fef.chunk.css.map": "/homefunny/static/css/main.e8844fef.chunk.css.map",
+    "static/css/main.53924283.chunk.css.map": "/homefunny/static/css/main.53924283.chunk.css.map",
     "static/js/2.93cd4c16.chunk.js.LICENSE.txt": "/homefunny/static/js/2.93cd4c16.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.6076826f.js",
     "static/css/2.a95be28f.chunk.css",
     "static/js/2.93cd4c16.chunk.js",
-    "static/css/main.e8844fef.chunk.css",
-    "static/js/main.ab802452.chunk.js"
+    "static/css/main.53924283.chunk.css",
+    "static/js/main.46aa8d8a.chunk.js"
   ]
 }
