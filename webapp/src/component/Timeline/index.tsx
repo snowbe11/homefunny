@@ -4,6 +4,7 @@ import { EventLogType } from "logic/api/eventLog";
 import { NameTag } from "component/NameTag";
 
 import "./style.css";
+import { normalizeTimeToday } from "logic/api/misc";
 
 const dingAudio = new Audio(
   "http://www.besplatnestvari.net/zvuci_1/mp3SMS/Sonic.Ring.mp3"
@@ -17,8 +18,9 @@ export const Timeline = ({ logs }: TimelineProps) => {
   const [alarmed, setAlarmed] = useState(false);
 
   logs.sort((a, b): number => {
-    const l_date = new Date(a.eventTime);
-    const r_date = new Date(b.eventTime);
+    // 이미 잘못 저장된 DB 를 수정하지 못해서 코드에서 대응하는 것으로...
+    const l_date = normalizeTimeToday(a.eventTime);
+    const r_date = normalizeTimeToday(b.eventTime);
 
     if (l_date > r_date) {
       return 1;
@@ -41,7 +43,7 @@ export const Timeline = ({ logs }: TimelineProps) => {
 
       let currentActived = 0;
       logs.map((log, index) => {
-        const tagTime = new Date(log.eventTime);
+        const tagTime = normalizeTimeToday(log.eventTime);
         if (tagTime < now) {
           currentActived = index;
         }
@@ -52,8 +54,8 @@ export const Timeline = ({ logs }: TimelineProps) => {
       let value = 0;
 
       if (currentActived + 1 < logs.length) {
-        const from = logs[currentActived].eventTime;
-        const to = logs[currentActived + 1].eventTime;
+        const from = normalizeTimeToday(logs[currentActived].eventTime);
+        const to = normalizeTimeToday(logs[currentActived + 1].eventTime);
 
         const duration = to.valueOf() - from.valueOf();
         const pregressed = new Date().valueOf() - from.valueOf();
@@ -88,7 +90,7 @@ export const Timeline = ({ logs }: TimelineProps) => {
           <p>{currentWork}</p>
           <Time>
             {logs.map((log, index) => {
-              const tagTime = log.eventTime;
+              const tagTime = normalizeTimeToday(log.eventTime);
 
               let color = "blue";
               if (currentActived !== index && tagTime < now) {
@@ -99,7 +101,7 @@ export const Timeline = ({ logs }: TimelineProps) => {
 
               return (
                 <Time.Item key={index} color={color}>
-                  <span>{tagTime.toLocaleTimeString()}</span>{" "}
+                  <span>{log.eventTime.toLocaleTimeString()}</span>{" "}
                   <NameTag name={log.eventUser} /> <span>{log.logText}</span>
                 </Time.Item>
               );
