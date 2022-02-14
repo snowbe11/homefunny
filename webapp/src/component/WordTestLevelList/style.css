@@ -1,6 +1,9 @@
+@import "antd/dist/antd.css";
+
 .word-test-level-list-link-container {
   display: flex;
   justify-content: space-between;
+  padding-left: 1rem;
 }
 
 .word-test-level-list-option {
