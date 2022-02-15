@@ -69,16 +69,18 @@ type GroupButtonProps = {
 
 const TestPaperButton = ({ label, list, onItemDeleted }: GroupButtonProps) => {
   //console.log("TestPaperButton", label, list);
-  const collator = new Intl.Collator(undefined, {
-    numeric: true,
-    sensitivity: "base",
-  });
+  const compare = (a: string, b: string) => {
+    return a.localeCompare(b, undefined, {
+      numeric: true,
+      sensitivity: "base",
+    });
+  };
 
   return (
     <div className="word-test-level-list-intent">
       <Menu.ItemGroup key={label} title={"/ " + label}>
         {list
-          .sort((a, b) => collator.compare(a.paper, b.paper))
+          .sort((a, b) => compare(a.page, b.page))
           .map((item) => (
             <TestButton
               key={item.link}
