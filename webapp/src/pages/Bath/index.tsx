@@ -6,8 +6,6 @@ import { RootState } from "logic/store";
 import { eventUserThuck } from "logic/reducer/eventUser";
 import { getTodayBathUser } from "logic/reducer/bathUser";
 
-import "antd/dist/antd.css";
-
 import Layout from "component/Layout";
 import { TodayBathUser } from "component/TodayBathUser";
 import { toKrDateString } from "logic/api/misc";
