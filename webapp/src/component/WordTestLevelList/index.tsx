@@ -1,6 +1,6 @@
 import { Button, Menu } from "antd";
 import { getTestLevelList } from "logic/api/wordTest";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
 import "./style.css";
@@ -55,13 +55,21 @@ type GroupButtonProps = {
 
 const TestPaperButton = ({ label, list }: GroupButtonProps) => {
   //console.log("TestPaperButton", label, list);
+  const collator = new Intl.Collator(undefined, {
+    numeric: true,
+    sensitivity: "base",
+  });
 
   return (
-    <Menu.SubMenu key={label} title={label}>
-      {list.map((item) => (
-        <TestButton key={item.link} level={item.link} label={item.page} />
-      ))}
-    </Menu.SubMenu>
+    <div className="word-test-level-list-intent">
+      <Menu.ItemGroup key={label} title={"/ " + label}>
+        {list
+          .sort((a, b) => collator.compare(a.paper, b.paper))
+          .map((item) => (
+            <TestButton key={item.link} level={item.link} label={item.page} />
+          ))}
+      </Menu.ItemGroup>
+    </div>
   );
 };
 
@@ -76,7 +84,11 @@ const TestLevelButton = ({ label, list }: GroupButtonProps) => {
   //console.log("TestLevelButton", label, papers);
 
   return (
-    <Menu.SubMenu key={label} title={label}>
+    <Menu.ItemGroup
+      key={label}
+      title={label + " >"}
+      className="word-test-level-list-paper"
+    >
       {papers.map((paper) => {
         return (
           <TestPaperButton
@@ -86,7 +98,7 @@ const TestLevelButton = ({ label, list }: GroupButtonProps) => {
           />
         );
       })}
-    </Menu.SubMenu>
+    </Menu.ItemGroup>
   );
 };
 
@@ -137,6 +149,8 @@ export const WordTestLevelList = () => {
   const onOpenChange = (openKeys: string[]) => {
     console.log(openKeys);
   };
+
+  const menuRef = useRef(null);
 
   return (
     <Menu mode="inline" theme="light" onOpenChange={onOpenChange}>

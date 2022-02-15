@@ -3,9 +3,19 @@
 .word-test-level-list-link-container {
   display: flex;
   justify-content: space-between;
-  padding-left: 1rem;
+  padding-left: 2.5rem;
+  font-weight: normal;
 }
 
 .word-test-level-list-option {
   display: flex;
+}
+
+.word-test-level-list-intent {
+  padding-left: 1.5rem;
+  font-weight: bold;
+}
+
+.word-test-level-list-paper {
+  font-weight: bold;
 }
