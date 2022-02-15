@@ -1,5 +1,5 @@
 import store, { getCollectionSnapshot } from "../firebase";
-import { collection, doc, getDocs, setDoc } from "firebase/firestore/lite";
+import { collection, deleteDoc, doc, getDocs, setDoc } from "firebase/firestore/lite";
 import { WordTestType } from "logic/type";
 
 export const getTestLevelList = async () => {
@@ -66,6 +66,24 @@ export const addWordTest = async (level: string, list: Array<WordTestType>) => {
       });
 
       await setDoc(stateLogDocRef, docData);
+    }
+
+    return true;
+  } catch {}
+
+  return false;
+};
+
+export const deleteWordTest = async (level: string) => {
+  try {
+    if (process.env.REACT_APP_COLLECTION_WORD_TEST) {
+      const stateLogDocRef = doc(
+        store,
+        process.env.REACT_APP_COLLECTION_WORD_TEST,
+        level
+      );
+
+      await deleteDoc(stateLogDocRef);
     }
 
     return true;

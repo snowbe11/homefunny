@@ -1,6 +1,6 @@
-import { Button, Menu } from "antd";
-import { getTestLevelList } from "logic/api/wordTest";
-import React, { useEffect, useRef, useState } from "react";
+import { Button, Menu, message } from "antd";
+import { deleteWordTest, getTestLevelList } from "logic/api/wordTest";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 import "./style.css";
@@ -26,10 +26,23 @@ type TestInstance = {
 type TestButtonProps = {
   level: string;
   label?: string;
+  onItemDeleted?: () => void;
 };
 
-const TestButton = ({ level, label }: TestButtonProps) => {
-  const deleteLevel = (level: string) => {};
+const TestButton = ({ level, label, onItemDeleted }: TestButtonProps) => {
+  const deleteLevel = async (level: string) => {
+    const result = await deleteWordTest(level);
+
+    if (result) {
+      message.success({
+        content: `${level} (을)를 삭제했습니다.`,
+        key: "updatable",
+        duration: 2,
+      });
+    }
+
+    onItemDeleted?.();
+  };
 
   return (
     <Menu.Item key={level}>
@@ -51,9 +64,10 @@ const TestButton = ({ level, label }: TestButtonProps) => {
 type GroupButtonProps = {
   label: string;
   list: Array<TestInstance>;
+  onItemDeleted?: () => void;
 };
 
-const TestPaperButton = ({ label, list }: GroupButtonProps) => {
+const TestPaperButton = ({ label, list, onItemDeleted }: GroupButtonProps) => {
   //console.log("TestPaperButton", label, list);
   const collator = new Intl.Collator(undefined, {
     numeric: true,
@@ -66,14 +80,19 @@ const TestPaperButton = ({ label, list }: GroupButtonProps) => {
         {list
           .sort((a, b) => collator.compare(a.paper, b.paper))
           .map((item) => (
-            <TestButton key={item.link} level={item.link} label={item.page} />
+            <TestButton
+              key={item.link}
+              level={item.link}
+              label={item.page}
+              onItemDeleted={onItemDeleted}
+            />
           ))}
       </Menu.ItemGroup>
     </div>
   );
 };
 
-const TestLevelButton = ({ label, list }: GroupButtonProps) => {
+const TestLevelButton = ({ label, list, onItemDeleted }: GroupButtonProps) => {
   const papers = list.reduce<Array<string>>((result, item) => {
     if (!result.includes(item.paper)) {
       result.push(item.paper);
@@ -95,6 +114,7 @@ const TestLevelButton = ({ label, list }: GroupButtonProps) => {
             key={paper}
             label={paper}
             list={list.filter((item) => item.paper === paper)}
+            onItemDeleted={onItemDeleted}
           />
         );
       })}
@@ -106,6 +126,7 @@ const regex = /[a-zA-Z]+[ ]+[0-9-]+[ ]+[pP.0-9]+/g;
 
 export const WordTestLevelList = () => {
   const [list, setList] = useState<Array<TestInstance>>([]);
+  const [rerender, setRerender] = useState(false);
 
   useEffect(() => {
     getTestLevelList().then((list) => {
@@ -150,7 +171,11 @@ export const WordTestLevelList = () => {
     console.log(openKeys);
   };
 
-  const menuRef = useRef(null);
+  const onItemDeleted = () => {
+    setRerender((current) => !current);
+
+    console.log("item deleted");
+  };
 
   return (
     <Menu mode="inline" theme="light" onOpenChange={onOpenChange}>
@@ -164,7 +189,13 @@ export const WordTestLevelList = () => {
       {list
         .filter((item) => item.level === "")
         .map((item) => {
-          return <TestButton key={item.level} level={item.link} />;
+          return (
+            <TestButton
+              key={item.level}
+              level={item.link}
+              onItemDeleted={onItemDeleted}
+            />
+          );
         })}
     </Menu>
   );

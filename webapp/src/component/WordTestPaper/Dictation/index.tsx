@@ -12,7 +12,13 @@ export const Dictation = ({
   answerVisiblity: boolean;
 }) => {
   const pronunce = (audio: string) => {
-    new Audio(audio).play();
+    if (audio.length > 0) {
+      try {
+        new Audio(audio).play();
+      } catch (e) {
+        console.log("Dictation", e);
+      }
+    }
   };
 
   const dataSource = list.map((e, index) => {
