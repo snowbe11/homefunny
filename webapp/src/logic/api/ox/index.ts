@@ -1,20 +1,4 @@
-export type WordType = {
-  word: string;
-  partOfSpeech: string;
-  definition: string;
-  translation: string;
-  example: string;
-  pronunciations: string;
-};
-
-export const initialWord: WordType = {
-  word: "",
-  partOfSpeech: "Noun",
-  definition: "",
-  translation: "",
-  example: "",
-  pronunciations: "",
-};
+import { WordType } from "./type";
 
 type OxEntryType = {
   etymologies: Array<any>;
@@ -62,7 +46,7 @@ const fromEnties = ({
   }
 };
 
-const getPronunce = ({ entries }: OxResultType) : string | undefined => {
+const getPronunce = ({ entries }: OxResultType): string | undefined => {
   try {
     const entry = entries["0"];
 

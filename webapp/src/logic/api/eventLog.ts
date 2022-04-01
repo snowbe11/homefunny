@@ -1,4 +1,4 @@
-import store from "../firebase";
+import store from "./firebase";
 import {
   collection,
   getDocs,
@@ -10,29 +10,31 @@ import {
 } from "firebase/firestore/lite";
 
 export type EventLogType = {
-  loggingTime: Date,
-  eventType: string,
-  eventTime: Date,
-  eventUser: string,
-  logText: string,
-  repeat: Array<string>,
+  loggingTime: Date;
+  eventType: string;
+  eventTime: Date;
+  eventUser: string;
+  logText: string;
+  repeat: Array<string>;
 };
 
 type EventLogCollection = {
-  LoggingTime: Timestamp,
-  EventType: string,
-  EventTime: Timestamp,
-  EventLog: string,
-  EventUser: string,
-  Repeat: Array<string>,
-}
+  LoggingTime: Timestamp;
+  EventType: string;
+  EventTime: Timestamp;
+  EventLog: string;
+  EventUser: string;
+  Repeat: Array<string>;
+};
 
 export type BathEventType = {
-  date: Date,
-  name: string,
-}
+  date: Date;
+  name: string;
+};
 
-const getEventLogSnapshot = async () : Promise<Array<EventLogCollection> | undefined> => {
+const getEventLogSnapshot = async (): Promise<
+  Array<EventLogCollection> | undefined
+> => {
   if (process.env.REACT_APP_COLLECTION_EVENT_LOG) {
     const storeCollection = collection(
       store,
@@ -40,13 +42,15 @@ const getEventLogSnapshot = async () : Promise<Array<EventLogCollection> | undef
     );
     const storeQuery = query(storeCollection, orderBy("EventTime", "desc"));
     const storeSnapshot = await getDocs(storeQuery);
-    return storeSnapshot.docs.map((doc) => doc.data()  as EventLogCollection);
+    return storeSnapshot.docs.map((doc) => doc.data() as EventLogCollection);
   } else {
     return undefined;
   }
 };
 
-const getEventByDate = async (date: Date) : Promise<Array<EventLogCollection> | undefined> => {
+const getEventByDate = async (
+  date: Date
+): Promise<Array<EventLogCollection> | undefined> => {
   if (process.env.REACT_APP_COLLECTION_EVENT_LOG) {
     const storeCollection = collection(
       store,
@@ -54,10 +58,13 @@ const getEventByDate = async (date: Date) : Promise<Array<EventLogCollection> | 
     );
 
     // 반복 스케줄 쿼리
-    const week = ['sun', 'mon', 'tue', 'wed', 'thr', 'fri', 'sat'];
+    const week = ["sun", "mon", "tue", "wed", "thr", "fri", "sat"];
     const thisweek = week[date.getDay()];
 
-    const repeatQuery = query(storeCollection, where("Repeat", "array-contains", thisweek));
+    const repeatQuery = query(
+      storeCollection,
+      where("Repeat", "array-contains", thisweek)
+    );
     const snapshotByRepeat = await getDocs(repeatQuery);
 
     const logCollection2 = snapshotByRepeat.docs.map((doc) => {
@@ -78,8 +85,12 @@ const getEventByDate = async (date: Date) : Promise<Array<EventLogCollection> | 
     // 지정일 스케줄
     const timefrom = Timestamp.fromDate(date);
     date.setDate(date.getDate() + 1);
-    const timeto =  Timestamp.fromDate(date);
-    const pickDateQuery = query(storeCollection, where("EventTime", ">=", timefrom), where("EventTime", "<=", timeto));
+    const timeto = Timestamp.fromDate(date);
+    const pickDateQuery = query(
+      storeCollection,
+      where("EventTime", ">=", timefrom),
+      where("EventTime", "<=", timeto)
+    );
     const snapshotByDate = await getDocs(pickDateQuery);
 
     // 쿼리에서 빼면 더 좋다.
@@ -89,13 +100,14 @@ const getEventByDate = async (date: Date) : Promise<Array<EventLogCollection> | 
 
       if (!eventLog.Repeat || eventLog.Repeat.length === 0) {
         return true;
-      }
-      else {
+      } else {
         return false;
       }
     });
 
-    const logCollection1 = logFilterCollection.map(doc=> doc.data() as EventLogCollection);
+    const logCollection1 = logFilterCollection.map(
+      (doc) => doc.data() as EventLogCollection
+    );
 
     return [...logCollection1, ...logCollection2];
   } else {
@@ -103,13 +115,13 @@ const getEventByDate = async (date: Date) : Promise<Array<EventLogCollection> | 
   }
 };
 
-export const getRecentBathEvent = async () : Promise<BathEventType> => {
+export const getRecentBathEvent = async (): Promise<BathEventType> => {
   try {
     const eventDateLog = await getEventLogSnapshot();
     if (eventDateLog) {
       const bathLogOnly = eventDateLog.filter((log) => {
         const { eventType } = parseLegacyEventLog(log);
-        return (eventType === "bath") ? true : false;
+        return eventType === "bath" ? true : false;
       });
 
       for (const log of bathLogOnly) {
@@ -117,7 +129,7 @@ export const getRecentBathEvent = async () : Promise<BathEventType> => {
         return {
           date: new Date(log.EventTime.seconds * 1000),
           name: eventUser,
-        }
+        };
       }
     }
   } catch (e) {
@@ -130,15 +142,15 @@ export const getRecentBathEvent = async () : Promise<BathEventType> => {
   };
 };
 
-export const getTodayEvent = async () : Promise<Array<EventLogType>> => {
+export const getTodayEvent = async (): Promise<Array<EventLogType>> => {
   return getEventAt(new Date());
 };
 
-export const getEventAt = async (date: Date) : Promise<Array<EventLogType>> => {
+export const getEventAt = async (date: Date): Promise<Array<EventLogType>> => {
   try {
     let eventDateLog = await getEventByDate(new Date(date.toDateString()));
     if (eventDateLog) {
-      return eventDateLog.map(log => {
+      return eventDateLog.map((log) => {
         return parseLegacyEventLog(log);
       });
     }
@@ -166,7 +178,9 @@ export const getEventLog = async () => {
   }
 };
 
-export const addEvent = async (eventLog : EventLogType) : Promise<EventLogType | undefined> => {
+export const addEvent = async (
+  eventLog: EventLogType
+): Promise<EventLogType | undefined> => {
   if (process.env.REACT_APP_COLLECTION_EVENT_LOG) {
     const collectionRef = collection(
       store,
@@ -187,36 +201,34 @@ export const addEvent = async (eventLog : EventLogType) : Promise<EventLogType |
 
 export type EventType = "bath" | "custom" | "ban" | "repeat";
 
-export const splitLogToContents = (log: string) : EventLogType => {
+export const splitLogToContents = (log: string): EventLogType => {
   const token = log.split("|");
 
   if (token.length < 5) {
     return {
-      loggingTime: new Date(token[3]), 
+      loggingTime: new Date(token[3]),
       eventTime: new Date(token[3]),
       eventUser: token[0] as "james" | "henry",
       eventType: token[1] as EventType,
       logText: token[2],
       repeat: [],
     };
-  }
-  else {
+  } else {
     return {
-      loggingTime: new Date(token[3]), 
+      loggingTime: new Date(token[3]),
       eventTime: new Date(token[3]),
       eventUser: token[0] as "james" | "henry",
       eventType: token[1] as EventType,
       logText: token[2],
-      repeat: token[4].split(''),
+      repeat: token[4].split(""),
     };
   }
-}
+};
 
 export const parseLegacyEventLog = (log: EventLogCollection) => {
   if (!log.EventUser || log.EventUser.length === 0) {
     return splitLogToContents(log.EventLog);
-  }
-  else {
+  } else {
     return {
       loggingTime: new Date(log.LoggingTime.seconds * 1000),
       eventType: log.EventType,
@@ -226,4 +238,4 @@ export const parseLegacyEventLog = (log: EventLogCollection) => {
       repeat: log.Repeat,
     };
   }
-}
+};
