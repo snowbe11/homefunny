@@ -1,5 +1,5 @@
 import { Table } from "antd";
-import { WordType } from "logic/api/ox";
+import { WordType } from "logic/api/ox/type";
 import { EditOutlined } from "@ant-design/icons";
 
 import "./style.css";

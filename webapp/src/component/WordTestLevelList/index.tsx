@@ -1,5 +1,5 @@
 import { Button, Menu, message } from "antd";
-import { deleteWordTest, getTestLevelList } from "logic/api/wordTest";
+import useWordTest from "logic/hook/useWordTest";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -30,6 +30,8 @@ type TestButtonProps = {
 };
 
 const TestButton = ({ level, label, onItemDeleted }: TestButtonProps) => {
+  const { deleteWordTest } = useWordTest();
+
   const deleteLevel = async (level: string) => {
     const result = await deleteWordTest(level);
 
@@ -130,6 +132,8 @@ export const WordTestLevelList = () => {
   const [list, setList] = useState<Array<TestInstance>>([]);
   const [rerender, setRerender] = useState(false);
 
+  const { getTestLevelList } = useWordTest();
+
   useEffect(() => {
     getTestLevelList().then((list) => {
       const testList = list.map((level) => {
@@ -160,7 +164,7 @@ export const WordTestLevelList = () => {
 
       setList(testList);
     });
-  }, []);
+  }, [getTestLevelList]);
 
   const levelFiltered = list.reduce<Array<string>>((result, item) => {
     if (item.level.length > 0 && !result.includes(item.level)) {

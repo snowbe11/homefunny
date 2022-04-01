@@ -1,28 +1,33 @@
 import { Button, Form, FormInstance, Input, message, Space } from "antd";
 import React, { useEffect, useRef, useState } from "react";
 import { PlusCircleTwoTone } from "@ant-design/icons";
-import { addWordTest, getWordTest } from "logic/api/wordTest";
-import { fetchPronunceAndExample, initialWord, WordType } from "logic/api/ox";
+import { fetchPronunceAndExample } from "logic/api/ox";
 import WordInputCardFormItem from "./WordInputCardFormItem";
 import { WordTestType } from "logic/type";
+import { initialWord, WordType } from "logic/api/ox/type";
+import useWordTest from "logic/hook/useWordTest";
 
 export const WordTestWordRegist = ({ level }: { level?: string }) => {
   const [testlist, setTestlist] = useState<Array<WordType>>([initialWord]);
   const formRef = useRef<FormInstance>(null);
 
+  const { addWordTest, getWordTest } = useWordTest();
+
   useEffect(() => {
     if (level) {
-      getWordTest(level).then((test: WordTestType) => {
-        let list = Array<WordType>();
-        for (const word of Object.keys(test)) {
-          const wordType: WordType = JSON.parse(test[word]);
-          list.push(wordType);
-        }
+      getWordTest(level).then((test) => {
+        if (test) {
+          let list = Array<WordType>();
+          for (const word of Object.keys(test)) {
+            const wordType: WordType = JSON.parse(test[word]);
+            list.push(wordType);
+          }
 
-        setTestlist(list);
+          setTestlist(list);
+        }
       });
     }
-  }, [level]);
+  }, [getWordTest, level]);
 
   useEffect(() => {
     // 3회에 걸쳐 리렌더가 일어난다.

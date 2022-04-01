@@ -1,6 +1,7 @@
 import React, { useRef, useState } from "react";
 import { Button, Input } from "antd";
-import { searchWord, WordType } from "logic/api/ox";
+import { searchWord } from "logic/api/ox";
+import { WordType } from "logic/api/ox/type";
 import WordCard from "component/WordCard";
 
 export const WordSearch = () => {

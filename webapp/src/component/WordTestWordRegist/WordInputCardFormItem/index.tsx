@@ -1,6 +1,6 @@
 import { Button, Form, Input, Select, Space } from "antd";
 import TextArea from "antd/lib/input/TextArea";
-import { WordType } from "logic/api/ox";
+import { WordType } from "logic/api/ox/type";
 import { MinusCircleTwoTone } from "@ant-design/icons";
 
 import "./style.css";

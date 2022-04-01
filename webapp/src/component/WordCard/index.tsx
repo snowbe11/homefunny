@@ -1,6 +1,6 @@
 import { Card, Divider, Space, Typography } from "antd";
 import { PlayCircleTwoTone } from "@ant-design/icons";
-import { WordType } from "logic/api/ox";
+import { WordType } from "logic/api/ox/type";
 
 export const WordCard = ({ word }: { word: WordType }) => {
   const pronunce = (audio: string) => {

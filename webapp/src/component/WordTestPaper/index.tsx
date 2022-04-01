@@ -1,12 +1,11 @@
-import { WordType } from "logic/api/ox";
-import { getWordTest } from "logic/api/wordTest";
-import { WordTestType } from "logic/type";
+import { WordType } from "logic/api/ox/type";
 import React, { useEffect, useState } from "react";
 import FillTheBlanks from "./FillTheBlanks";
 import Dictation from "./Dictation";
 
 import "./style.css";
 import { Button, Space } from "antd";
+import useWordTest from "logic/hook/useWordTest";
 
 const shuffle = (array: any[]) => {
   let currentIndex = array.length;
@@ -37,22 +36,26 @@ export const WordTestPaper = ({ level }: { level?: string }) => {
   const [test, setTest] = useState<SaveType>({ part1: [], part2: [] });
   const [answerVisiblity, showAnswer] = useState(false);
 
+  const { getWordTest } = useWordTest();
+
   useEffect(() => {
     if (level) {
-      getWordTest(level).then((test: WordTestType) => {
-        let testList = Array<WordType>();
-        for (const word of Object.keys(test)) {
-          const wordType: WordType = JSON.parse(test[word]);
-          testList.push(wordType);
+      getWordTest(level).then((test) => {
+        if (test) {
+          let testList = Array<WordType>();
+          for (const word of Object.keys(test)) {
+            const wordType: WordType = JSON.parse(test[word]);
+            testList.push(wordType);
+          }
+
+          const q = shuffle(testList);
+          const count = Math.round(testList.length / 2);
+
+          setTest({ part1: q.slice(0, count), part2: q.slice(count) });
         }
-
-        const q = shuffle(testList);
-        const count = Math.round(testList.length / 2);
-
-        setTest({ part1: q.slice(0, count), part2: q.slice(count) });
       });
     }
-  }, [level]);
+  }, [getWordTest, level]);
 
   const onClickShowAnswer = (visible: boolean) => {
     showAnswer(visible);
