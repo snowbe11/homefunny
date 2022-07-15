@@ -1,4 +1,4 @@
-import store from "./firebase";
+import store from "@snowbe11/easy-firebase";
 import {
   collection,
   getDocs,

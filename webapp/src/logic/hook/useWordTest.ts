@@ -1,5 +1,5 @@
+import { useFirebase } from "@snowbe11/easy-firebase";
 import { WordTestType } from "logic/type";
-import useFirebase from "logic/hook/useFirebase";
 import { useCallback } from "react";
 
 const useWordTest = () => {
